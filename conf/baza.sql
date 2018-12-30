@@ -24,7 +24,7 @@ USE `pivomat` ;
 DROP TABLE IF EXISTS `pivomat`.`Admin` ;
 
 CREATE TABLE IF NOT EXISTS `pivomat`.`Admin` (
-  id INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `ime` VARCHAR(45) NOT NULL,
   `priimek` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
@@ -38,16 +38,16 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `pivomat`.`Artikel` ;
 
 CREATE TABLE IF NOT EXISTS `pivomat`.`Artikel` (
-  id INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `aktiviran` TINYINT(1) NOT NULL,
   `posodobljen` TIMESTAMP NULL DEFAULT NULL ON UPDATE NOW(),
   `naziv` VARCHAR(45) NOT NULL,
-  idZnamka INT NOT NULL,
+  `idZnamka` INT NOT NULL,
   `opis` TEXT(100) NOT NULL,
   `kolicina` DOUBLE NOT NULL,
   `alkohol` DOUBLE NOT NULL,
   `cena` DOUBLE NOT NULL,
-  idStil INT NOT NULL,
+  `idStil` INT NOT NULL,
   PRIMARY KEY (id),
   CONSTRAINT `znamka`
     FOREIGN KEY (idZnamka)
@@ -78,12 +78,12 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `pivomat`.`Narocilo` ;
 
 CREATE TABLE IF NOT EXISTS `pivomat`.`Narocilo` (
-  id INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `potrjeno` TIMESTAMP NULL DEFAULT NULL,
   `preklicano` TIMESTAMP NULL DEFAULT NULL,
   `stornirano` TIMESTAMP NULL DEFAULT NULL,
   `datum` TIMESTAMP NOT NULL DEFAULT NOW(),
-  idStranka INT NOT NULL,
+  `idStranka` INT NOT NULL,
   PRIMARY KEY (id),
   INDEX `stranka_idx` (idStranka ASC),
   CONSTRAINT `stranka`
@@ -99,7 +99,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `pivomat`.`Postavka` ;
 
 CREATE TABLE IF NOT EXISTS `pivomat`.`Postavka` (
-  id INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `idArtikel` INT NOT NULL,
   `kolicina` INT NOT NULL,
   `idNarocilo` INT NOT NULL,
@@ -124,7 +124,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `pivomat`.`Prodajalec` ;
 
 CREATE TABLE IF NOT EXISTS `pivomat`.`Prodajalec`(
-  id INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `ime` VARCHAR(45) NOT NULL,
   `priimek` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
@@ -139,7 +139,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `pivomat`.`Stil` ;
 
 CREATE TABLE IF NOT EXISTS `pivomat`.`Stil`(
-  id INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `naziv` VARCHAR(45) NOT NULL,
   PRIMARY KEY (id))
 ENGINE = InnoDB;
@@ -150,7 +150,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `pivomat`.`Stranka` ;
 
 CREATE TABLE IF NOT EXISTS `pivomat`.`Stranka` (
-  id INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `ime` VARCHAR(45) NOT NULL,
   `priimek` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
@@ -175,7 +175,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `pivomat`.`Znamka` ;
 
 CREATE TABLE IF NOT EXISTS `pivomat`.`Znamka`(
-  id INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `naziv` VARCHAR(45) NOT NULL,
   PRIMARY KEY (id))
 ENGINE = InnoDB;
@@ -183,3 +183,67 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -------------------------------
+-- INSERTI
+-- -------------------------------
+INSERT INTO `Admin` (`id`,`ime`,`priimek`,`email`,`geslo`) VALUES (1,'Admin','Admin','admin@admin.net', 'geslo');
+
+INSERT INTO `Prodajalec` (`id`,`ime`,`priimek`,`email`,`geslo`,`aktiviran`) VALUES (1,'Janez','Novak','janez.novak@pivomat.si','geslo',1);
+INSERT INTO `Prodajalec` (`id`,`ime`,`priimek`,`email`,`geslo`,`aktiviran`) VALUES (NULL,'Metka','Dolenc','metka.dolenc@pivomat.si','geslo',1);
+INSERT INTO `Prodajalec` (`id`,`ime`,`priimek`,`email`,`geslo`,`aktiviran`) VALUES (NULL,'Marjetka','Kovač','marjetka.kovac@pivomat.si','geslo',0);
+
+INSERT INTO `Kraj` (`postnaSt`,`ime`) VALUES (1000,'Ljubljana');
+
+INSERT INTO `Stranka` (`id`,`ime`,`priimek`,`email`,`ulica`,`hisnaSt`,`postnaSt`,`telefon`,`geslo`,`aktiviran`) VALUES (1,'Urban','Urbanija','urban@gmail.com','Dunajska cesta',256,1000,'051000000','geslo',1);
+INSERT INTO `Stranka` (`id`,`ime`,`priimek`,`email`,`ulica`,`hisnaSt`,`postnaSt`,`telefon`,`geslo`,`aktiviran`) VALUES (2,'Lara','Oblak','lara.oblak@hotmail.com','Gosposvetska ulica',39,1000,'031000000','geslo',1);
+INSERT INTO `Stranka` (`id`,`ime`,`priimek`,`email`,`ulica`,`hisnaSt`,`postnaSt`,`telefon`,`geslo`,`aktiviran`) VALUES (3,'Rudi','Jerman','rudi.jerman@gmail.com','Šmartinska cesta',15,1000,'070000000','geslo',0);
+INSERT INTO `Stranka` (`id`,`ime`,`priimek`,`email`,`ulica`,`hisnaSt`,`postnaSt`,`telefon`,`geslo`,`aktiviran`) VALUES (4,'Tončka','Stele','toncka@hotmail.com','Kolodvorska ulica',34,1000,'069000000','geslo',0);
+
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (1,'Abbey Trippel');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (2,'Abt / Quadrupel');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (3,'Amber / Red Ale');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (4,'American IPA');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (5,'American Pale Ale');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (6,'American Wheat');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (7,'Barley Wine');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (8,'Belgian Dubbel');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (9,'Belgian Strong Ale');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (10,'Berliner Weisse');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (11,'Bière de Garde');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (12,'Black IPA');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (13,'Brown Ale');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (14,'California Common');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (15,'Double IPA / Imperial IPA');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (16,'Dunkelweizen');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (17,'Fruit Beer');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (18,'German Hefeweizen');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (19,'Golden Ale / Blond Ale');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (20,'Gose');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (21,'Imperial Stout');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (22,'India Pale Ale - IPA');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (23,'Lager');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (24,'Pale Ale');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (25,'Pilsner');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (26,'Porter');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (27,'Premium Bitter / ESB');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (28,'Saison');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (29,'Schwarzbier');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (30,'Session IPA');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (31,'Sour / Wild Ale');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (32,'Sour Red/Brown');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (33,'Spice / Herb / Vegetable');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (34,'Stout');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (35,'Tripel');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (36,'Weizenbock');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (37,'Wheat Ale');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (38,'White IPA');
+INSERT INTO `Stil` (`id`,`naziv`) VALUES (39,'Witbier');
+
+INSERT INTO `Znamka` (`id`,`naziv`) VALUES (1,'Mali grad');
+
+INSERT INTO `Artikel` (`id`,`aktiviran`,`posodobljen`,`naziv`,`idZnamka`,`opis`,`kolicina`,`alkohol`,`cena`,`idStil`) VALUES (1,1,NULL,'Pale Ale',1,'Pivo v stilu ameriškega pale ale je paradni konj pivovarne Mali Grad. Jantarno-zlato barvo hmeljnega napitka pokriva velika in obstojna pena bele barve. Nežna sadna aroma s pridihom karamele in visoka stopnja mehurčkov daje zelo okusnemu in pitnemu pivu prijetno svežino in osvežilen občutek.',0.5,4.9,2.60,24);
+INSERT INTO `Artikel` (`id`,`aktiviran`,`posodobljen`,`naziv`,`idZnamka`,`opis`,`kolicina`,`alkohol`,`cena`,`idStil`) VALUES (2,1,NULL,'Your Bitter Ex',1,'Za stilom ESB se skrivajo močnejša klasična angleška \"bitter\" piva in tudi kamniški Bitter Ex v tem kontekstu ni nobena izjema. Motna jantarna barva je pokrita z manjšo umazano belo peno, aroma pa je sladkasta z izrazitejšo zeliščo noto, kar na koncu lepo zaokroži v lahko in pitno pivo.',0.5,5.5,2.80,27);
+INSERT INTO `Artikel` (`id`,`aktiviran`,`posodobljen`,`naziv`,`idZnamka`,`opis`,`kolicina`,`alkohol`,`cena`,`idStil`) VALUES (3,1,NULL,'India Pale Ale',1,'IPA pivo z oranžno-zlato barvo, katerega krasi solidna in obstojna pena bež barve ima prijetno sadno aromo agrumov in grenivke. Okus tega IPA piva zaznamuje zelo konkretna grenkoba, kar bo zadovoljilo tudi bolj zahtevne ljubitelje piv stila IPA.',0.5,6.0,2.90,22);
+INSERT INTO `Artikel` (`id`,`aktiviran`,`posodobljen`,`naziv`,`idZnamka`,`opis`,`kolicina`,`alkohol`,`cena`,`idStil`) VALUES (4,0,NULL,'Your Obsession',1,'Pivo stila session IPA ima motno zlato barvo, pokriva pa ga obstojna, velika bela pena. Lahka sadna aroma z agrumi in tropskim sadjem ter nižjo stopnjo alkohola poskrbi za lahkotno in tako izjemno pitno pivo.',0.5,4.8,2.90,30);
+INSERT INTO `Artikel` (`id`,`aktiviran`,`posodobljen`,`naziv`,`idZnamka`,`opis`,`kolicina`,`alkohol`,`cena`,`idStil`) VALUES (5,0,NULL,'Black Magic Woman',1,'Pivo popolnoma črne barve in veliko kremasto bež peno je mešanica klasične IPE in temnega piva. Zmerna grenkoba in srednje močna aroma sladkega sadja in praženega sladu z dodatkom kave.',0.5,6.0,2.90,12);
