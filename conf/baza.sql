@@ -24,12 +24,12 @@ USE `pivomat` ;
 DROP TABLE IF EXISTS `pivomat`.`Admin` ;
 
 CREATE TABLE IF NOT EXISTS `pivomat`.`Admin` (
-  `idAdmin` INT NOT NULL AUTO_INCREMENT,
+  id INT NOT NULL AUTO_INCREMENT,
   `ime` VARCHAR(45) NOT NULL,
   `priimek` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `geslo` CHAR(255) NOT NULL,
-  PRIMARY KEY (`idAdmin`))
+  PRIMARY KEY (id))
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -38,25 +38,25 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `pivomat`.`Artikel` ;
 
 CREATE TABLE IF NOT EXISTS `pivomat`.`Artikel` (
-  `idArtikel` INT NOT NULL AUTO_INCREMENT,
+  id INT NOT NULL AUTO_INCREMENT,
   `aktiviran` TINYINT(1) NOT NULL,
   `posodobljen` TIMESTAMP NULL DEFAULT NULL ON UPDATE NOW(),
   `naziv` VARCHAR(45) NOT NULL,
-  `znamka` INT NOT NULL,
+  idZnamka INT NOT NULL,
   `opis` TEXT(100) NOT NULL,
   `kolicina` DOUBLE NOT NULL,
   `alkohol` DOUBLE NOT NULL,
   `cena` DOUBLE NOT NULL,
-  `stil` INT NOT NULL,
-  PRIMARY KEY (`idArtikel`),
+  idStil INT NOT NULL,
+  PRIMARY KEY (id),
   CONSTRAINT `znamka`
-    FOREIGN KEY (`znamka`)
-    REFERENCES `pivomat`.`Znamka` (`idZnamka`)
+    FOREIGN KEY (idZnamka)
+    REFERENCES `pivomat`.`Znamka` (id)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `stil`
-    FOREIGN KEY (`stil`)
-    REFERENCES `pivomat`.`Stil` (`idStil`)
+    FOREIGN KEY (idStil)
+    REFERENCES `pivomat`.`Stil` (id)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -78,17 +78,17 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `pivomat`.`Narocilo` ;
 
 CREATE TABLE IF NOT EXISTS `pivomat`.`Narocilo` (
-  `idNarocilo` INT NOT NULL AUTO_INCREMENT,
+  id INT NOT NULL AUTO_INCREMENT,
   `potrjeno` TIMESTAMP NULL DEFAULT NULL,
   `preklicano` TIMESTAMP NULL DEFAULT NULL,
   `stornirano` TIMESTAMP NULL DEFAULT NULL,
   `datum` TIMESTAMP NOT NULL DEFAULT NOW(),
-  `stranka` INT NOT NULL,
-  PRIMARY KEY (`idNarocilo`),
-  INDEX `stranka_idx` (`stranka` ASC),
+  idStranka INT NOT NULL,
+  PRIMARY KEY (id),
+  INDEX `stranka_idx` (idStranka ASC),
   CONSTRAINT `stranka`
-    FOREIGN KEY (`stranka`)
-    REFERENCES `pivomat`.`Stranka` (`idStranka`)
+    FOREIGN KEY (idStranka)
+    REFERENCES `pivomat`.`Stranka` (id)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -99,21 +99,21 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `pivomat`.`Postavka` ;
 
 CREATE TABLE IF NOT EXISTS `pivomat`.`Postavka` (
-  `idPostavka` INT NOT NULL AUTO_INCREMENT,
+  id INT NOT NULL AUTO_INCREMENT,
   `idArtikel` INT NOT NULL,
   `kolicina` INT NOT NULL,
   `idNarocilo` INT NOT NULL,
-  PRIMARY KEY (`idPostavka`),
+  PRIMARY KEY (id),
   INDEX `artikel_idx` (`idArtikel` ASC),
   INDEX `narocilo_idx` (`idNarocilo` ASC),
   CONSTRAINT `artikel`
     FOREIGN KEY (`idArtikel`)
-    REFERENCES `pivomat`.`Artikel` (`idArtikel`)
+    REFERENCES `pivomat`.`Artikel` (id)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `narocilo`
     FOREIGN KEY (`idNarocilo`)
-    REFERENCES `pivomat`.`Narocilo` (`idNarocilo`)
+    REFERENCES `pivomat`.`Narocilo` (id)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -123,14 +123,14 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `pivomat`.`Prodajalec` ;
 
-CREATE TABLE IF NOT EXISTS `pivomat`.`Prodajalec` (
-  `idProdajalec` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `pivomat`.`Prodajalec`(
+  id INT NOT NULL AUTO_INCREMENT,
   `ime` VARCHAR(45) NOT NULL,
   `priimek` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `geslo` CHAR(255) NOT NULL,
   `aktiviran` TINYINT(1) NULL,
-  PRIMARY KEY (`idProdajalec`))
+  PRIMARY KEY (id))
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -138,10 +138,10 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `pivomat`.`Stil` ;
 
-CREATE TABLE IF NOT EXISTS `pivomat`.`Stil` (
-  `idStil` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `pivomat`.`Stil`(
+  id INT NOT NULL AUTO_INCREMENT,
   `naziv` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idStil`))
+  PRIMARY KEY (id))
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -150,7 +150,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `pivomat`.`Stranka` ;
 
 CREATE TABLE IF NOT EXISTS `pivomat`.`Stranka` (
-  `idStranka` INT NOT NULL AUTO_INCREMENT,
+  id INT NOT NULL AUTO_INCREMENT,
   `ime` VARCHAR(45) NOT NULL,
   `priimek` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `pivomat`.`Stranka` (
   `telefon` VARCHAR(15) NOT NULL,
   `geslo` CHAR(255) NOT NULL,
   `aktiviran` TINYINT(1) NOT NULL,
-  PRIMARY KEY (`idStranka`),
+  PRIMARY KEY (id),
   INDEX `posta_idx` (`postnaSt` ASC),
   CONSTRAINT `posta`
     FOREIGN KEY (`postnaSt`)
@@ -174,10 +174,10 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `pivomat`.`Znamka` ;
 
-CREATE TABLE IF NOT EXISTS `pivomat`.`Znamka` (
-  `idZnamka` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `pivomat`.`Znamka`(
+  id INT NOT NULL AUTO_INCREMENT,
   `naziv` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idZnamka`))
+  PRIMARY KEY (id))
 ENGINE = InnoDB;
 
 SET SQL_MODE=@OLD_SQL_MODE;
