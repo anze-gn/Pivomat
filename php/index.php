@@ -4,6 +4,7 @@
 session_start();
 
 require_once("controller/PivoController.php");
+require_once("controller/ProdajalciController.php");
 
 define("BASE_URL", $_SERVER["SCRIPT_NAME"] . "/");
 define("IMAGES_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php") . "static/images/");
@@ -29,6 +30,18 @@ $urls = [
     "" => function () {
         ViewHelper::redirect(BASE_URL . "piva");
     },
+    "prodajalci" => function () {
+        ProdajalciController::index();
+    },
+    "prodajalci/add" => function () {
+        ProdajalciController::add();
+    },
+    "prodajalci/edit" => function () {
+        ProdajalciController::edit();
+    },
+    "prodajalci/delete" => function () {
+        ProdajalciController::delete();
+    }
 ];
 
 try {

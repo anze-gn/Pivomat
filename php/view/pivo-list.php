@@ -6,8 +6,8 @@
 
 <p>[ <a href="<?= BASE_URL . "piva/add" ?>">Dodaj novo</a> ]</p>
 
+<h3>Aktivirana:</h3>
 <ul>
-    <h3>Aktivirana:</h3>
     <?php foreach ($piva as $pivo): ?>
         <li>
             <a href="<?= BASE_URL . "piva?id=" . $pivo["id"] ?>">
@@ -15,8 +15,10 @@
             </a>
         </li>
     <?php endforeach; ?>
-    <br>
-    <h3>Deaktivirana:</h3>
+</ul>
+<br>
+<h3>Deaktivirana:</h3>
+<ul>
     <?php foreach ($neaktivnaPiva as $pivo): ?>
         <li>
             <a href="<?= BASE_URL . "piva?id=" . $pivo["id"] ?>">
