@@ -1,6 +1,8 @@
 <?php
 
 require_once 'model/AbstractDB.php';
+require_once 'model/ZnamkaDB.php';
+require_once 'model/StilDB.php';
 
 class PivoDB extends AbstractDB {
 
@@ -13,7 +15,6 @@ class PivoDB extends AbstractDB {
     }
 
     public static function update(array $params) {
-        # TODO naredi tako, da se ob spremembi kreira nov artikel, staremu se pa spremeni atribut "posodobljen"
         return
             parent::modify("UPDATE Artikel SET "
                     . "aktiviran = :aktiviran, "
@@ -23,7 +24,7 @@ class PivoDB extends AbstractDB {
                     . "kolicina = :kolicina, "
                     . "alkohol = :alkohol, "
                     . "cena = :cena, "
-                    . "idStil = :idStil, "
+                    . "idStil = :idStil "
                 . " WHERE id = :id", $params);
     }
 
@@ -32,7 +33,24 @@ class PivoDB extends AbstractDB {
     }
 
     public static function get(array $params) {
-        # TODO vračaj znamko in stil (naredi JOIN query), dodaj WHERE posodobljen IS NULL
+        $piva = parent::query("SELECT id, aktiviran, naziv, idZnamka, opis, kolicina, alkohol, cena, idStil "
+                        . "FROM Artikel "
+                        . "WHERE id = :id",
+                $params);
+        
+        if (count($piva) == 1 && $piva[0]["idZnamka"] && $piva[0]["idStil"]) {
+            $a["id"] = $piva[0]["idZnamka"];
+            $b["id"] = $piva[0]["idStil"];
+            $piva[0]["idZnamka"] = ZnamkaDB::get($a)["naziv"];
+            $piva[0]["idStil"] = StilDB::get($b)["naziv"];
+            return $piva[0];
+        } else {
+            throw new InvalidArgumentException("Pivo z id-jem $params ne obstaja!");
+        }
+    }
+
+    #Ta get ne nadomesti znamke in stila z nazivom, ampak pusti id-je, pomemben pri vnosu edit-a
+    public static function get2(array $params) {
         $piva = parent::query("SELECT id, aktiviran, naziv, idZnamka, opis, kolicina, alkohol, cena, idStil "
                         . "FROM Artikel "
                         . "WHERE id = :id",
@@ -41,15 +59,39 @@ class PivoDB extends AbstractDB {
         if (count($piva) == 1) {
             return $piva[0];
         } else {
-            throw new InvalidArgumentException("Pivo z id-jem $params ne bostaja!");
+            throw new InvalidArgumentException("Pivo z id-jem $params ne obstaja!");
         }
     }
-
+    
     public static function getAll() {
-        # TODO vračaj znamko in stil (naredi JOIN query), dodaj WHERE posodobljen IS NULL
-        return parent::query("SELECT id, aktiviran, posodobljen, naziv, idZnamka, opis, kolicina, alkohol, cena, idStil "
+        $piva = parent::query("SELECT id, aktiviran, naziv, idZnamka, opis, kolicina, alkohol, cena, idStil "
             . "FROM Artikel "
             . "ORDER BY id ASC");
+        foreach ($piva as $num => $pivo):
+            if($pivo["idZnamka"] && $pivo["idStil"]){
+                $a["id"] = $pivo["idZnamka"];
+                $b["id"] = $pivo["idStil"];
+                $piva[$num]["idZnamka"] = ZnamkaDB::get($a)["naziv"];
+                $piva[$num]["idStil"] = StilDB::get($b)["naziv"];
+            }
+        endforeach;
+        return $piva;
+    }
+    
+    public static function getAllActivity(array $params) {
+        $piva = parent::query("SELECT id, aktiviran, naziv, idZnamka, opis, kolicina, alkohol, cena, idStil "
+            . "FROM Artikel "
+            . "WHERE aktiviran = :aktiviran "
+            . "ORDER BY id ASC", $params);
+        foreach ($piva as $num => $pivo):
+            if($pivo["idZnamka"] && $pivo["idStil"]){
+                $a["id"] = $pivo["idZnamka"];
+                $b["id"] = $pivo["idStil"];
+                $piva[$num]["idZnamka"] = ZnamkaDB::get($a)["naziv"];
+                $piva[$num]["idStil"] = StilDB::get($b)["naziv"];
+            }
+        endforeach;
+        return $piva;
     }
 
 }

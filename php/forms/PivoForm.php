@@ -6,6 +6,8 @@ require_once 'HTML/QuickForm2/Element/InputSubmit.php';
 require_once 'HTML/QuickForm2/Element/InputText.php';
 require_once 'HTML/QuickForm2/Element/Textarea.php';
 require_once 'HTML/QuickForm2/Element/InputCheckbox.php';
+require_once 'model/ZnamkaDB.php';
+require_once 'model/StilDB.php';
 
 abstract class PivoAbstractForm extends HTML_QuickForm2 {
 
@@ -34,19 +36,23 @@ abstract class PivoAbstractForm extends HTML_QuickForm2 {
         $this->addElement($this->naziv);
 
         $this->znamka = new HTML_QuickForm2_Element_Select('idZnamka');
-        $this->znamka->setLabel('Znamka');
-        $this->znamka->loadOptions(array('0'=>'Izberite...', '1'=>'znamka1', '2'=>'znamka2') /* TODO array znamk */);
-        # TODO naredi required
+        $this->znamka->setLabel('Znamka - izberi');
+        $znamke = ZnamkaDB::getAll();
+        foreach ($znamke as $znamka):
+            $this->znamka->addOption($znamka["naziv"], $znamka["id"]);
+        endforeach;
         $this->addElement($this->znamka);
 
         $this->stil = new HTML_QuickForm2_Element_Select('idStil');
-        $this->stil->setLabel('Stil');
-        $this->stil->loadOptions(array('0'=>'Izberite...', '1'=>'stil1', '2'=>'stil2') /* TODO array stilov */);
-        # TODO naredi required
+        $this->stil->setLabel('Stil - izberi');
+        $stili = StilDB::getAll();
+        foreach ($stili as $stil):
+            $this->stil->addOption($stil["naziv"], $stil["id"]);
+        endforeach;
         $this->addElement($this->stil);
 
         $this->kolicina = new HTML_QuickForm2_Element_InputText('kolicina');
-        $this->kolicina->setLabel('Količina');
+        $this->kolicina->setLabel('Količina v litrih');
         $this->kolicina->addRule('required', 'Količina ne sme biti prazna.');
         $this->kolicina->addRule('callback', 'Količina ni pravilno zapisana.', array(
             'callback' => 'filter_var','arguments' => [FILTER_VALIDATE_FLOAT]));

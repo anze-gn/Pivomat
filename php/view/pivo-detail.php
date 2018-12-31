@@ -7,13 +7,12 @@
 <p>[ <a href="<?= BASE_URL . "piva" ?>">Seznam vseh piv</a> ]</p>
 
 <ul>
-    (aktiviran, posodobljen, naziv, znamka, opis, kolicina, alkohol, cena, stil)
-    <li>Znamka:             <b><?= $pivo["znamka"] ?>   </b></li>
-    <li>Opis:               <b><?= $pivo["stil"] ?>     </b></li>
-    <li>Količina:           <b><?= $pivo["kolicina"] ?> </b></li>
-    <li>Vsebnost alkohola:  <b><?= $pivo["alkohol"] ?>% </b></li>
-    <li>cena:               <b><?= $pivo["cena"] ?>€    </b></li>
-    <li>opis:               <i><?= $pivo["opis"] ?>     </i></li>
+    <li>Znamka:             <b><?= $pivo["idZnamka"] ?>   </b></li>
+    <li>Stil:               <b><?= $pivo["idStil"] ?>     </b></li>
+    <li>Količina:           <b><?= $pivo["kolicina"] ?>l </b></li>
+    <li>Vsebnost alkohola:  <b><?= number_format($pivo["alkohol"], 1, '.', ''); ?>% </b></li>
+    <li>Cena:               <b><?= number_format($pivo["cena"], 2, '.', ''); ?>€    </b></li>
+    <li>Opis:               <i><?= $pivo["opis"] ?>     </i></li>
 </ul>
 
 <p>[ <a href="<?= BASE_URL . "piva/edit?id=" . $pivo["id"] ?>">Uredi</a> ]</p>

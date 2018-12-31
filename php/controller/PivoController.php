@@ -21,9 +21,16 @@ class PivoController {
                 "pivo" => PivoDB::get($data)
             ]);
         } else {
-            echo ViewHelper::render("view/pivo-list.php", [
+            /*echo ViewHelper::render("view/pivo-list.php", [
                 "title" => "seznam vseh piv",
                 "piva" => PivoDB::getAll()
+            ]);*/
+            $data["aktiviran"] = 1;
+            $data2["aktiviran"] = 0;
+            echo ViewHelper::render("view/pivo-list.php", [
+                "title" => "seznam vseh piv",
+                "piva" => PivoDB::getAllActivity($data),
+                "neaktivnaPiva" => PivoDB::getAllActivity($data2)
             ]);
         }
     }
@@ -32,7 +39,11 @@ class PivoController {
         $form = new PivoInsertForm("add_form");
 
         if ($form->validate()) {
-            $id = PivoDB::insert($form->getValue());
+            $data = $form->getValue();
+            if(!array_key_exists('aktiviran', $data)){
+                $data["aktiviran"] = 0;
+            }
+            $id = PivoDB::insert($data);
             ViewHelper::redirect(BASE_URL . "piva?id=" . $id);
         } else {
             echo ViewHelper::render("view/pivo-form.php", [
@@ -49,6 +60,9 @@ class PivoController {
         if ($editForm->isSubmitted()) {
             if ($editForm->validate()) {
                 $data = $editForm->getValue();
+                if(!array_key_exists('aktiviran', $data)){
+                    $data["aktiviran"] = 0;
+                }
                 PivoDB::update($data);
                 ViewHelper::redirect(BASE_URL . "piva?id=" . $data["id"]);
             } else {
@@ -69,7 +83,7 @@ class PivoController {
             $data = filter_input_array(INPUT_GET, $rules);
 
             if ($data["id"]) {
-                $pivo = PivoDB::get($data);
+                $pivo = PivoDB::get2($data);
                 $dataSource = new HTML_QuickForm2_DataSource_Array($pivo);
                 $editForm->addDataSource($dataSource);
                 $deleteForm->addDataSource($dataSource);
