@@ -11,7 +11,7 @@
     <?php foreach ($piva as $pivo): ?>
         <li>
             <a href="<?= BASE_URL . "piva?id=" . $pivo["id"] ?>">
-                <?= $pivo["idZnamka"] ?>: <?= $pivo["naziv"] ?> (<?= $pivo["idStil"] ?>)
+                <?= $pivo["imeZnamke"] ?>: <?= $pivo["naziv"] ?> (<?= $pivo["imeStila"] ?>)
             </a>
         </li>
     <?php endforeach; ?>
@@ -22,7 +22,7 @@
     <?php foreach ($neaktivnaPiva as $pivo): ?>
         <li>
             <a href="<?= BASE_URL . "piva?id=" . $pivo["id"] ?>">
-                <?= $pivo["idZnamka"] ?>: <?= $pivo["naziv"] ?> (<?= $pivo["idStil"] ?>)
+                <?= $pivo["imeZnamke"] ?>: <?= $pivo["naziv"] ?> (<?= $pivo["imeStila"] ?>)
             </a>
         </li>
     <?php endforeach; ?>

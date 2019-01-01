@@ -1,8 +1,6 @@
 <?php
 
 require_once 'model/AbstractDB.php';
-require_once 'model/ZnamkaDB.php';
-require_once 'model/StilDB.php';
 
 class PivoDB extends AbstractDB {
 
@@ -33,23 +31,19 @@ class PivoDB extends AbstractDB {
     }
 
     public static function get(array $params) {
-        $piva = parent::query("SELECT id, aktiviran, naziv, idZnamka, opis, kolicina, alkohol, cena, idStil "
-                        . "FROM Artikel "
-                        . "WHERE id = :id",
-                $params);
+        $piva = parent::query("SELECT a.id, a.aktiviran, a.naziv, a.idZnamka, a.opis, a.kolicina, a.alkohol, a.cena, a.idStil, z.naziv as imeZnamke, s.naziv as imeStila "
+            . "FROM Artikel a, Znamka z, Stil s "
+            . "WHERE a.id = :id AND a.idZnamka = z.id AND a.idStil = s.id",  
+              $params);
         
-        if (count($piva) == 1 && $piva[0]["idZnamka"] && $piva[0]["idStil"]) {
-            $a["id"] = $piva[0]["idZnamka"];
-            $b["id"] = $piva[0]["idStil"];
-            $piva[0]["idZnamka"] = ZnamkaDB::get($a)["naziv"];
-            $piva[0]["idStil"] = StilDB::get($b)["naziv"];
+        if (count($piva) == 1) {
             return $piva[0];
         } else {
             throw new InvalidArgumentException("Pivo z id-jem $params ne obstaja!");
         }
     }
 
-    #Ta get ne nadomesti znamke in stila z nazivom, ampak pusti id-je, pomemben pri vnosu edit-a
+    #Ta get ne dodaja imena znamke in stila, uporabljen pri vnosu edit-a
     public static function get2(array $params) {
         $piva = parent::query("SELECT id, aktiviran, naziv, idZnamka, opis, kolicina, alkohol, cena, idStil "
                         . "FROM Artikel "
@@ -64,34 +58,17 @@ class PivoDB extends AbstractDB {
     }
     
     public static function getAll() {
-        $piva = parent::query("SELECT id, aktiviran, naziv, idZnamka, opis, kolicina, alkohol, cena, idStil "
-            . "FROM Artikel "
+        return parent::query("SELECT a.id, a.aktiviran, a.naziv, a.idZnamka, a.opis, a.kolicina, a.alkohol, a.cena, a.idStil, z.naziv as imeZnamke, s.naziv as imeStila "
+            . "FROM Artikel a, Znamka z, Stil s "
+            . "WHERE a.idZnamka = z.id AND a.idStil = s.id "
             . "ORDER BY id ASC");
-        foreach ($piva as $num => $pivo):
-            if($pivo["idZnamka"] && $pivo["idStil"]){
-                $a["id"] = $pivo["idZnamka"];
-                $b["id"] = $pivo["idStil"];
-                $piva[$num]["idZnamka"] = ZnamkaDB::get($a)["naziv"];
-                $piva[$num]["idStil"] = StilDB::get($b)["naziv"];
-            }
-        endforeach;
-        return $piva;
     }
     
     public static function getAllActivity(array $params) {
-        $piva = parent::query("SELECT id, aktiviran, naziv, idZnamka, opis, kolicina, alkohol, cena, idStil "
-            . "FROM Artikel "
-            . "WHERE aktiviran = :aktiviran "
+        return parent::query("SELECT a.id, a.aktiviran, a.naziv, a.idZnamka, a.opis, a.kolicina, a.alkohol, a.cena, a.idStil, z.naziv as imeZnamke, s.naziv as imeStila "
+            . "FROM Artikel a, Znamka z, Stil s "
+            . "WHERE aktiviran = :aktiviran AND a.idZnamka = z.id AND a.idStil = s.id "
             . "ORDER BY id ASC", $params);
-        foreach ($piva as $num => $pivo):
-            if($pivo["idZnamka"] && $pivo["idStil"]){
-                $a["id"] = $pivo["idZnamka"];
-                $b["id"] = $pivo["idStil"];
-                $piva[$num]["idZnamka"] = ZnamkaDB::get($a)["naziv"];
-                $piva[$num]["idStil"] = StilDB::get($b)["naziv"];
-            }
-        endforeach;
-        return $piva;
     }
 
 }

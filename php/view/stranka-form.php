@@ -5,8 +5,8 @@
 <h1><?= $title ?></h1>
 
 <p>[
-    <a href="<?= BASE_URL . "prodajalci" ?>">Seznam vseh prodajalcev</a> |
-    <a href="<?= BASE_URL . "prodajalci/add" ?>">Dodaj novega prodajalca</a>
+    <a href="<?= BASE_URL . "stranke" ?>">Seznam vseh strank</a> |
+    <a href="<?= BASE_URL . "stranke/add" ?>">Dodaj novo stranko</a>
     ]</p>
 
 <?= $form ?>

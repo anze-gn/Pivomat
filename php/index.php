@@ -5,6 +5,7 @@ session_start();
 
 require_once("controller/PivoController.php");
 require_once("controller/ProdajalciController.php");
+require_once("controller/StrankeController.php");
 
 define("BASE_URL", $_SERVER["SCRIPT_NAME"] . "/");
 define("IMAGES_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php") . "static/images/");
@@ -41,6 +42,24 @@ $urls = [
     },
     "prodajalci/delete" => function () {
         ProdajalciController::delete();
+    },
+    "admin" => function () {
+        ProdajalciController::admin();  
+    },
+    "admin/edit" => function () {
+        ProdajalciController::editAdmin();
+    },
+    "stranke" => function () {
+        StrankeController::index();
+    },
+    "stranke/add" => function () {
+        StrankeController::add();
+    },
+    "stranke/edit" => function () {
+        StrankeController::edit();
+    },
+    "stranke/delete" => function () {
+        StrankeController::delete();
     }
 ];
 

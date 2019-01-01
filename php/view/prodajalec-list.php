@@ -2,6 +2,8 @@
 
 <?= HtmlTemplates::head($title); ?>
 
+<p>[ <a href="<?= BASE_URL . "admin" ?>">Admin nastavitve</a> ]</p>
+
 <h1>Seznam vseh prodajalcev</h1>
 
 <p>[ <a href="<?= BASE_URL . "prodajalci/add" ?>">Dodaj novega prodajalca</a> ]</p>

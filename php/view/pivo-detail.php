@@ -7,8 +7,8 @@
 <p>[ <a href="<?= BASE_URL . "piva" ?>">Seznam vseh piv</a> ]</p>
 
 <ul>
-    <li>Znamka:             <b><?= $pivo["idZnamka"] ?>   </b></li>
-    <li>Stil:               <b><?= $pivo["idStil"] ?>     </b></li>
+    <li>Znamka:             <b><?= $pivo["imeZnamke"] ?>   </b></li>
+    <li>Stil:               <b><?= $pivo["imeStila"] ?>     </b></li>
     <li>Količina:           <b><?= $pivo["kolicina"] ?>l </b></li>
     <li>Vsebnost alkohola:  <b><?= number_format($pivo["alkohol"], 1, '.', ''); ?>% </b></li>
     <li>Cena:               <b><?= number_format($pivo["cena"], 2, '.', ''); ?>€    </b></li>
