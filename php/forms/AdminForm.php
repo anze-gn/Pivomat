@@ -14,6 +14,8 @@ abstract class AdminAbstractForm extends HTML_QuickForm2 {
 
     public function __construct($id) {
         parent::__construct($id);
+
+        $this->setAttribute('action', $_SERVER["REQUEST_URI"]);
         
         $this->ime = new HTML_QuickForm2_Element_InputText('ime');
         $this->ime->setLabel('Ime');

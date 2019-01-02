@@ -7,7 +7,7 @@ require_once("controller/PivoController.php");
 require_once("controller/ProdajalciController.php");
 require_once("controller/StrankeController.php");
 
-define("BASE_URL", $_SERVER["SCRIPT_NAME"] . "/");
+define("BASE_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php"));
 define("IMAGES_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php") . "static/images/");
 define("CSS_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php") . "static/css/");
 define("DEBUG", true);
