@@ -4,7 +4,7 @@ RewriteBase /pivomat/
 RewriteRule ^index.php - [L,PT,QSA]
 
 RewriteCond %{REQUEST_FILENAME} -f
-RewriteCond %{REQUEST_URI} !^/pivomat/static/
+RewriteCond %{REQUEST_URI} /static/
 RewriteRule . - [L,PT,QSA]
 
 RewriteRule ^(.*) index.php/$1 [L,PT,QSA]
