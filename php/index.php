@@ -70,7 +70,7 @@ try {
         ViewHelper::error404();
     }
 } catch (InvalidArgumentException $e) {
-    ViewHelper::error404();
+    ViewHelper::displayError($e, DEBUG);
 } catch (Exception $e) {
     ViewHelper::displayError($e, DEBUG);
 }

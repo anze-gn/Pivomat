@@ -3,6 +3,7 @@
 require_once 'model/AbstractDB.php';
 
 class ZnamkaDB extends AbstractDB {
+
     public static function get(array $params) {
         $znamka = parent::query("SELECT naziv "
                 . "FROM Znamka "
@@ -20,7 +21,7 @@ class ZnamkaDB extends AbstractDB {
         
     }
 
-    public static function getAll() {
+    public static function getAll(array $params = array()) {
         return parent::query("SELECT id, naziv FROM Znamka");
     }
 

@@ -3,7 +3,8 @@
 require_once 'model/AbstractDB.php';
 
 class PostavkaDB extends AbstractDB {
-    public static function getAll() {
+
+    public static function getAll(array $params = array()) {
         return parent::query("SELECT id, idArtikel, kolicina, idNarocilo "
             . "FROM Postavka "
             . "ORDER BY id ASC");

@@ -3,7 +3,8 @@
 require_once 'model/AbstractDB.php';
 
 class KrajDB extends AbstractDB {
-    public static function getAll() {
+
+    public static function getAll(array $params = array()) {
         return parent::query("SELECT postnaSt, ime "
             . "FROM Kraj "
             . "ORDER BY ime ASC");

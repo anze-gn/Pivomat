@@ -3,21 +3,16 @@
 require_once 'model/AbstractDB.php';
 
 class ProdajalecDB extends AbstractDB {
-    public static function getAll() {
-        return parent::query("SELECT id, ime, priimek, email, geslo, aktiviran "
+
+    public static function getAll(array $params = array()) {
+        return parent::query("SELECT id, ime, priimek, email, aktiviran "
             . "FROM Prodajalec "
-            . "ORDER BY id ASC");
-    }
-    
-    public static function getAllActivity(array $params) {
-        return parent::query("SELECT id, ime, priimek, email, geslo, aktiviran "
-            . "FROM Prodajalec "
-            . "WHERE aktiviran = :aktiviran "
+            . parent::whereString($params, array("aktiviran" => "="))
             . "ORDER BY id ASC", $params);
     }
 
     public static function get(array $params) {
-        $prodajalec = parent::query("SELECT id, ime, priimek, email, geslo, aktiviran "
+        $prodajalec = parent::query("SELECT id, ime, priimek, email, aktiviran "
                         . "FROM Prodajalec "
                         . "WHERE id = :id",
                 $params);
@@ -26,6 +21,20 @@ class ProdajalecDB extends AbstractDB {
             return $prodajalec[0];
         } else {
             throw new InvalidArgumentException("Prodajalec z id-jem $params ne obstaja!");
+        }
+    }
+
+    public static function getPasswordHash($email) {
+        # za preverjanje gesla: password_verify($sent["geslo"], ProdajalecDB::getPasswordHash($sent["email"]))
+        $prodajalec = parent::query("SELECT geslo "
+            . "FROM Prodajalec "
+            . "WHERE email = :email",
+            array("email" => $email));
+
+        if (count($prodajalec) == 1) {
+            return $prodajalec[0]["geslo"];
+        } else {
+            throw new InvalidArgumentException("Prodajalec z email-om $email ne obstaja!");
         }
     }
 
@@ -43,8 +52,8 @@ class ProdajalecDB extends AbstractDB {
                     . "aktiviran = :aktiviran, "
                     . "ime = :ime, "
                     . "priimek = :priimek, "
-                    . "email = :email, "
-                    . "geslo = :geslo "
+                    . "email = :email"
+                    . ((strlen($params["geslo"]) > 0) ? ", geslo = :geslo ": " ")
                 . " WHERE id = :id", $params);
     }
 

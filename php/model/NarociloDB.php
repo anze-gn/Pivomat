@@ -3,7 +3,8 @@
 require_once 'model/AbstractDB.php';
 
 class NarociloDB extends AbstractDB {
-    public static function getAll() {
+
+    public static function getAll(array $params = array()) {
         return parent::query("SELECT id, potrjeno, preklicano, stornirano, datum, idStranka "
             . "FROM Narocilo "
             . "ORDER BY id ASC");

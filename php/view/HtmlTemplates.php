@@ -3,20 +3,20 @@
 class HtmlTemplates {
 
     public static function head($title) {
-        echo('<!DOCTYPE html>
+        return '<!DOCTYPE html>
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="' . CSS_URL . 'style.css">
         <meta charset="UTF-8" />
         <title>' . $title . '</title>
     </head>
-    <body>');
+    <body>';
     }
 
     public static function foot() {
-        echo('
+        return'
     </body>
-</html>');
+</html>';
     }
 
 

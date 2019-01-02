@@ -62,6 +62,9 @@ abstract class AbstractDB {
     protected static function modify($sql, array $params = array()) {
         $stmt = self::getConnection()->prepare($sql);
         $params_filtered = self::filterParams($sql, $params);
+        if (array_key_exists(":geslo", $params_filtered)) {
+            $params_filtered[":geslo"] = password_hash($params_filtered[":geslo"], PASSWORD_BCRYPT);
+        }
         $stmt->execute($params_filtered);
         
         return self::getConnection()->lastInsertId();
@@ -149,7 +152,7 @@ abstract class AbstractDB {
      * array("kljuc" => "vrednost") postane array(":kljuc" => "vrednost")
      * 
      * @param type $params
-     * @return type 
+     * @return array type
      */
     protected static function alterKeys(array $params) {
         $result = array();
@@ -161,9 +164,19 @@ abstract class AbstractDB {
         return $result;
     }
 
+    public static function whereString(array $params, array $filterParams, $whereSuffix = "" ) {
+        $conditions = [];
+        foreach ($filterParams as $column => $comparator) {
+            if (isset($params[$column])) {
+                $conditions[] = "$column $comparator :$column";
+            }
+        }
+        return (count($conditions)>0 || strlen($whereSuffix)>0) ? (" WHERE ".implode(" AND ", $conditions))." ".$whereSuffix." " : "";
+    }
+
     public static abstract function get(array $id);
 
-    public static abstract function getAll();
+    public static abstract function getAll(array $params);
 
     public static abstract function insert(array $params);
 

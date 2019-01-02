@@ -18,19 +18,13 @@ class StrankeController {
 
         if ($data["id"]) {
             echo ViewHelper::render("view/stranka-detail.php", [
-                "stranka" => StrankaDB::get2($data)
+                "stranka" => StrankaDB::get($data)
             ]);
         } else {
-            /*echo ViewHelper::render("view/stranka-list.php", [
-                "title" => "seznam vseh strank",
-                "stranke" => StrankaDB::getAll()
-            ]);*/
-            $data["aktiviran"] = 1;
-            $data2["aktiviran"] = 0;
             echo ViewHelper::render("view/stranka-list.php", [
                 "title" => "seznam vseh strank",
-                "stranke" => strankaDB::getAllActivity($data),
-                "neaktivneStranke" => strankaDB::getAllActivity($data2)
+                "stranke" => strankaDB::getAll(array("aktiviran" => 1)),
+                "neaktivneStranke" => strankaDB::getAll(array("aktiviran" => 0))
             ]);
         }
     }

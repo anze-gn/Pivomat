@@ -21,16 +21,10 @@ class PivoController {
                 "pivo" => PivoDB::get($data)
             ]);
         } else {
-            /*echo ViewHelper::render("view/pivo-list.php", [
-                "title" => "seznam vseh piv",
-                "piva" => PivoDB::getAll()
-            ]);*/
-            $data["aktiviran"] = 1;
-            $data2["aktiviran"] = 0;
             echo ViewHelper::render("view/pivo-list.php", [
                 "title" => "seznam vseh piv",
-                "piva" => PivoDB::getAllActivity($data),
-                "neaktivnaPiva" => PivoDB::getAllActivity($data2)
+                "piva" => PivoDB::getAll(array("aktiviran" => 1)),
+                "neaktivnaPiva" => PivoDB::getAll(array("aktiviran" => 0))
             ]);
         }
     }
@@ -83,7 +77,7 @@ class PivoController {
             $data = filter_input_array(INPUT_GET, $rules);
 
             if ($data["id"]) {
-                $pivo = PivoDB::get2($data);
+                $pivo = PivoDB::get($data);
                 $dataSource = new HTML_QuickForm2_DataSource_Array($pivo);
                 $editForm->addDataSource($dataSource);
                 $deleteForm->addDataSource($dataSource);

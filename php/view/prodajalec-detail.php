@@ -6,10 +6,11 @@
 
 <p>[ <a href="<?= BASE_URL . "prodajalci" ?>">Seznam vseh prodajalcev</a> ]</p>
 
-<ul>
-    <li>E-mail:             <b><?= $prodajalec["email"] ?>   </b></li>
-    <li>Geslo:               <b><?= $prodajalec["geslo"] ?>     </b></li>
-</ul>
+    <ul>
+        <li>Ime:                <b><?= $prodajalec["ime"] ?>     </b></li>
+        <li>Priimek:            <b><?= $prodajalec["priimek"] ?> </b></li>
+        <li>E-mail:             <b><?= $prodajalec["email"] ?>   </b></li>
+    </ul>
 
 <p>[ <a href="<?= BASE_URL . "prodajalci/edit?id=" . $prodajalec["id"] ?>">Uredi</a> ]</p>
 

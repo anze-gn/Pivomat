@@ -83,7 +83,7 @@ abstract class StrankaAbstractForm extends HTML_QuickForm2 {
         $this->addElement($this->telefon);
         
         $this->geslo = $this->addElement('password', 'geslo')->setLabel('Geslo');
-        $this->geslo->addRule('required', 'Geslo ne sme biti prazno');
+        $this->gesloRule = $this->geslo->addRule('required', 'Geslo ne sme biti prazno');
         $this->geslo->addRule('minlength', 'Geslo mora vsebovati najmanj 5 znakov.', 5);
         $this->geslo->addRule('maxlength', 'Geslo lahko vsebuje največ 45 znakov.', 45);
 
@@ -113,6 +113,8 @@ class StrankaEditForm extends StrankaAbstractForm {
     public function __construct($id) {
         parent::__construct($id);
 
+        $this->geslo->setLabel('Geslo (pustite prazno za ohranitev starega gesla)');
+        $this->geslo->removeRule($this->gesloRule);
         $this->button->setAttribute('value', 'Shrani spremembe');
         $this->id = new HTML_QuickForm2_Element_InputHidden("id");
         $this->addElement($this->id);

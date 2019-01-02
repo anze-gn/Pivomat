@@ -23,16 +23,10 @@ class ProdajalciController {
                 "prodajalec" => ProdajalecDB::get($data)
             ]);
         } else {
-            /*echo ViewHelper::render("view/prodajalec-list.php", [
-                "title" => "seznam vseh prodajalcev",
-                "prodajalci" => ProdajalecDB::getAll()
-            ]);*/
-            $data["aktiviran"] = 1;
-            $data2["aktiviran"] = 0;
             echo ViewHelper::render("view/prodajalec-list.php", [
                 "title" => "seznam vseh prodajalcev",
-                "prodajalci" => ProdajalecDB::getAllActivity($data),
-                "neaktivniProdajalci" => ProdajalecDB::getAllActivity($data2)
+                "prodajalci" => ProdajalecDB::getAll(array("aktiviran" => 1)),
+                "neaktivniProdajalci" => ProdajalecDB::getAll(array("aktiviran" => 0))
             ]);
         }
     }
