@@ -1,5 +1,4 @@
 RewriteEngine On
-RewriteBase /pivomat/
 
 RewriteRule ^index.php - [L,PT,QSA]
 

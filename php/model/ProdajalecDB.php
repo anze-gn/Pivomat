@@ -34,7 +34,8 @@ class ProdajalecDB extends AbstractDB {
         if (count($prodajalec) == 1) {
             return $prodajalec[0]["geslo"];
         } else {
-            throw new InvalidArgumentException("Prodajalec z email-om $email ne obstaja!");
+            #throw new InvalidArgumentException("Prodajalec z email-om $email ne obstaja!");
+            return 1;
         }
     }
 

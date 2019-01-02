@@ -37,7 +37,7 @@ abstract class AdminAbstractForm extends HTML_QuickForm2 {
         $this->email->setLabel('E-mail');
         $this->setAttribute('size', 100);
         $this->email->addRule('required', 'E-mail ne sme biti prazen.');
-        $this->email->addRule('regex', 'Dovoljen vnos e-maila.', '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/');
+        $this->email->addRule('email', 'Napačen vnos e-maila.');
         $this->email->addRule('maxlength', 'E-mail lahko vsebuje največ 45 znakov.', 45);
         $this->addElement($this->email);
         

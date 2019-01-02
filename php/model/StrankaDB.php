@@ -34,7 +34,8 @@ class StrankaDB extends AbstractDB {
         if (count($stranka) == 1) {
             return $stranka[0]["geslo"];
         } else {
-            throw new InvalidArgumentException("Stranka z email-om $email ne obstaja!");
+            #throw new InvalidArgumentException("Stranka z email-om $email ne obstaja!");
+            return 1;
         }
     }
 

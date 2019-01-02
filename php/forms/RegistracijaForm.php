@@ -6,10 +6,10 @@ require_once 'HTML/QuickForm2/Element/InputSubmit.php';
 require_once 'HTML/QuickForm2/Element/InputText.php';
 require_once 'HTML/QuickForm2/Element/InputCheckbox.php';
 require_once 'model/KrajDB.php';
+require_once 'HTML/QuickForm2/Element/Captcha/Numeral.php';
 
-abstract class StrankaAbstractForm extends HTML_QuickForm2 {
+abstract class RegistracijaAbstractForm extends HTML_QuickForm2 {
 
-    public $aktiviran;
     public $ime;
     public $priimek;
     public $email;
@@ -18,15 +18,13 @@ abstract class StrankaAbstractForm extends HTML_QuickForm2 {
     public $postnaSt;
     public $telefon;
     public $geslo;
+    public $ponovitevGesla;
+    public $captcha;
 
     public function __construct($id) {
         parent::__construct($id);
-
+        
         $this->setAttribute('action', $_SERVER["REQUEST_URI"]);
-
-        $this->aktiviran = new HTML_QuickForm2_Element_InputCheckbox('aktiviran');
-        $this->aktiviran->setLabel('Aktiviran');
-        $this->addElement($this->aktiviran);
 
         $this->ime = new HTML_QuickForm2_Element_InputText('ime');
         $this->ime->setLabel('Ime');
@@ -83,9 +81,30 @@ abstract class StrankaAbstractForm extends HTML_QuickForm2 {
         $this->addElement($this->telefon);
         
         $this->geslo = $this->addElement('password', 'geslo')->setLabel('Geslo');
-        $this->gesloRule = $this->geslo->addRule('required', 'Geslo ne sme biti prazno');
+        $this->geslo->addRule('required', 'Geslo ne sme biti prazno.');
         $this->geslo->addRule('minlength', 'Geslo mora vsebovati najmanj 5 znakov.', 5);
         $this->geslo->addRule('maxlength', 'Geslo lahko vsebuje največ 45 znakov.', 45);
+        
+        $this->ponovitevGesla = $this->addElement('password', 'ponovitevGesla')->setLabel('Ponovitev gesla');
+        $this->ponovitevGesla->addRule('required', 'Ponovitev gesla ne sme biti prazno.');
+        $this->ponovitevGesla->addRule('eq', 'Gesli se ne ujemata!', array($this->geslo));
+        
+        HTML_QuickForm2_Factory::registerElement(
+            'numeralcaptcha',
+            'HTML_QuickForm2_Element_Captcha_Numeral'
+        );
+
+        $this->captcha = $this->addElement(
+            'numeralcaptcha',
+            'captchaelem',
+            array(
+                'id' => 'captchavalue',
+            ),
+            array(
+                'minValue' => 100,
+                'maxValue' => 200,
+            )
+        )->setLabel('Izračunaj');
 
         $this->button = new HTML_QuickForm2_Element_InputSubmit(null);
         $this->addElement($this->button);
@@ -96,50 +115,12 @@ abstract class StrankaAbstractForm extends HTML_QuickForm2 {
 
 }
 
-class StrankaInsertForm extends StrankaAbstractForm {
+class RegistracijaInsertForm extends RegistracijaAbstractForm {
 
     public function __construct($id) {
         parent::__construct($id);
 
-        $this->button->setAttribute('value', 'Dodaj stranko');
-    }
-
-}
-
-class StrankaEditForm extends StrankaAbstractForm {
-
-    public $id;
-
-    public function __construct($id) {
-        parent::__construct($id);
-
-        $this->geslo->setLabel('Geslo (pustite prazno za ohranitev starega gesla)');
-        $this->geslo->removeRule($this->gesloRule);
-        $this->button->setAttribute('value', 'Shrani spremembe');
-        $this->id = new HTML_QuickForm2_Element_InputHidden("id");
-        $this->addElement($this->id);
-    }
-
-}
-
-class StrankaDeleteForm extends HTML_QuickForm2 {
-
-    public $id;
-
-    public function __construct($id) {
-        parent::__construct($id, "post", ["action" => BASE_URL . "stranke/delete"]);
-
-        $this->id = new HTML_QuickForm2_Element_InputHidden("id");
-        $this->addElement($this->id);
-
-        $this->confirmation = new HTML_QuickForm2_Element_InputCheckbox("confirmation");
-        $this->confirmation->setLabel('Potrditev brisanja');
-        $this->confirmation->addRule('required', 'Za brisanje označite to polje.');
-        $this->addElement($this->confirmation);
-
-        $this->button = new HTML_QuickForm2_Element_InputSubmit(null);
-        $this->button->setAttribute('value', 'Izbriši');
-        $this->addElement($this->button);
+        $this->button->setAttribute('value', 'Registriraj');
     }
 
 }

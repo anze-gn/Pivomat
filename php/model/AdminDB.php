@@ -32,7 +32,8 @@ class AdminDB extends AbstractDB {
         if (count($admin) == 1) {
             return $admin[0]["geslo"];
         } else {
-            throw new InvalidArgumentException("Admin z email-om $email ne obstaja!");
+            #throw new InvalidArgumentException("Admin z email-om $email ne obstaja!");
+            return 1;
         }
     }
 

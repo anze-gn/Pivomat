@@ -6,6 +6,7 @@ session_start();
 require_once("controller/PivoController.php");
 require_once("controller/ProdajalciController.php");
 require_once("controller/StrankeController.php");
+require_once("controller/PrijavaRegistracijaController.php");
 
 define("BASE_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php"));
 define("IMAGES_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php") . "static/images/");
@@ -60,6 +61,12 @@ $urls = [
     },
     "stranke/delete" => function () {
         StrankeController::delete();
+    },
+    "registracija" => function () {
+        PrijavaRegistracijaController::registracija();
+    },
+    "prijava" => function () {
+        PrijavaRegistracijaController::prijava();
     }
 ];
 

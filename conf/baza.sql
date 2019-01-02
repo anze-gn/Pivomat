@@ -129,6 +129,7 @@ CREATE TABLE IF NOT EXISTS `pivomat`.`Prodajalec`(
   `email` VARCHAR(45) NOT NULL,
   `geslo` CHAR(255) NOT NULL,
   `aktiviran` TINYINT(1) NULL,
+  UNIQUE (email),
   PRIMARY KEY (id))
 ENGINE = InnoDB;
 
@@ -159,6 +160,7 @@ CREATE TABLE IF NOT EXISTS `pivomat`.`Stranka` (
   `telefon` VARCHAR(15) NOT NULL,
   `geslo` CHAR(255) NOT NULL,
   `aktiviran` TINYINT(1) NOT NULL,
+  UNIQUE (email),
   PRIMARY KEY (id),
   INDEX `posta_idx` (`postnaSt` ASC),
   CONSTRAINT `posta`
@@ -186,11 +188,11 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -------------------------------
 -- INSERTI
 -- -------------------------------
-INSERT INTO `Admin` (`id`,`ime`,`priimek`,`email`,`geslo`) VALUES (1,'Admin','Admin','admin@admin.net', 'geslo');
+INSERT INTO `Admin` (`id`,`ime`,`priimek`,`email`,`geslo`) VALUES (1,'Admin','Admin','admin@pivomat.si', '$2y$10$mBtvDrHIxFAB14mANatPTuCpjOOOv3pmZvS6cUSvB9faSa3F08Saq');
 
-INSERT INTO `Prodajalec` (`id`,`ime`,`priimek`,`email`,`geslo`,`aktiviran`) VALUES (1,'Janez','Novak','janez.novak@pivomat.si','geslo',1);
-INSERT INTO `Prodajalec` (`id`,`ime`,`priimek`,`email`,`geslo`,`aktiviran`) VALUES (2,'Metka','Dolenc','metka.dolenc@pivomat.si','geslo',1);
-INSERT INTO `Prodajalec` (`id`,`ime`,`priimek`,`email`,`geslo`,`aktiviran`) VALUES (3,'Marjetka','Kovač','marjetka.kovac@pivomat.si','geslo',0);
+INSERT INTO `Prodajalec` (`id`,`ime`,`priimek`,`email`,`geslo`,`aktiviran`) VALUES (1,'Janez','Novak','janez.novak@pivomat.si','$2y$10$rnfXbpSBjWMXHvYUmEYIqeGyYq0mf61FOGjqZnmtdB2wBXCShkVHy',1);
+INSERT INTO `Prodajalec` (`id`,`ime`,`priimek`,`email`,`geslo`,`aktiviran`) VALUES (2,'Metka','Dolenc','metka.dolenc@pivomat.si','$2y$10$rnfXbpSBjWMXHvYUmEYIqeGyYq0mf61FOGjqZnmtdB2wBXCShkVHy',1);
+INSERT INTO `Prodajalec` (`id`,`ime`,`priimek`,`email`,`geslo`,`aktiviran`) VALUES (3,'Marjetka','Kovač','marjetka.kovac@pivomat.si','$2y$10$rnfXbpSBjWMXHvYUmEYIqeGyYq0mf61FOGjqZnmtdB2wBXCShkVHy',0);
 
 INSERT INTO `Kraj` (`postnaSt`,`ime`) VALUES (8341,'Adlešiči');
 INSERT INTO `Kraj` (`postnaSt`,`ime`) VALUES (5270,'Ajdovščina');
@@ -671,10 +673,10 @@ INSERT INTO `Kraj` (`postnaSt`,`ime`) VALUES (4226,'Žiri');
 INSERT INTO `Kraj` (`postnaSt`,`ime`) VALUES (4274,'Žirovnica');
 INSERT INTO `Kraj` (`postnaSt`,`ime`) VALUES (8360,'Žužemberk');
 
-INSERT INTO `Stranka` (`id`,`ime`,`priimek`,`email`,`ulica`,`hisnaSt`,`postnaSt`,`telefon`,`geslo`,`aktiviran`) VALUES (1,'Urban','Urbanija','urban@gmail.com','Dunajska cesta',256,1000,'051000000','geslo',1);
-INSERT INTO `Stranka` (`id`,`ime`,`priimek`,`email`,`ulica`,`hisnaSt`,`postnaSt`,`telefon`,`geslo`,`aktiviran`) VALUES (2,'Lara','Oblak','lara.oblak@hotmail.com','Gosposvetska ulica',39,1000,'031000000','geslo',1);
-INSERT INTO `Stranka` (`id`,`ime`,`priimek`,`email`,`ulica`,`hisnaSt`,`postnaSt`,`telefon`,`geslo`,`aktiviran`) VALUES (3,'Rudi','Jerman','rudi.jerman@gmail.com','Šmartinska cesta',15,1000,'070000000','geslo',0);
-INSERT INTO `Stranka` (`id`,`ime`,`priimek`,`email`,`ulica`,`hisnaSt`,`postnaSt`,`telefon`,`geslo`,`aktiviran`) VALUES (4,'Tončka','Stele','toncka@hotmail.com','Kolodvorska ulica',34,1000,'069000000','geslo',0);
+INSERT INTO `Stranka` (`id`,`ime`,`priimek`,`email`,`ulica`,`hisnaSt`,`postnaSt`,`telefon`,`geslo`,`aktiviran`) VALUES (1,'Urban','Urbanija','urban@gmail.com','Dunajska cesta',256,1000,'051000000','$2y$10$rnfXbpSBjWMXHvYUmEYIqeGyYq0mf61FOGjqZnmtdB2wBXCShkVHy',1);
+INSERT INTO `Stranka` (`id`,`ime`,`priimek`,`email`,`ulica`,`hisnaSt`,`postnaSt`,`telefon`,`geslo`,`aktiviran`) VALUES (2,'Lara','Oblak','lara.oblak@hotmail.com','Gosposvetska ulica',39,1235,'031000000','$2y$10$rnfXbpSBjWMXHvYUmEYIqeGyYq0mf61FOGjqZnmtdB2wBXCShkVHy',1);
+INSERT INTO `Stranka` (`id`,`ime`,`priimek`,`email`,`ulica`,`hisnaSt`,`postnaSt`,`telefon`,`geslo`,`aktiviran`) VALUES (3,'Rudi','Jerman','rudi.jerman@gmail.com','Šmartinska cesta',15,1230,'070000000','$2y$10$rnfXbpSBjWMXHvYUmEYIqeGyYq0mf61FOGjqZnmtdB2wBXCShkVHy',0);
+INSERT INTO `Stranka` (`id`,`ime`,`priimek`,`email`,`ulica`,`hisnaSt`,`postnaSt`,`telefon`,`geslo`,`aktiviran`) VALUES (4,'Tončka','Stele','toncka@hotmail.com','Kolodvorska ulica',34,1000,'069000000','$2y$10$rnfXbpSBjWMXHvYUmEYIqeGyYq0mf61FOGjqZnmtdB2wBXCShkVHy',0);
 
 INSERT INTO `Stil` (`id`,`naziv`) VALUES (1,'Abbey Trippel');
 INSERT INTO `Stil` (`id`,`naziv`) VALUES (2,'Abt / Quadrupel');
