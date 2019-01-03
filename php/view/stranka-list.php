@@ -10,7 +10,7 @@
 <ul>
     <?php foreach ($stranke as $stranka): ?>
         <li>
-            <a href="<?= BASE_URL . "stranke?id=" . $stranka["id"] ?>">
+            <a href="<?= BASE_URL . "stranke/" . $stranka["id"] ?>">
                 <?= $stranka["ime"] ?> <?= $stranka["priimek"] ?> (<?= $stranka["email"] ?>)
             </a>
         </li>
@@ -21,7 +21,7 @@
 <ul>
     <?php foreach ($neaktivneStranke as $stranka): ?>
         <li>
-            <a href="<?= BASE_URL . "stranke?id=" . $stranka["id"] ?>">
+            <a href="<?= BASE_URL . "stranke/" . $stranka["id"] ?>">
                 <?= $stranka["ime"] ?> <?= $stranka["priimek"] ?> (<?= $stranka["email"] ?>)
             </a>
         </li>

@@ -4,29 +4,20 @@ require_once("model/PivoDB.php");
 require_once("ViewHelper.php");
 require_once("forms/PivoForm.php");
 
-class PivoController {
+class PivaController {
 
     public static function index() {
-        $rules = [
-            "id" => [
-                'filter' => FILTER_VALIDATE_INT,
-                'options' => ['min_range' => 1]
-            ]
-        ];
+        echo ViewHelper::render("view/pivo-list.php", [
+            "title" => "seznam vseh piv",
+            "piva" => PivoDB::getAll(array("aktiviran" => 1)),
+            "neaktivnaPiva" => PivoDB::getAll(array("aktiviran" => 0))
+        ]);
+    }
 
-        $data = filter_input_array(INPUT_GET, $rules);
-
-        if ($data["id"]) {
-            echo ViewHelper::render("view/pivo-detail.php", [
-                "pivo" => PivoDB::get($data)
-            ]);
-        } else {
-            echo ViewHelper::render("view/pivo-list.php", [
-                "title" => "seznam vseh piv",
-                "piva" => PivoDB::getAll(array("aktiviran" => 1)),
-                "neaktivnaPiva" => PivoDB::getAll(array("aktiviran" => 0))
-            ]);
-        }
+    public static function get($id) {
+        echo ViewHelper::render("view/pivo-detail.php", [
+            "pivo" => PivoDB::get(array('id' => $id))
+        ]);
     }
 
     public static function add() {
@@ -38,7 +29,7 @@ class PivoController {
                 $data["aktiviran"] = 0;
             }
             $id = PivoDB::insert($data);
-            ViewHelper::redirect(BASE_URL . "piva?id=" . $id);
+            ViewHelper::redirect(BASE_URL . "piva/" . $id);
         } else {
             echo ViewHelper::render("view/pivo-form.php", [
                 "title" => "Dodaj novo pivo",
@@ -47,7 +38,7 @@ class PivoController {
         }
     }
 
-    public static function edit() {
+    public static function edit($id) {
         $editForm = new PivoEditForm("edit_form");
         $deleteForm = new PivoDeleteForm("delete_form");
 
@@ -58,7 +49,7 @@ class PivoController {
                     $data["aktiviran"] = 0;
                 }
                 PivoDB::update($data);
-                ViewHelper::redirect(BASE_URL . "piva?id=" . $data["id"]);
+                ViewHelper::redirect(BASE_URL . "piva/" . $data["id"]);
             } else {
                 echo ViewHelper::render("view/pivo-form.php", [
                     "title" => "Uredi podatke o pivu",
@@ -67,29 +58,16 @@ class PivoController {
                 ]);
             }
         } else {
-            $rules = [
-                "id" => [
-                    'filter' => FILTER_VALIDATE_INT,
-                    'options' => ['min_range' => 1]
-                ]
-            ];
+            $pivo = PivoDB::get(array('id' => $id));
+            $dataSource = new HTML_QuickForm2_DataSource_Array($pivo);
+            $editForm->addDataSource($dataSource);
+            $deleteForm->addDataSource($dataSource);
 
-            $data = filter_input_array(INPUT_GET, $rules);
-
-            if ($data["id"]) {
-                $pivo = PivoDB::get($data);
-                $dataSource = new HTML_QuickForm2_DataSource_Array($pivo);
-                $editForm->addDataSource($dataSource);
-                $deleteForm->addDataSource($dataSource);
-
-                echo ViewHelper::render("view/pivo-form.php", [
-                    "title" => "Uredi podatke o pivu",
-                    "form" => $editForm,
-                    "deleteForm" => $deleteForm
-                ]);
-            } else {
-                throw new InvalidArgumentException("Pivo ne obstaja.");
-            }
+            echo ViewHelper::render("view/pivo-form.php", [
+                "title" => "Uredi podatke o pivu",
+                "form" => $editForm,
+                "deleteForm" => $deleteForm
+            ]);
         }
     }
 
@@ -102,7 +80,7 @@ class PivoController {
             ViewHelper::redirect(BASE_URL . "piva");
         } else {
             if (isset($data["id"])) {
-                $url = BASE_URL . "piva/edit?id=" . $data["id"];
+                $url = BASE_URL . "piva/edit/" . $data["id"];
             } else {
                 $url = BASE_URL . "piva";
             }

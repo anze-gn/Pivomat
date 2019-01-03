@@ -12,7 +12,7 @@
 <ul>
     <?php foreach ($prodajalci as $prodajalec): ?>
         <li>
-            <a href="<?= BASE_URL . "prodajalci?id=" . $prodajalec["id"] ?>">
+            <a href="<?= BASE_URL . "prodajalci/" . $prodajalec["id"] ?>">
                 <?= $prodajalec["ime"] ?> <?= $prodajalec["priimek"] ?> (<?= $prodajalec["email"] ?>)
             </a>
         </li>
@@ -23,7 +23,7 @@
 <ul>
     <?php foreach ($neaktivniProdajalci as $prodajalec): ?>
         <li>
-            <a href="<?= BASE_URL . "prodajalci?id=" . $prodajalec["id"] ?>">
+            <a href="<?= BASE_URL . "prodajalci/" . $prodajalec["id"] ?>">
                 <?= $prodajalec["ime"] ?> <?= $prodajalec["priimek"] ?> (<?= $prodajalec["email"] ?>)
             </a>
         </li>

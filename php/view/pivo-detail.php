@@ -15,6 +15,6 @@
     <li>Opis:               <i><?= $pivo["opis"] ?>     </i></li>
 </ul>
 
-<p>[ <a href="<?= BASE_URL . "piva/edit?id=" . $pivo["id"] ?>">Uredi</a> ]</p>
+<p>[ <a href="<?= BASE_URL . "piva/edit/" . $pivo["id"] ?>">Uredi</a> ]</p>
 
 <?= HtmlTemplates::foot(); ?>

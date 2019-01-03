@@ -46,7 +46,14 @@ class PivoDB extends AbstractDB {
     public static function getAll(array $params = array()) {
         return parent::query("SELECT a.id, a.aktiviran, a.naziv, a.idZnamka, a.opis, a.kolicina, a.alkohol, a.cena, a.idStil, z.naziv as imeZnamke, s.naziv as imeStila "
             . "FROM Artikel a, Znamka z, Stil s "
-            . parent::whereString($params, array("aktiviran" => "="), "AND a.idZnamka = z.id AND a.idStil = s.id")
-            . "ORDER BY id ASC", $params);
+            . parent::whereString($params, array("aktiviran" => "="), "AND a.idZnamka = z.id AND a.idStil = s.id ")
+            . "ORDER BY a.id ASC", $params);
+    }
+
+    public static function getAllwithURI(array $params) {
+        return parent::query("SELECT a.id, a.naziv, a.idZnamka, a.opis, a.kolicina, a.alkohol, a.cena, a.idStil, z.naziv as imeZnamke, s.naziv as imeStila, CONCAT(:prefix, a.id) as uri "
+            . "FROM Artikel a, Znamka z, Stil s "
+            . parent::whereString($params, array("aktiviran" => "="), " AND a.idZnamka = z.id AND a.idStil = s.id ")
+            . "ORDER BY a.id ASC", $params);
     }
 }

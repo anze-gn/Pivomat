@@ -15,6 +15,6 @@
     <li>Telefon:            <b><?= $stranka["telefon"] ?>   </b></li>
 </ul>
 
-<p>[ <a href="<?= BASE_URL . "stranke/edit?id=" . $stranka["id"] ?>">Uredi</a> ]</p>
+<p>[ <a href="<?= BASE_URL . "stranke/edit/" . $stranka["id"] ?>">Uredi</a> ]</p>
 
 <?= HtmlTemplates::foot(); ?>

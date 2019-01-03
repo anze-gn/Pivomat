@@ -12,6 +12,6 @@
         <li>E-mail:             <b><?= $prodajalec["email"] ?>   </b></li>
     </ul>
 
-<p>[ <a href="<?= BASE_URL . "prodajalci/edit?id=" . $prodajalec["id"] ?>">Uredi</a> ]</p>
+<p>[ <a href="<?= BASE_URL . "prodajalci/edit/" . $prodajalec["id"] ?>">Uredi</a> ]</p>
 
 <?= HtmlTemplates::foot(); ?>

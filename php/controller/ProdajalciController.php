@@ -9,26 +9,17 @@ require_once("forms/AdminForm.php");
 class ProdajalciController {
 
     public static function index() {
-        $rules = [
-            "id" => [
-                'filter' => FILTER_VALIDATE_INT,
-                'options' => ['min_range' => 1]
-            ]
-        ];
+        echo ViewHelper::render("view/prodajalec-list.php", [
+            "title" => "seznam vseh prodajalcev",
+            "prodajalci" => ProdajalecDB::getAll(array("aktiviran" => 1)),
+            "neaktivniProdajalci" => ProdajalecDB::getAll(array("aktiviran" => 0))
+        ]);
+    }
 
-        $data = filter_input_array(INPUT_GET, $rules);
-
-        if ($data["id"]) {
-            echo ViewHelper::render("view/prodajalec-detail.php", [
-                "prodajalec" => ProdajalecDB::get($data)
-            ]);
-        } else {
-            echo ViewHelper::render("view/prodajalec-list.php", [
-                "title" => "seznam vseh prodajalcev",
-                "prodajalci" => ProdajalecDB::getAll(array("aktiviran" => 1)),
-                "neaktivniProdajalci" => ProdajalecDB::getAll(array("aktiviran" => 0))
-            ]);
-        }
+    public static function get($id) {
+        echo ViewHelper::render("view/prodajalec-detail.php", [
+            "prodajalec" => ProdajalecDB::get(array('id' => $id))
+        ]);
     }
     
     public static function add() {
@@ -40,7 +31,7 @@ class ProdajalciController {
                 $data["aktiviran"] = 0;
             }
             $id = ProdajalecDB::insert($data);
-            ViewHelper::redirect(BASE_URL . "prodajalci?id=" . $id);
+            ViewHelper::redirect(BASE_URL . "prodajalci/" . $id);
         } else {
             echo ViewHelper::render("view/prodajalec-form.php", [
                 "title" => "Dodaj novega prodajalca",
@@ -49,7 +40,7 @@ class ProdajalciController {
         }
     }
     
-    public static function edit() {
+    public static function edit($id) {
         $editForm = new ProdajalecEditForm("edit_form");
         $deleteForm = new ProdajalecDeleteForm("delete_form");
 
@@ -60,7 +51,7 @@ class ProdajalciController {
                     $data["aktiviran"] = 0;
                 }
                 ProdajalecDB::update($data);
-                ViewHelper::redirect(BASE_URL . "prodajalci?id=" . $data["id"]);
+                ViewHelper::redirect(BASE_URL . "prodajalci/" . $data["id"]);
             } else {
                 echo ViewHelper::render("view/prodajalec-form.php", [
                     "title" => "Uredi podatke o prodajalcu",
@@ -69,37 +60,22 @@ class ProdajalciController {
                 ]);
             }
         } else {
-            $rules = [
-                "id" => [
-                    'filter' => FILTER_VALIDATE_INT,
-                    'options' => ['min_range' => 1]
-                ]
-            ];
+            $prodajalec = ProdajalecDB::get(array('id' => $id));
+            $dataSource = new HTML_QuickForm2_DataSource_Array($prodajalec);
+            $editForm->addDataSource($dataSource);
+            $deleteForm->addDataSource($dataSource);
 
-            $data = filter_input_array(INPUT_GET, $rules);
-
-            if ($data["id"]) {
-                $prodajalec = ProdajalecDB::get($data);
-                $dataSource = new HTML_QuickForm2_DataSource_Array($prodajalec);
-                $editForm->addDataSource($dataSource);
-                $deleteForm->addDataSource($dataSource);
-
-                echo ViewHelper::render("view/prodajalec-form.php", [
-                    "title" => "Uredi podatke o prodajalcu",
-                    "form" => $editForm,
-                    "deleteForm" => $deleteForm
-                ]);
-            } else {
-                throw new InvalidArgumentException("Prodajalec ne obstaja.");
-            }
+            echo ViewHelper::render("view/prodajalec-form.php", [
+                "title" => "Uredi podatke o prodajalcu",
+                "form" => $editForm,
+                "deleteForm" => $deleteForm
+            ]);
         }
     }
     
     public static function admin() {
-        $data["id"] = 1;
-
         echo ViewHelper::render("view/admin-detail.php", [
-            "admin" => AdminDB::get($data)
+            "admin" => AdminDB::get(array('id' => 1))
         ]);
     }
     
@@ -118,8 +94,7 @@ class ProdajalciController {
                 ]);
             }
         } else {
-            $data["id"] = 1;
-            $prodajalec = AdminDB::get($data);
+            $prodajalec = AdminDB::get(array('id' => 1));
             $dataSource = new HTML_QuickForm2_DataSource_Array($prodajalec);
             $editForm->addDataSource($dataSource);
 
@@ -139,7 +114,7 @@ class ProdajalciController {
             ViewHelper::redirect(BASE_URL . "prodajalci");
         } else {
             if (isset($data["id"])) {
-                $url = BASE_URL . "prodajalci/edit?id=" . $data["id"];
+                $url = BASE_URL . "prodajalci/edit/" . $data["id"];
             } else {
                 $url = BASE_URL . "prodajalci";
             }

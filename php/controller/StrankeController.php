@@ -7,26 +7,17 @@ require_once("forms/StrankaForm.php");
 class StrankeController {
 
     public static function index() {
-        $rules = [
-            "id" => [
-                'filter' => FILTER_VALIDATE_INT,
-                'options' => ['min_range' => 1]
-            ]
-        ];
+        echo ViewHelper::render("view/stranka-list.php", [
+            "title" => "seznam vseh strank",
+            "stranke" => strankaDB::getAll(array("aktiviran" => 1)),
+            "neaktivneStranke" => strankaDB::getAll(array("aktiviran" => 0))
+        ]);
+    }
 
-        $data = filter_input_array(INPUT_GET, $rules);
-
-        if ($data["id"]) {
-            echo ViewHelper::render("view/stranka-detail.php", [
-                "stranka" => StrankaDB::get($data)
-            ]);
-        } else {
-            echo ViewHelper::render("view/stranka-list.php", [
-                "title" => "seznam vseh strank",
-                "stranke" => strankaDB::getAll(array("aktiviran" => 1)),
-                "neaktivneStranke" => strankaDB::getAll(array("aktiviran" => 0))
-            ]);
-        }
+    public static function get($id) {
+        echo ViewHelper::render("view/stranka-detail.php", [
+            "stranka" => StrankaDB::get(array('id' => $id))
+        ]);
     }
 
     public static function add() {
@@ -38,7 +29,7 @@ class StrankeController {
                 $data["aktiviran"] = 0;
             }
             $id = StrankaDB::insert($data);
-            ViewHelper::redirect(BASE_URL . "stranke?id=" . $id);
+            ViewHelper::redirect(BASE_URL . "stranke/" . $id);
         } else {
             echo ViewHelper::render("view/stranka-form.php", [
                 "title" => "Dodaj novo stranko",
@@ -47,7 +38,7 @@ class StrankeController {
         }
     }
 
-    public static function edit() {
+    public static function edit($id) {
         $editForm = new StrankaEditForm("edit_form");
         $deleteForm = new StrankaDeleteForm("delete_form");
 
@@ -58,7 +49,7 @@ class StrankeController {
                     $data["aktiviran"] = 0;
                 }
                 StrankaDB::update($data);
-                ViewHelper::redirect(BASE_URL . "stranke?id=" . $data["id"]);
+                ViewHelper::redirect(BASE_URL . "stranke/" . $data["id"]);
             } else {
                 echo ViewHelper::render("view/stranka-form.php", [
                     "title" => "Uredi podatke o stranki",
@@ -67,29 +58,16 @@ class StrankeController {
                 ]);
             }
         } else {
-            $rules = [
-                "id" => [
-                    'filter' => FILTER_VALIDATE_INT,
-                    'options' => ['min_range' => 1]
-                ]
-            ];
+            $stranka = StrankaDB::get(array('id' => $id));
+            $dataSource = new HTML_QuickForm2_DataSource_Array($stranka);
+            $editForm->addDataSource($dataSource);
+            $deleteForm->addDataSource($dataSource);
 
-            $data = filter_input_array(INPUT_GET, $rules);
-
-            if ($data["id"]) {
-                $stranka = StrankaDB::get($data);
-                $dataSource = new HTML_QuickForm2_DataSource_Array($stranka);
-                $editForm->addDataSource($dataSource);
-                $deleteForm->addDataSource($dataSource);
-
-                echo ViewHelper::render("view/stranka-form.php", [
-                    "title" => "Uredi podatke o stranki",
-                    "form" => $editForm,
-                    "deleteForm" => $deleteForm
-                ]);
-            } else {
-                throw new InvalidArgumentException("Stranka ne obstaja.");
-            }
+            echo ViewHelper::render("view/stranka-form.php", [
+                "title" => "Uredi podatke o stranki",
+                "form" => $editForm,
+                "deleteForm" => $deleteForm
+            ]);
         }
     }
 
@@ -102,7 +80,7 @@ class StrankeController {
             ViewHelper::redirect(BASE_URL . "stranke");
         } else {
             if (isset($data["id"])) {
-                $url = BASE_URL . "stranke/edit?id=" . $data["id"];
+                $url = BASE_URL . "stranke/edit/" . $data["id"];
             } else {
                 $url = BASE_URL . "stranke";
             }
