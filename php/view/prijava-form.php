@@ -1,4 +1,7 @@
-<?php require_once("HtmlTemplates.php"); ?>
+<?php
+    require_once("HtmlTemplates.php");
+    require_once("custom_renderer.php");
+?>
 
 <?= HtmlTemplates::head($title); ?>
 
@@ -11,6 +14,6 @@
     <?= isset($error) ? $error : "" ?>
 </h4>
 
-<?= $form ?>
+<?= $form->render($custom_renderer) ?>
 
 <?= HtmlTemplates::foot(); ?>

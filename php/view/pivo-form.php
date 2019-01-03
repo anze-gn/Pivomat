@@ -1,4 +1,7 @@
-<?php require_once("HtmlTemplates.php"); ?>
+<?php
+    require_once("HtmlTemplates.php");
+    require_once("custom_renderer.php");
+?>
 
 <?= HtmlTemplates::head($title); ?>
 
@@ -9,8 +12,8 @@
     <a href="<?= BASE_URL . "piva/add" ?>">Dodaj novo</a>
     ]</p>
 
-<?= $form ?>
+<?= $form->render($custom_renderer) ?>
 
-<?= isset($deleteForm) ? $deleteForm : "" ?>
+<?= isset($deleteForm) ? $deleteForm->render($custom_renderer) : ""?>
 
 <?= HtmlTemplates::foot(); ?>

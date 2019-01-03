@@ -111,6 +111,11 @@ abstract class RegistracijaAbstractForm extends HTML_QuickForm2 {
 
         $this->addRecursiveFilter('trim');
         $this->addRecursiveFilter('htmlspecialchars');
+
+        // Bootstrap
+        foreach ($this::getElements() as $el) {
+            $el->setAttribute('class', 'form-control');
+        }
     }
 
 }
