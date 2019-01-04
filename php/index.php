@@ -77,6 +77,9 @@ $urls = [
     "/^piva\/(\d+)$/" => function ($method, $id) {
         PivaController::get($id);
     },
+    "/^piva\/(\d+)\.jpg$/" => function ($method, $id) {
+        PivaController::getSlika($id);
+    },
     "/^piva\/add$/" => function ($method) {
         PivaController::add();
     },

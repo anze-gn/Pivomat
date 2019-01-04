@@ -2,8 +2,10 @@
 
 require_once 'HTML/QuickForm2.php';
 require_once 'HTML/QuickForm2/Element/Select.php';
+require_once 'HTML/QuickForm2/Element/Static.php';
 require_once 'HTML/QuickForm2/Element/InputSubmit.php';
 require_once 'HTML/QuickForm2/Element/InputText.php';
+require_once 'HTML/QuickForm2/Element/InputFile.php';
 require_once 'HTML/QuickForm2/Element/Textarea.php';
 require_once 'HTML/QuickForm2/Element/InputCheckbox.php';
 require_once 'model/ZnamkaDB.php';
@@ -82,6 +84,15 @@ abstract class PivoAbstractForm extends HTML_QuickForm2 {
         $this->opis->setAttribute('cols', 70);
         $this->addElement($this->opis);
 
+        $this->obstojecaSlika = new HTML_QuickForm2_Element_Static('obstojecaSlika');
+        $this->obstojecaSlika->setLabel('Obstoječa slika');
+        $this->obstojecaSlika->setTagName('img', false);
+        $this->addElement($this->obstojecaSlika);
+
+        $this->slika = new HTML_QuickForm2_Element_InputFile('slika');
+        $this->slika->setLabel('Nova slika');
+        $this->addElement($this->slika);
+
         $this->button = new HTML_QuickForm2_Element_InputSubmit(null);
         $this->addElement($this->button);
 
@@ -103,6 +114,7 @@ class PivoInsertForm extends PivoAbstractForm {
     public function __construct($id) {
         parent::__construct($id);
 
+        $this->removeChild($this->obstojecaSlika);
         $this->button->setAttribute('value', 'Dodaj pivo');
     }
 

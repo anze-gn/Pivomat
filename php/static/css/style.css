@@ -5,3 +5,17 @@
 label {
     margin-bottom: 0px;
 }
+
+img[name=obstojecaSlika] {
+    height: 250px;
+    width: auto;
+}
+
+img.slika {
+    height: 400px;
+    width: auto;
+}
+
+.qf2-captcha-question {
+    width: 100%;
+}

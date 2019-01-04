@@ -20,6 +20,14 @@ class PivaController {
         ]);
     }
 
+    public static function getSlika($id) {
+        $slika = PivoDB::getSlika($id);
+        if (ViewHelper::renderJpeg($slika) != null) {
+            ViewHelper::renderJpeg($slika);
+        }
+        echo ViewHelper::error404();
+    }
+
     public static function add() {
         $form = new PivoInsertForm("add_form");
 
@@ -62,6 +70,8 @@ class PivaController {
             $dataSource = new HTML_QuickForm2_DataSource_Array($pivo);
             $editForm->addDataSource($dataSource);
             $deleteForm->addDataSource($dataSource);
+
+            $editForm->obstojecaSlika->setAttribute('src', "../" . $id . ".jpg");
 
             echo ViewHelper::render("view/pivo-form.php", [
                 "title" => "Uredi podatke o pivu",

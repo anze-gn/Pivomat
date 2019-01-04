@@ -54,4 +54,9 @@ class ViewHelper {
         return json_encode($data);
     }
 
+    public static function renderJpeg($data) {
+        header('Content-Type: image/jpeg');
+        echo($data);
+    }
+
 }

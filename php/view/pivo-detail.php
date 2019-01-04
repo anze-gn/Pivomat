@@ -7,6 +7,7 @@
 <p>[ <a href="<?= BASE_URL . "piva" ?>">Seznam vseh piv</a> ]</p>
 
 <ul>
+    <li><img class="slika" src="./<?= $pivo["id"] ?>.jpg"></li>
     <li>Znamka:             <b><?= $pivo["imeZnamke"] ?>   </b></li>
     <li>Stil:               <b><?= $pivo["imeStila"] ?>     </b></li>
     <li>Količina:           <b><?= $pivo["kolicina"] ?>l </b></li>

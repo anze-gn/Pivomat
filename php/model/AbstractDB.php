@@ -65,7 +65,18 @@ abstract class AbstractDB {
         if (array_key_exists(":geslo", $params_filtered)) {
             $params_filtered[":geslo"] = password_hash($params_filtered[":geslo"], PASSWORD_BCRYPT);
         }
-        $stmt->execute($params_filtered);
+
+        foreach ($params_filtered as $key => $value) {
+            if ($key == ':slika') {
+                $fp = fopen($params_filtered[':slika']['tmp_name'], 'rb');
+                $stmt->bindValue($key, $fp, PDO::PARAM_LOB);
+            } else {
+                $value = (string)$value;
+                $stmt->bindValue($key, $value);
+            }
+        }
+
+        $stmt->execute();
         
         return self::getConnection()->lastInsertId();
     }

@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS `pivomat`.`Artikel` (
   `alkohol` DOUBLE NOT NULL,
   `cena` DOUBLE NOT NULL,
   `idStil` INT NOT NULL,
+  `slika` LONGBLOB NULL DEFAULT NULL,
   PRIMARY KEY (id),
   CONSTRAINT `znamka`
     FOREIGN KEY (idZnamka)
