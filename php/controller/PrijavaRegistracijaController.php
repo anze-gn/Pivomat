@@ -18,6 +18,12 @@ class PrijavaRegistracijaController {
             $data["aktiviran"] = 0;
             unset($data["ponovitevGesla"]);
             $id = StrankaDB::insert($data);
+            /*$link = rtrim($_SERVER["SCRIPT_NAME"], "/index.php") . trim($_SERVER["PATH_INFO"]) ."/potrditev/id/" . $id;
+            $subject = "Potrditev računa Pivomat.";
+            $content = "Klikni povezavo za potrditev: <a href='" . $link . "'>" . "Potrdi" . "</a>";
+            $content = wordwrap($content, 70, "\r\n");
+            $mailHeaders = "From: Admin\r\n";
+            mail($data["email"], $subject, $content, $mailHeaders);*/
             ViewHelper::redirect(BASE_URL . "prijava");
         } else {
             echo ViewHelper::render("view/registracija-form.php", [
