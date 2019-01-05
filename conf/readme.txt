@@ -17,3 +17,4 @@ Inštaliranje:
 - sudo pear install Text_CAPTCHA_Numeral
 
 - sudo apt-get install sendmail
+- sudo sendmailconfig

@@ -16,15 +16,15 @@ class PrijavaRegistracijaController {
             $data = $form->getValue();
             $form->captcha->clearCaptchaSession();
             $data["aktiviran"] = 0;
+            $data["potrjen"] = password_hash($data["email"], PASSWORD_BCRYPT);
             unset($data["ponovitevGesla"]);
             $id = StrankaDB::insert($data);
-            /*$link = rtrim($_SERVER["SCRIPT_NAME"], "/index.php") . trim($_SERVER["PATH_INFO"]) ."/potrditev/id/" . $id;
+            $link = BASE_URL ."potrditev/" . $data["email"] . "/" . $data["potrjen"];
             $subject = "Potrditev računa Pivomat.";
-            $content = "Klikni povezavo za potrditev: <a href='" . $link . "'>" . "Potrdi" . "</a>";
-            $content = wordwrap($content, 70, "\r\n");
-            $mailHeaders = "From: Admin\r\n";
-            mail($data["email"], $subject, $content, $mailHeaders);*/
-            ViewHelper::redirect(BASE_URL . "prijava");
+            $content = "Za potrditev računa kliknite na spodnjo povezavo: \r\n" . $link;
+            $header="from: Pivomat <no-reply@pivomat.si>";
+            ViewHelper::redirect(BASE_URL . "potrditev");
+            mail($data["email"], $subject, $content, $header);
         } else {
             echo ViewHelper::render("view/registracija-form.php", [
                 "title" => "Registriraj se",
@@ -38,7 +38,8 @@ class PrijavaRegistracijaController {
 
         if ($form->validate()) {
             $data = $form->getValue();
-            if(password_verify($data["geslo"], StrankaDB::getPasswordHash($data["email"]))){
+            $podatkiStranke = StrankaDB::getPasswordHash($data["email"]);
+            if(password_verify($data["geslo"], $podatkiStranke[0]) && $podatkiStranke == NULL){
                 $_SESSION["uporabnik"] = "stranka";
                 ViewHelper::redirect(BASE_URL . "piva");
             } else if(password_verify($data["geslo"], ProdajalecDB::getPasswordHash($data["email"]))){
@@ -57,6 +58,22 @@ class PrijavaRegistracijaController {
             echo ViewHelper::render("view/prijava-form.php", [
                 "title" => "Prijavi se",
                 "form" => $form
+            ]);
+        }
+    }
+    
+    public static function potrdiEmail(String $email, String $hash) {
+        if($email == ""){
+            echo ViewHelper::render("view/potrditev.php", [
+                "title" => "Potrdi registracijo"
+            ]);
+        } else if(password_verify($hash, StrankaDB::getPasswordHash($data["email"])[1])){
+            StrankaDB::potrdi(array("email" => $email));
+            ViewHelper::redirect(BASE_URL . "prijava");
+        } else{
+            echo ViewHelper::render("view/potrditev.php", [
+                "title" => "Napaka pri registraciji",
+                "error" => "Prišlo je do napake, poskusite znova."
             ]);
         }
     }

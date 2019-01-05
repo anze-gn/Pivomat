@@ -15,6 +15,7 @@ class ViewHelper {
     // Preusmeritev na $url.
     public static function redirect($url) {
         header("Location: " . $url);
+        header("Connection: close");
     }
 
     // Prikaz ob napaki 404.

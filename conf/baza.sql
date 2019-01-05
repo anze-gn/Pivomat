@@ -161,7 +161,7 @@ CREATE TABLE IF NOT EXISTS `pivomat`.`Stranka` (
   `telefon` VARCHAR(15) NOT NULL,
   `geslo` CHAR(255) NOT NULL,
   `aktiviran` TINYINT(1) NOT NULL,
-  `potrjen` TINYINT(1) NOT NULL DEFAULT 0,
+  `potrjen` CHAR(255) NULL DEFAULT NULL,
   UNIQUE (email),
   PRIMARY KEY (id),
   INDEX `posta_idx` (`postnaSt` ASC),
