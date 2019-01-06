@@ -27,14 +27,7 @@ class PivoDetailActivity : AppCompatActivity(), Callback<Pivo> {
 //            startActivity(intent)
 //        }
 //
-//        fabDelete.setOnClickListener {
-//            val dialog = AlertDialog.Builder(this)
-//            dialog.setTitle("Confirm deletion")
-//            dialog.setMessage("Are you sure?")
-//            dialog.setPositiveButton("Yes") { _, _ -> deleteBook() }
-//            dialog.setNegativeButton("Cancel", null)
-//            dialog.create().show()
-//        }
+
 
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -43,6 +36,10 @@ class PivoDetailActivity : AppCompatActivity(), Callback<Pivo> {
 
         if (id > 0) {
             PivoService.instance.get(id).enqueue(this)
+        }
+
+        fabVkosarico.setOnClickListener {
+
         }
     }
 

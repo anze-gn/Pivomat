@@ -1,24 +1,27 @@
 package ep.rest
 
 import android.content.Intent
-import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
 import android.util.Log
 import android.widget.AdapterView
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main_prijavljen.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
 
-class MainActivity : AppCompatActivity(), Callback<List<Pivo>> {
+
+
+
+class MainActivityPrijavljen: AppCompatActivity(), Callback<List<Pivo>> {
 
     private var adapter: PivoAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main_prijavljen)
 
         adapter = PivoAdapter(this)
         items.adapter = adapter
@@ -33,11 +36,18 @@ class MainActivity : AppCompatActivity(), Callback<List<Pivo>> {
 
         container.setOnRefreshListener { PivoService.instance.getAll().enqueue(this) }
 
-        btnPrijava.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
+        btnKosarica.setOnClickListener {
+            val intent = Intent(this, null)
             startActivity(intent)
         }
 
+        btnOdjava.setOnClickListener {
+
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        //Log.i("JST", PivomatApp().getEmail())
         PivoService.instance.getAll().enqueue(this)
     }
 
@@ -67,6 +77,6 @@ class MainActivity : AppCompatActivity(), Callback<List<Pivo>> {
     }
 
     companion object {
-        private val TAG = MainActivity::class.java.canonicalName
+        private val TAG = MainActivityPrijavljen::class.java.canonicalName
     }
 }
