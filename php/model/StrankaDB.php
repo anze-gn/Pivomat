@@ -24,6 +24,20 @@ class StrankaDB extends AbstractDB {
         }
     }
 
+    public static function getByEmail(array $params) {
+        $stranka = parent::query("SELECT s.id, s.ime, s.priimek, s.email, s.ulica, s.hisnaSt, s.postnaSt, s.telefon, s.aktiviran, s.geslo, s.potrjen, k.ime as imeKraja "
+            . "FROM Stranka s, Kraj k "
+            . "WHERE s.email = :email AND s.postnaSt = k.postnaSt",
+            $params);
+
+        if (count($stranka) == 1) {
+            return $stranka[0];
+        } else {
+            #throw new InvalidArgumentException("Stranka z id-jem $params ne obstaja!");
+            return false;
+        }
+    }
+
     public static function getPasswordHash($email) {
         # za preverjanje gesla: password_verify($sent["geslo"], StrankaDB::getPasswordHash($sent["email"]))
         $stranka = parent::query("SELECT geslo, potrjen "

@@ -15,6 +15,7 @@ class Twig {
             $instance = new Twig_Environment(new Twig_Loader_Filesystem('templates'));
             $instance->addGlobal('STATIC_URL', STATIC_URL);
             $instance->addGlobal('BASE_URL', BASE_URL);
+            $instance->addGlobal('SESSION', $_SESSION);
         }
 
         return $instance;

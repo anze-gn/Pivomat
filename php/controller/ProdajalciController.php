@@ -8,16 +8,18 @@ require_once("forms/AdminForm.php");
 class ProdajalciController {
 
     public static function index() {
-        echo ViewHelper::render("view/prodajalec-list.php", [
-            "title" => "seznam vseh prodajalcev",
+        echo Twig::instance()->render("prodajalec-list.html.twig", [
+            "title" => "Seznam vseh prodajalcev",
             "prodajalci" => ProdajalecDB::getAll(array("aktiviran" => 1)),
-            "neaktivniProdajalci" => ProdajalecDB::getAll(array("aktiviran" => 0))
+            "deaktiviraniProdajalci" => ProdajalecDB::getAll(array("aktiviran" => 0))
         ]);
     }
 
     public static function get($id) {
-        echo ViewHelper::render("view/prodajalec-detail.php", [
-            "prodajalec" => ProdajalecDB::get(array('id' => $id))
+        echo Twig::instance()->render("prodajalec-detail.html.twig", [
+            "title" => "Podatki prodajalca",
+            "prodajalec" => ProdajalecDB::get(array('id' => $id)),
+            "vloga" => "prodajalci"
         ]);
     }
     
@@ -32,9 +34,9 @@ class ProdajalciController {
             $id = ProdajalecDB::insert($data);
             ViewHelper::redirect(BASE_URL . "prodajalci/" . $id);
         } else {
-            echo ViewHelper::render("view/prodajalec-form.php", [
+            echo Twig::instance()->render("form.html.twig", [
                 "title" => "Dodaj novega prodajalca",
-                "form" => $form
+                "form" => (string) $form->render(CustomRenderer::instance())
             ]);
         }
     }
@@ -50,12 +52,15 @@ class ProdajalciController {
                     $data["aktiviran"] = 0;
                 }
                 ProdajalecDB::update($data);
+                if ($_SESSION["vloga"] == "prodajalci" && $data['id'] == $_SESSION["uporabnik"]["id"]) {
+                    $_SESSION["uporabnik"] = ProdajalecDB::get(["id" => $data['id']]);
+                }
                 ViewHelper::redirect(BASE_URL . "prodajalci/" . $data["id"]);
             } else {
-                echo ViewHelper::render("view/prodajalec-form.php", [
+                echo Twig::instance()->render("form.html.twig", [
                     "title" => "Uredi podatke o prodajalcu",
-                    "form" => $editForm,
-                    "deleteForm" => $deleteForm
+                    "form" => (string) $editForm->render(CustomRenderer::instance()),
+                    "deleteForm" => (string) $deleteForm->render(CustomRenderer::instance())
                 ]);
             }
         } else {
@@ -64,17 +69,19 @@ class ProdajalciController {
             $editForm->addDataSource($dataSource);
             $deleteForm->addDataSource($dataSource);
 
-            echo ViewHelper::render("view/prodajalec-form.php", [
+            echo Twig::instance()->render("form.html.twig", [
                 "title" => "Uredi podatke o prodajalcu",
-                "form" => $editForm,
-                "deleteForm" => $deleteForm
+                "form" => (string) $editForm->render(CustomRenderer::instance()),
+                "deleteForm" => (string) $deleteForm->render(CustomRenderer::instance())
             ]);
         }
     }
     
     public static function admin() {
-        echo ViewHelper::render("view/admin-detail.php", [
-            "admin" => AdminDB::get(array('id' => 1))
+        echo Twig::instance()->render("prodajalec-detail.html.twig", [
+            "title" => "Vaši podatki",
+            "prodajalec" => AdminDB::get(array('id' => 1)),
+            "vloga" => "admin"
         ]);
     }
     
@@ -85,11 +92,12 @@ class ProdajalciController {
             if ($editForm->validate()) {
                 $data = $editForm->getValue();
                 AdminDB::update($data);
+                $_SESSION["uporabnik"] = AdminDB::get(["id" => $data['id']]);
                 ViewHelper::redirect(BASE_URL . "admin");
             } else {
-                echo ViewHelper::render("view/prodajalec-form.php", [
+                echo Twig::instance()->render("form.html.twig", [
                     "title" => "Uredi podatke o adminu",
-                    "form" => $editForm
+                    "form" => (string) $editForm->render(CustomRenderer::instance())
                 ]);
             }
         } else {
@@ -97,9 +105,9 @@ class ProdajalciController {
             $dataSource = new HTML_QuickForm2_DataSource_Array($prodajalec);
             $editForm->addDataSource($dataSource);
 
-            echo ViewHelper::render("view/prodajalec-form.php", [
+            echo Twig::instance()->render("form.html.twig", [
                 "title" => "Uredi podatke o adminu",
-                "form" => $editForm
+                "form" => (string) $editForm->render(CustomRenderer::instance())
             ]);
         }
     }

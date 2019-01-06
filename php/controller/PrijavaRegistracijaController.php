@@ -25,55 +25,68 @@ class PrijavaRegistracijaController {
             ViewHelper::redirect(BASE_URL . "potrditev");
             mail($data["email"], $subject, $content, $header);
         } else {
-            echo ViewHelper::render("view/registracija-form.php", [
+            echo Twig::instance()->render("form.html.twig", [
                 "title" => "Registriraj se",
-                "form" => $form
+                "form" => (string) $form->render(CustomRenderer::instance())
             ]);
         }
     }
     
     public static function prijava() {
-        $form = new PrijavaInsertForm("add_form");
+        $form = new PrijavaForm("prijava");
 
         if ($form->validate()) {
             $data = $form->getValue();
-            $podatkiStranke = StrankaDB::getPasswordHash($data["email"]);
-            if(password_verify($data["geslo"], $podatkiStranke[0]) && $podatkiStranke[1] == NULL){
-                $_SESSION["uporabnik"] = "stranka";
+
+            session_regenerate_id();
+
+            $podatkiUporabnika = StrankaDB::getByEmail($data);
+            if ($podatkiUporabnika && $podatkiUporabnika['potrjen'] == NULL && password_verify($data["geslo"], $podatkiUporabnika['geslo'])) {
+                $_SESSION["vloga"] = "stranke";
+                $_SESSION["uporabnik"] = $podatkiUporabnika;
                 ViewHelper::redirect(BASE_URL . "piva");
-            } else if(password_verify($data["geslo"], ProdajalecDB::getPasswordHash($data["email"]))){
-                $_SESSION["uporabnik"] = "prodajalec";
+            }
+
+            $podatkiUporabnika = ProdajalecDB::getByEmail($data);
+            if ($podatkiUporabnika && password_verify($data["geslo"], $podatkiUporabnika['geslo'])) {
+                $_SESSION["vloga"] = "prodajalci";
+                $_SESSION["uporabnik"] = $podatkiUporabnika;
                 ViewHelper::redirect(BASE_URL . "stranke");
-            } else if(password_verify($data["geslo"], AdminDB::getPasswordHash($data["email"]))){
-                $_SESSION["uporabnik"] = "admin";
+            }
+
+            $podatkiUporabnika = AdminDB::getByEmail($data);
+            if ($podatkiUporabnika && password_verify($data["geslo"], $podatkiUporabnika['geslo'])) {
+                $_SESSION["vloga"] = "admin";
+                $_SESSION["uporabnik"] = $podatkiUporabnika;
                 ViewHelper::redirect(BASE_URL . "prodajalci");
             }
-            echo ViewHelper::render("view/prijava-form.php", [
-                    "title" => "Prijavi se",
-                    "error" => "Napačen e-mail ali geslo!",
-                    "form" => $form
+
+            echo Twig::instance()->render("form.html.twig", [
+                "title" => "Prijavi se",
+                "error" => "Napačen e-mail ali geslo!",
+                "form" => (string) $form->render(CustomRenderer::instance())
             ]);
         } else {
-            echo ViewHelper::render("view/prijava-form.php", [
+            echo Twig::instance()->render("form.html.twig", [
                 "title" => "Prijavi se",
-                "form" => $form
+                "form" => (string) $form->render(CustomRenderer::instance())
             ]);
         }
     }
     
     public static function potrdiEmail($email, $hash) {
         if($email == ""){
-            echo ViewHelper::render("view/potrditev.php", [
+            echo Twig::instance()->render("potrditev.html.twig", [
                 "title" => "Potrdi registracijo"
             ]);
         } else if($hash == StrankaDB::getPasswordHash($email)[1]){
             StrankaDB::potrdi(array("email" => $email));
             ViewHelper::redirect(BASE_URL . "prijava");
         } else{
-            $a = StrankaDB::getPasswordHash($email)[1];
-            echo ViewHelper::render("view/potrditev.php", [
+            echo Twig::instance()->render("error.html.twig", [
                 "title" => "Napaka pri registraciji",
-                "error" => "Prišlo je do napake, poskusite znova."
+                "errorHtml" => '
+                    <h1>Prišlo je do napake, poskusite znova.</h1>'
             ]);
         }
     }

@@ -5,7 +5,7 @@ require_once 'model/AbstractDB.php';
 class ZnamkaDB extends AbstractDB {
 
     public static function get(array $params) {
-        $znamka = parent::query("SELECT naziv "
+        $znamka = parent::query("SELECT id, naziv "
                 . "FROM Znamka "
                 . "WHERE id = :id",
                 $params);

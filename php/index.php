@@ -90,6 +90,10 @@ $urls = [
     "/^admin\/edit$/" => function ($method) {
         ProdajalciController::editAdmin();
     },
+    "/^odjava$/" => function ($method) {
+        session_destroy();
+        ViewHelper::redirect(BASE_URL);
+    },
 
     # REST API
     "/^api\/piva\/(\d+)$/" => function ($method, $id) {

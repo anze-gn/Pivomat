@@ -4,7 +4,7 @@ require_once 'HTML/QuickForm2.php';
 require_once 'HTML/QuickForm2/Element/InputSubmit.php';
 require_once 'HTML/QuickForm2/Element/InputText.php';
 
-abstract class PrijavaAbstractForm extends HTML_QuickForm2 {
+class PrijavaForm extends HTML_QuickForm2 {
 
     public $email;
     public $geslo;
@@ -26,6 +26,7 @@ abstract class PrijavaAbstractForm extends HTML_QuickForm2 {
 
         $this->button = new HTML_QuickForm2_Element_InputSubmit(null);
         $this->addElement($this->button);
+        $this->button->setAttribute('value', 'Prijava');
 
         $this->addRecursiveFilter('trim');
         $this->addRecursiveFilter('htmlspecialchars');
@@ -34,16 +35,7 @@ abstract class PrijavaAbstractForm extends HTML_QuickForm2 {
         foreach ($this::getElements() as $el) {
             $el->setAttribute('class', 'form-control');
         }
-    }
-
-}
-
-class PrijavaInsertForm extends PrijavaAbstractForm {
-
-    public function __construct($id) {
-        parent::__construct($id);
-
-        $this->button->setAttribute('value', 'Prijava');
+        $this->button->setAttribute('class', 'btn btn-primary d-block mx-auto');
     }
 
 }

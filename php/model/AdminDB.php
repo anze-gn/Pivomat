@@ -22,6 +22,20 @@ class AdminDB extends AbstractDB {
         }
     }
 
+    public static function getByEmail(array $params) {
+        $admin = parent::query("SELECT id, ime, priimek, email, geslo "
+            . "FROM Admin "
+            . "WHERE email = :email",
+            $params);
+
+        if (count($admin) == 1) {
+            return $admin[0];
+        } else {
+            #throw new InvalidArgumentException("Admin z id-jem $params ne obstaja!");
+            return false;
+        }
+    }
+
     public static function getPasswordHash($email) {
         # za preverjanje gesla: password_verify($sent["geslo"], AdminDB::getPasswordHash($sent["email"]))
         $admin = parent::query("SELECT geslo "
