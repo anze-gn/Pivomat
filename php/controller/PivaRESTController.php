@@ -1,7 +1,6 @@
 <?php
 
 require_once("model/PivoDB.php");
-require_once("ViewHelper.php");
 require_once("forms/PivoForm.php");
 
 class PivaRESTController {

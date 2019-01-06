@@ -3,7 +3,6 @@
 require_once("model/StrankaDB.php");
 require_once("model/ProdajalecDB.php");
 require_once("model/AdminDB.php");
-require_once("ViewHelper.php");
 require_once("forms/RegistracijaForm.php");
 require_once("forms/PrijavaForm.php");
 
@@ -39,7 +38,7 @@ class PrijavaRegistracijaController {
         if ($form->validate()) {
             $data = $form->getValue();
             $podatkiStranke = StrankaDB::getPasswordHash($data["email"]);
-            if(password_verify($data["geslo"], $podatkiStranke[0]) && $podatkiStranke == NULL){
+            if(password_verify($data["geslo"], $podatkiStranke[0]) && $podatkiStranke[1] == NULL){
                 $_SESSION["uporabnik"] = "stranka";
                 ViewHelper::redirect(BASE_URL . "piva");
             } else if(password_verify($data["geslo"], ProdajalecDB::getPasswordHash($data["email"]))){
@@ -62,15 +61,16 @@ class PrijavaRegistracijaController {
         }
     }
     
-    public static function potrdiEmail(String $email, String $hash) {
+    public static function potrdiEmail($email, $hash) {
         if($email == ""){
             echo ViewHelper::render("view/potrditev.php", [
                 "title" => "Potrdi registracijo"
             ]);
-        } else if(password_verify($hash, StrankaDB::getPasswordHash($data["email"])[1])){
+        } else if($hash == StrankaDB::getPasswordHash($email)[1]){
             StrankaDB::potrdi(array("email" => $email));
             ViewHelper::redirect(BASE_URL . "prijava");
         } else{
+            $a = StrankaDB::getPasswordHash($email)[1];
             echo ViewHelper::render("view/potrditev.php", [
                 "title" => "Napaka pri registraciji",
                 "error" => "Prišlo je do napake, poskusite znova."

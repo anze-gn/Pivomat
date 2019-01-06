@@ -2,7 +2,6 @@
 
 require_once("model/ProdajalecDB.php");
 require_once("model/AdminDB.php");
-require_once("ViewHelper.php");
 require_once("forms/ProdajalecForm.php");
 require_once("forms/AdminForm.php");
 

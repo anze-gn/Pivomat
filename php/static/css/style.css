@@ -19,3 +19,11 @@ img.slika {
 .qf2-captcha-question {
     width: 100%;
 }
+
+.block2-labelnew::before {
+    content: 'novo';
+}
+
+.header1 {
+    height: 80px;
+}

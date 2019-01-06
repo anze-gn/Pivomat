@@ -15,7 +15,12 @@ class ViewHelper {
     // Preusmeritev na $url.
     public static function redirect($url) {
         header("Location: " . $url);
-        header("Connection: close");
+        header("Connection: close", true);
+        header("Content-Encoding: none\r\n");
+        header("Content-Length: 0", true);
+        flush();
+        ob_flush();
+        session_write_close();
     }
 
     // Prikaz ob napaki 404.

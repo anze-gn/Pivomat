@@ -1,21 +1,20 @@
 <?php
 
 require_once("model/PivoDB.php");
-require_once("ViewHelper.php");
 require_once("forms/PivoForm.php");
 
 class PivaController {
 
     public static function index() {
-        echo ViewHelper::render("view/pivo-list.php", [
-            "title" => "seznam vseh piv",
-            "piva" => PivoDB::getAll(array("aktiviran" => 1)),
-            "neaktivnaPiva" => PivoDB::getAll(array("aktiviran" => 0))
+        echo Twig::instance()->render('pivo-list.html.twig', [
+            "title" => "Seznam piv",
+            "piva" => PivoDB::getAll(["aktiviran" => 1]),
+            "neaktivnaPiva" => PivoDB::getAll(["aktiviran" => 0])
         ]);
     }
 
     public static function get($id) {
-        echo ViewHelper::render("view/pivo-detail.php", [
+        echo Twig::instance()->render('pivo-detail.html.twig', [
             "pivo" => PivoDB::get(array('id' => $id))
         ]);
     }
@@ -39,9 +38,9 @@ class PivaController {
             $id = PivoDB::insert($data);
             ViewHelper::redirect(BASE_URL . "piva/" . $id);
         } else {
-            echo ViewHelper::render("view/pivo-form.php", [
+            echo Twig::instance()->render("pivo-form.html.twig", [
                 "title" => "Dodaj novo pivo",
-                "form" => $form
+                "form" => (string) $form->render(CustomRenderer::instance())
             ]);
         }
     }
@@ -59,10 +58,10 @@ class PivaController {
                 PivoDB::update($data);
                 ViewHelper::redirect(BASE_URL . "piva/" . $data["id"]);
             } else {
-                echo ViewHelper::render("view/pivo-form.php", [
+                echo Twig::instance()->render("pivo-form.html.twig", [
                     "title" => "Uredi podatke o pivu",
-                    "form" => $editForm,
-                    "deleteForm" => $deleteForm
+                    "form" => (string) $editForm->render(CustomRenderer::instance()),
+                    "deleteForm" => (string) $deleteForm->render(CustomRenderer::instance())
                 ]);
             }
         } else {
@@ -73,10 +72,10 @@ class PivaController {
 
             $editForm->obstojecaSlika->setAttribute('src', "../" . $id . ".jpg");
 
-            echo ViewHelper::render("view/pivo-form.php", [
+            echo Twig::instance()->render("pivo-form.html.twig", [
                 "title" => "Uredi podatke o pivu",
-                "form" => $editForm,
-                "deleteForm" => $deleteForm
+                "form" => (string) $editForm->render(CustomRenderer::instance()),
+                "deleteForm" => (string) $deleteForm->render(CustomRenderer::instance())
             ]);
         }
     }
