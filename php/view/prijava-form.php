@@ -1,6 +1,6 @@
 <?php
     require_once("HtmlTemplates.php");
-    require_once("custom_renderer.php");
+    require_once("forms/CustomRenderer.php");
 ?>
 
 <?= HtmlTemplates::head($title); ?>
@@ -14,6 +14,6 @@
     <?= isset($error) ? $error : "" ?>
 </h4>
 
-<?= $form->render($custom_renderer) ?>
+<?= $form->render(CustomRenderer::instance()) ?>
 
 <?= HtmlTemplates::foot(); ?>

@@ -1,7 +1,6 @@
 <?php
 
 require_once("model/StrankaDB.php");
-require_once("ViewHelper.php");
 require_once("forms/StrankaForm.php");
 
 class StrankeController {

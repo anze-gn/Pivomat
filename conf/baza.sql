@@ -161,6 +161,7 @@ CREATE TABLE IF NOT EXISTS `pivomat`.`Stranka` (
   `telefon` VARCHAR(15) NOT NULL,
   `geslo` CHAR(255) NOT NULL,
   `aktiviran` TINYINT(1) NOT NULL,
+  `potrjen` CHAR(255) NULL DEFAULT NULL,
   UNIQUE (email),
   PRIMARY KEY (id),
   INDEX `posta_idx` (`postnaSt` ASC),
@@ -674,10 +675,10 @@ INSERT INTO `Kraj` (`postnaSt`,`ime`) VALUES (4226,'Žiri');
 INSERT INTO `Kraj` (`postnaSt`,`ime`) VALUES (4274,'Žirovnica');
 INSERT INTO `Kraj` (`postnaSt`,`ime`) VALUES (8360,'Žužemberk');
 
-INSERT INTO `Stranka` (`id`,`ime`,`priimek`,`email`,`ulica`,`hisnaSt`,`postnaSt`,`telefon`,`geslo`,`aktiviran`) VALUES (1,'Urban','Urbanija','urban@gmail.com','Dunajska cesta',256,1000,'051000000','$2y$10$rnfXbpSBjWMXHvYUmEYIqeGyYq0mf61FOGjqZnmtdB2wBXCShkVHy',1);
-INSERT INTO `Stranka` (`id`,`ime`,`priimek`,`email`,`ulica`,`hisnaSt`,`postnaSt`,`telefon`,`geslo`,`aktiviran`) VALUES (2,'Lara','Oblak','lara.oblak@hotmail.com','Gosposvetska ulica',39,1235,'031000000','$2y$10$rnfXbpSBjWMXHvYUmEYIqeGyYq0mf61FOGjqZnmtdB2wBXCShkVHy',1);
-INSERT INTO `Stranka` (`id`,`ime`,`priimek`,`email`,`ulica`,`hisnaSt`,`postnaSt`,`telefon`,`geslo`,`aktiviran`) VALUES (3,'Rudi','Jerman','rudi.jerman@gmail.com','Šmartinska cesta',15,1230,'070000000','$2y$10$rnfXbpSBjWMXHvYUmEYIqeGyYq0mf61FOGjqZnmtdB2wBXCShkVHy',0);
-INSERT INTO `Stranka` (`id`,`ime`,`priimek`,`email`,`ulica`,`hisnaSt`,`postnaSt`,`telefon`,`geslo`,`aktiviran`) VALUES (4,'Tončka','Stele','toncka@hotmail.com','Kolodvorska ulica',34,1000,'069000000','$2y$10$rnfXbpSBjWMXHvYUmEYIqeGyYq0mf61FOGjqZnmtdB2wBXCShkVHy',0);
+INSERT INTO `Stranka` (`id`,`ime`,`priimek`,`email`,`ulica`,`hisnaSt`,`postnaSt`,`telefon`,`geslo`,`aktiviran`,`potrjen`) VALUES (1,'Urban','Urbanija','urban@gmail.com','Dunajska cesta',256,1000,'051000000','$2y$10$rnfXbpSBjWMXHvYUmEYIqeGyYq0mf61FOGjqZnmtdB2wBXCShkVHy',1,1);
+INSERT INTO `Stranka` (`id`,`ime`,`priimek`,`email`,`ulica`,`hisnaSt`,`postnaSt`,`telefon`,`geslo`,`aktiviran`,`potrjen`) VALUES (2,'Lara','Oblak','lara.oblak@hotmail.com','Gosposvetska ulica',39,1235,'031000000','$2y$10$rnfXbpSBjWMXHvYUmEYIqeGyYq0mf61FOGjqZnmtdB2wBXCShkVHy',1,1);
+INSERT INTO `Stranka` (`id`,`ime`,`priimek`,`email`,`ulica`,`hisnaSt`,`postnaSt`,`telefon`,`geslo`,`aktiviran`,`potrjen`) VALUES (3,'Rudi','Jerman','rudi.jerman@gmail.com','Šmartinska cesta',15,1230,'070000000','$2y$10$rnfXbpSBjWMXHvYUmEYIqeGyYq0mf61FOGjqZnmtdB2wBXCShkVHy',0,1);
+INSERT INTO `Stranka` (`id`,`ime`,`priimek`,`email`,`ulica`,`hisnaSt`,`postnaSt`,`telefon`,`geslo`,`aktiviran`,`potrjen`) VALUES (4,'Tončka','Stele','toncka@hotmail.com','Kolodvorska ulica',34,1000,'069000000','$2y$10$rnfXbpSBjWMXHvYUmEYIqeGyYq0mf61FOGjqZnmtdB2wBXCShkVHy',0,1);
 
 INSERT INTO `Stil` (`id`,`naziv`) VALUES (1,'Abbey Trippel');
 INSERT INTO `Stil` (`id`,`naziv`) VALUES (2,'Abt / Quadrupel');

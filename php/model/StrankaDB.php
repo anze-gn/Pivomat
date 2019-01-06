@@ -26,24 +26,24 @@ class StrankaDB extends AbstractDB {
 
     public static function getPasswordHash($email) {
         # za preverjanje gesla: password_verify($sent["geslo"], StrankaDB::getPasswordHash($sent["email"]))
-        $stranka = parent::query("SELECT geslo "
+        $stranka = parent::query("SELECT geslo, potrjen "
             . "FROM Stranka "
             . "WHERE email = :email",
             array("email" => $email));
 
         if (count($stranka) == 1) {
-            return $stranka[0]["geslo"];
+            return [$stranka[0]["geslo"], $stranka[0]["potrjen"]];
         } else {
             #throw new InvalidArgumentException("Stranka z email-om $email ne obstaja!");
-            return 1;
+            return [1, 1];
         }
     }
 
     public static function insert(array $params) {
         return parent::modify("INSERT INTO Stranka "
-                . "(aktiviran, ime, priimek, email, ulica, hisnaSt, postnaSt, telefon, geslo) "
+                . "(aktiviran, ime, priimek, email, ulica, hisnaSt, postnaSt, telefon, geslo, potrjen) "
                 . "VALUES "
-                . "(:aktiviran, :ime, :priimek, :email, :ulica, :hisnaSt, :postnaSt, :telefon, :geslo)",
+                . "(:aktiviran, :ime, :priimek, :email, :ulica, :hisnaSt, :postnaSt, :telefon, :geslo, :potrjen)",
             $params);
     }
 
@@ -60,6 +60,14 @@ class StrankaDB extends AbstractDB {
                     . "telefon = :telefon"
                     . ((strlen($params["geslo"]) > 0) ? ", geslo = :geslo ": " ")
                 . " WHERE id = :id", $params);
+    }
+    
+    public static function potrdi(array $params) {
+        return
+            parent::modify("UPDATE Stranka SET "
+                    . "aktiviran = 1, "
+                    . "potrjen = NULL "
+                . " WHERE email = :email", $params);
     }
 
     public static function delete(array $params) {

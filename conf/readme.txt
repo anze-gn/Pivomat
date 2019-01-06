@@ -15,3 +15,6 @@ Inštaliranje:
 - sudo pear install -Z HTML_QuickForm2
 - sudo pear install HTML_QuickForm2_Captcha-0.1.2
 - sudo pear install Text_CAPTCHA_Numeral
+
+- sudo apt-get install sendmail
+- sudo sendmailconfig

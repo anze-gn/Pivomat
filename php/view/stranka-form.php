@@ -1,6 +1,6 @@
 <?php
     require_once("HtmlTemplates.php");
-    require_once("custom_renderer.php");
+    require_once("forms/CustomRenderer.php");
 ?>
 
 <?= HtmlTemplates::head($title); ?>
@@ -12,8 +12,8 @@
     <a href="<?= BASE_URL . "stranke/add" ?>">Dodaj novo stranko</a>
     ]</p>
 
-<?= $form->render($custom_renderer) ?>
+<?= $form->render(CustomRenderer::instance()) ?>
 
-<?= isset($deleteForm) ? $deleteForm->render($custom_renderer) : ""?>
+<?= isset($deleteForm) ? $deleteForm->render(CustomRenderer::instance()) : ""?>
 
 <?= HtmlTemplates::foot(); ?>
