@@ -16,59 +16,7 @@ define("DEBUG", true);
 
 $path = isset($_SERVER["PATH_INFO"]) ? trim($_SERVER["PATH_INFO"], "/") : "";
 
-// ROUTER:
-/*
-$urls = [
-    "prodajalci" => function () {
-        ProdajalciController::index();
-    },
-    "prodajalci/add" => function () {
-        ProdajalciController::add();
-    },
-    "prodajalci/edit" => function () {
-        ProdajalciController::edit();
-    },
-    "prodajalci/delete" => function () {
-        ProdajalciController::delete();
-    },
-    "admin" => function () {
-        ProdajalciController::admin();
-    },
-    "admin/edit" => function () {
-        ProdajalciController::editAdmin();
-    },
-    "stranke" => function () {
-        StrankeController::index();
-    },
-    "stranke/add" => function () {
-        StrankeController::add();
-    },
-    "stranke/edit" => function () {
-        StrankeController::edit();
-    },
-    "stranke/delete" => function () {
-        StrankeController::delete();
-    },
-    "registracija" => function () {
-        PrijavaRegistracijaController::registracija();
-    },
-    "prijava" => function () {
-        PrijavaRegistracijaController::prijava();
-    }
-];
 
-try {
-    if (isset($urls[$path])) {
-        $urls[$path]();
-    } else {
-        ViewHelper::error404();
-    }
-} catch (InvalidArgumentException $e) {
-    ViewHelper::displayError($e, DEBUG);
-} catch (Exception $e) {
-    ViewHelper::displayError($e, DEBUG);
-}
-*/
 
 $urls = [
     "/^piva$/" => function ($method) {
