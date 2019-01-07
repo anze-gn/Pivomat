@@ -64,11 +64,11 @@ $urls = [
     "/^prijava$/" => function ($method) {
         PrijavaRegistracijaController::prijava();
     },
-    "/^potrditev\/(.*)\/(.*)$/" => function ($method, $email, $hash) {
-        PrijavaRegistracijaController::potrdiEmail($email, $hash);
+    "/^potrditev.+$/" => function ($method) {
+        PrijavaRegistracijaController::potrdiEmail();
     },
     "/^potrditev$/" => function ($method) {
-        PrijavaRegistracijaController::potrdiEmail("", "");
+        PrijavaRegistracijaController::potrdiEmail();
     },
     "/^prodajalci$/" => function ($method) {
         ProdajalciController::index();

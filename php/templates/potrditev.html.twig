@@ -3,12 +3,15 @@
 
 {% block content %}
 
-    <h1>{{ title }}</h1>
 
-    <h3>Potrditveno elektronsko sporočilo je na poti. Pred prijavo kliknite na povezavo v sporočilu.</h3>
+    <section class="bgwhite p-t-55 p-b-65">
+        <div class="container">
+            <h1 class="my-5">{{ title }}</h1>
 
-    <p>Če v nekaj minutah ne prejmete sporočila, preverite še mapo z vsiljeno pošto.</p>
+            <h3 class="my-5">Potrditveno elektronsko sporočilo je na poti. Pred prijavo kliknite na povezavo v sporočilu.</h3>
 
-    <p><a href={{ BASE_URL }}prijava" ?>">Prijavi se</a></p>
+            <p class="my-5">Če v nekaj minutah ne prejmete sporočila, preverite še mapo z vsiljeno pošto, nato pa se poskusite ponovno registrirati.</p>
+        </div>
+    </section>
 
 {% endblock %}

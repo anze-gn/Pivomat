@@ -1,5 +1,6 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
 require_once("model/StrankaDB.php");
 require_once("model/ProdajalecDB.php");
 require_once("model/AdminDB.php");
@@ -18,12 +19,36 @@ class PrijavaRegistracijaController {
             $data["potrjen"] = password_hash($data["email"], PASSWORD_BCRYPT);
             unset($data["ponovitevGesla"]);
             $id = StrankaDB::insert($data);
-            $link = BASE_URL ."potrditev/" . $data["email"] . "/" . $data["potrjen"];
-            $subject = "Potrditev računa Pivomat.";
-            $content = "Za potrditev računa kliknite na spodnjo povezavo: \r\n" . $link;
-            $header="from: Pivomat <no-reply@pivomat.si>";
+            $link = BASE_URL ."potrditev?m=" . urlencode($data["email"]) . "&h=" . urlencode($data["potrjen"]);
+
             ViewHelper::redirect(BASE_URL . "potrditev");
-            mail($data["email"], $subject, $content, $header);
+
+            $mail = new PHPMailer;
+            $mail->CharSet = 'UTF-8';
+            $mail->isSMTP();
+            $mail->SMTPDebug = 0;
+            $mail->Host = gethostbyname('smtp.gmail.com');
+            $mail->Port = 465;
+            $mail->SMTPSecure = 'ssl';
+            $mail->SMTPAuth = true;
+            $mail->Username = "pivomat2019@gmail.com";
+            $mail->Password = "craftpiva";
+            $mail->setFrom('pivomat2019@gmail.com', 'Pivomat');
+            $mail->addAddress($data['email']);
+            $mail->Subject = "Potrditev računa Pivomat.";
+            $mail->Body = "Za potrditev računa kliknite na spodnjo povezavo: \r\n" . "http://localhost".$link;
+            $mail->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
+            );
+
+            if (!$mail->send()) {
+                # Napaka pri pošiljanju, izbriši stranko, da lahko poskusi znova
+                StrankaDB::delete(['id' => $id]);
+            }
         } else {
             echo Twig::instance()->render("form.html.twig", [
                 "title" => "Registriraj se",
@@ -42,6 +67,10 @@ class PrijavaRegistracijaController {
 
             $podatkiUporabnika = StrankaDB::getByEmail($data);
             if ($podatkiUporabnika && $podatkiUporabnika['potrjen'] == NULL && password_verify($data["geslo"], $podatkiUporabnika['geslo'])) {
+                if ($podatkiUporabnika['aktiviran'] == 0) {
+                    echo Twig::instance()->render("deactivated.html.twig");
+                    exit();
+                }
                 $_SESSION["vloga"] = "stranke";
                 $_SESSION["uporabnik"] = $podatkiUporabnika;
                 ViewHelper::redirect(BASE_URL . "piva");
@@ -49,6 +78,10 @@ class PrijavaRegistracijaController {
 
             $podatkiUporabnika = ProdajalecDB::getByEmail($data);
             if ($podatkiUporabnika && password_verify($data["geslo"], $podatkiUporabnika['geslo'])) {
+                if ($podatkiUporabnika['aktiviran'] == 0) {
+                    echo Twig::instance()->render("deactivated.html.twig");
+                    exit();
+                }
                 $_SESSION["vloga"] = "prodajalci";
                 $_SESSION["uporabnik"] = $podatkiUporabnika;
                 ViewHelper::redirect(BASE_URL . "stranke");
@@ -74,13 +107,14 @@ class PrijavaRegistracijaController {
         }
     }
     
-    public static function potrdiEmail($email, $hash) {
-        if($email == ""){
+    public static function potrdiEmail() {
+        if(!isset($_GET['m']) && !isset($_GET['h'])){
             echo Twig::instance()->render("potrditev.html.twig", [
                 "title" => "Potrdi registracijo"
             ]);
-        } else if($hash == StrankaDB::getPasswordHash($email)[1]){
-            StrankaDB::potrdi(array("email" => $email));
+        } else if( isset($_GET['m']) && isset($_GET['h']) &&
+                   $_GET['h'] == StrankaDB::getByEmail(["email" => $_GET['m']])['potrjen']){
+            StrankaDB::potrdi(["email" => $_GET['m']]);
             ViewHelper::redirect(BASE_URL . "prijava");
         } else{
             echo Twig::instance()->render("error.html.twig", [
