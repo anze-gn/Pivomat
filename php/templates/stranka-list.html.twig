@@ -1,0 +1,40 @@
+{% extends "base.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+
+    <section class="bgwhite p-t-55 p-b-65">
+        <div class="container normal-list">
+
+            <h1>{{ title }}</h1>
+
+            <div class="my-5"></div>
+
+            <h2>Aktivirane:</h2>
+            <ul>
+                {% for stranka in stranke %}
+                <li class="my-1">
+                    <a href="{{BASE_URL}}stranke/{{ stranka.id }}">
+                        {{ stranka.ime }} {{ stranka.priimek }} ({{ stranka.email }})
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+
+            <div class="my-5"></div>
+
+            <h2>Deaktivirane:</h2>
+            <ul>
+                {% for stranka in deaktiviraneStranke %}
+                    <li class="my-1">
+                        <a href="{{BASE_URL}}stranke/{{ stranka.id }}">
+                            {{ stranka.ime }} {{ stranka.priimek }} ({{ stranka.email }})
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+        </div>
+    </section>
+
+{% endblock %}

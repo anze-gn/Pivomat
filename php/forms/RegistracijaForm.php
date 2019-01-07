@@ -4,7 +4,6 @@ require_once 'HTML/QuickForm2.php';
 require_once 'HTML/QuickForm2/Element/Select.php';
 require_once 'HTML/QuickForm2/Element/InputSubmit.php';
 require_once 'HTML/QuickForm2/Element/InputText.php';
-require_once 'HTML/QuickForm2/Element/InputCheckbox.php';
 require_once 'model/KrajDB.php';
 require_once 'HTML/QuickForm2/Element/Captcha/Numeral.php';
 
@@ -116,6 +115,7 @@ abstract class RegistracijaAbstractForm extends HTML_QuickForm2 {
         foreach ($this::getElements() as $el) {
             $el->setAttribute('class', 'form-control');
         }
+        $this->button->setAttribute('class', 'btn btn-primary d-block mx-auto');
     }
 
 }

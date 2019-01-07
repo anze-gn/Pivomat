@@ -1,23 +1,30 @@
 <?php
 
 require_once("model/PivoDB.php");
-require_once("ViewHelper.php");
 require_once("forms/PivoForm.php");
 
 class PivaController {
 
     public static function index() {
-        echo ViewHelper::render("view/pivo-list.php", [
-            "title" => "seznam vseh piv",
-            "piva" => PivoDB::getAll(array("aktiviran" => 1)),
-            "neaktivnaPiva" => PivoDB::getAll(array("aktiviran" => 0))
+        echo Twig::instance()->render('pivo-list.html.twig', [
+            "title" => "Seznam piv",
+            "piva" => PivoDB::getAll(["aktiviran" => 1]),
+            "neaktivnaPiva" => PivoDB::getAll(["aktiviran" => 0])
         ]);
     }
 
     public static function get($id) {
-        echo ViewHelper::render("view/pivo-detail.php", [
+        echo Twig::instance()->render('pivo-detail.html.twig', [
             "pivo" => PivoDB::get(array('id' => $id))
         ]);
+    }
+
+    public static function getSlika($id) {
+        $slika = PivoDB::getSlika($id);
+        if (ViewHelper::renderJpeg($slika) != null) {
+            ViewHelper::renderJpeg($slika);
+        }
+        echo ViewHelper::error404();
     }
 
     public static function add() {
@@ -28,33 +35,40 @@ class PivaController {
             if(!array_key_exists('aktiviran', $data)){
                 $data["aktiviran"] = 0;
             }
+            if ($data['slika']['size'] < 1) {
+                unset($data['slika']);
+            }
             $id = PivoDB::insert($data);
             ViewHelper::redirect(BASE_URL . "piva/" . $id);
         } else {
-            echo ViewHelper::render("view/pivo-form.php", [
+            echo Twig::instance()->render("form.html.twig", [
                 "title" => "Dodaj novo pivo",
-                "form" => $form
+                "form" => (string) $form->render(CustomRenderer::instance())
             ]);
         }
     }
 
     public static function edit($id) {
         $editForm = new PivoEditForm("edit_form");
+        $editForm->obstojecaSlika->setAttribute('src', "../" . $id . ".jpg");
         $deleteForm = new PivoDeleteForm("delete_form");
 
         if ($editForm->isSubmitted()) {
             if ($editForm->validate()) {
                 $data = $editForm->getValue();
-                if(!array_key_exists('aktiviran', $data)){
+                if (!array_key_exists('aktiviran', $data)) {
                     $data["aktiviran"] = 0;
+                }
+                if ($data['slika']['size'] < 1) {
+                    unset($data['slika']);
                 }
                 PivoDB::update($data);
                 ViewHelper::redirect(BASE_URL . "piva/" . $data["id"]);
             } else {
-                echo ViewHelper::render("view/pivo-form.php", [
+                echo Twig::instance()->render("form.html.twig", [
                     "title" => "Uredi podatke o pivu",
-                    "form" => $editForm,
-                    "deleteForm" => $deleteForm
+                    "form" => (string) $editForm->render(CustomRenderer::instance()),
+                    "deleteForm" => (string) $deleteForm->render(CustomRenderer::instance())
                 ]);
             }
         } else {
@@ -63,10 +77,10 @@ class PivaController {
             $editForm->addDataSource($dataSource);
             $deleteForm->addDataSource($dataSource);
 
-            echo ViewHelper::render("view/pivo-form.php", [
+            echo Twig::instance()->render("form.html.twig", [
                 "title" => "Uredi podatke o pivu",
-                "form" => $editForm,
-                "deleteForm" => $deleteForm
+                "form" => (string) $editForm->render(CustomRenderer::instance()),
+                "deleteForm" => (string) $deleteForm->render(CustomRenderer::instance())
             ]);
         }
     }

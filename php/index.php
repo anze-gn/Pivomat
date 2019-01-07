@@ -8,14 +8,17 @@ require_once("controller/PivaRESTController.php");
 require_once("controller/ProdajalciController.php");
 require_once("controller/StrankeController.php");
 require_once("controller/PrijavaRegistracijaController.php");
+require_once("ViewHelper.php"); #REMOVE
+require_once("Twig.php");
+require_once("forms/CustomRenderer.php");
 
 define("BASE_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php"));
-define("IMAGES_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php") . "static/images/");
-define("CSS_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php") . "static/css/");
+define("IMAGES_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php") . "static/images/"); #REMOVE
+define("CSS_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php") . "static/css/"); #REMOVE
+define("STATIC_URL", BASE_URL . "static/");
 define("DEBUG", true);
 
 $path = isset($_SERVER["PATH_INFO"]) ? trim($_SERVER["PATH_INFO"], "/") : "";
-
 
 
 $urls = [
@@ -24,6 +27,9 @@ $urls = [
     },
     "/^piva\/(\d+)$/" => function ($method, $id) {
         PivaController::get($id);
+    },
+    "/^piva\/(\d+)\.jpg$/" => function ($method, $id) {
+        PivaController::getSlika($id);
     },
     "/^piva\/add$/" => function ($method) {
         PivaController::add();
@@ -58,6 +64,12 @@ $urls = [
     "/^prijava$/" => function ($method) {
         PrijavaRegistracijaController::prijava();
     },
+    "/^potrditev\/(.*)\/(.*)$/" => function ($method, $email, $hash) {
+        PrijavaRegistracijaController::potrdiEmail($email, $hash);
+    },
+    "/^potrditev$/" => function ($method) {
+        PrijavaRegistracijaController::potrdiEmail("", "");
+    },
     "/^prodajalci$/" => function ($method) {
         ProdajalciController::index();
     },
@@ -78,6 +90,10 @@ $urls = [
     },
     "/^admin\/edit$/" => function ($method) {
         ProdajalciController::editAdmin();
+    },
+    "/^odjava$/" => function ($method) {
+        session_destroy();
+        ViewHelper::redirect(BASE_URL);
     },
 
     # REST API

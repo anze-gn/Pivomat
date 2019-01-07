@@ -24,6 +24,20 @@ class ProdajalecDB extends AbstractDB {
         }
     }
 
+    public static function getByEmail(array $params) {
+        $prodajalec = parent::query("SELECT id, ime, priimek, email, aktiviran, geslo "
+            . "FROM Prodajalec "
+            . "WHERE email = :email",
+            $params);
+
+        if (count($prodajalec) == 1) {
+            return $prodajalec[0];
+        } else {
+            #throw new InvalidArgumentException("Prodajalec z id-jem $params ne obstaja!");
+            return false;
+        }
+    }
+
     public static function getPasswordHash($email) {
         # za preverjanje gesla: password_verify($sent["geslo"], ProdajalecDB::getPasswordHash($sent["email"]))
         $prodajalec = parent::query("SELECT geslo "

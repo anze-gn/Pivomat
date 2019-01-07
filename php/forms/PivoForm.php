@@ -2,12 +2,15 @@
 
 require_once 'HTML/QuickForm2.php';
 require_once 'HTML/QuickForm2/Element/Select.php';
+require_once 'HTML/QuickForm2/Element/Static.php';
 require_once 'HTML/QuickForm2/Element/InputSubmit.php';
 require_once 'HTML/QuickForm2/Element/InputText.php';
+require_once 'HTML/QuickForm2/Element/InputFile.php';
 require_once 'HTML/QuickForm2/Element/Textarea.php';
 require_once 'HTML/QuickForm2/Element/InputCheckbox.php';
 require_once 'model/ZnamkaDB.php';
 require_once 'model/StilDB.php';
+require_once 'forms/DeleteForm.php';
 
 abstract class PivoAbstractForm extends HTML_QuickForm2 {
 
@@ -78,9 +81,17 @@ abstract class PivoAbstractForm extends HTML_QuickForm2 {
         $this->opis = new HTML_QuickForm2_Element_Textarea('opis');
         $this->opis->setLabel('Opis');
         $this->opis->addRule('required', 'Opis ne sme biti prazen.');
-        $this->opis->setAttribute('rows', 10);
-        $this->opis->setAttribute('cols', 70);
+        $this->opis->setAttribute('rows', 5);
         $this->addElement($this->opis);
+
+        $this->obstojecaSlika = new HTML_QuickForm2_Element_Static('obstojecaSlika');
+        $this->obstojecaSlika->setLabel('Obstoječa slika');
+        $this->obstojecaSlika->setTagName('img', false);
+        $this->addElement($this->obstojecaSlika);
+
+        $this->slika = new HTML_QuickForm2_Element_InputFile('slika');
+        $this->slika->setLabel('Nova slika');
+        $this->addElement($this->slika);
 
         $this->button = new HTML_QuickForm2_Element_InputSubmit(null);
         $this->addElement($this->button);
@@ -93,6 +104,8 @@ abstract class PivoAbstractForm extends HTML_QuickForm2 {
             $el->setAttribute('class', 'form-control');
         }
         $this->aktiviran->setAttribute('class', 'checkbox');
+        $this->slika->setAttribute('class', '');
+        $this->button->setAttribute('class', 'btn btn-primary d-block mx-auto');
 
     }
 
@@ -103,6 +116,7 @@ class PivoInsertForm extends PivoAbstractForm {
     public function __construct($id) {
         parent::__construct($id);
 
+        $this->removeChild($this->obstojecaSlika);
         $this->button->setAttribute('value', 'Dodaj pivo');
     }
 
@@ -122,24 +136,12 @@ class PivoEditForm extends PivoAbstractForm {
 
 }
 
-class PivoDeleteForm extends HTML_QuickForm2 {
+class PivoDeleteForm extends DeleteForm {
 
     public $id;
 
     public function __construct($id) {
         parent::__construct($id, "post", ["action" => BASE_URL . "piva/delete"]);
-
-        $this->id = new HTML_QuickForm2_Element_InputHidden("id");
-        $this->addElement($this->id);
-
-        $this->confirmation = new HTML_QuickForm2_Element_InputCheckbox("confirmation");
-        $this->confirmation->setLabel('Potrditev brisanja');
-        $this->confirmation->addRule('required', 'Za brisanje označite to polje.');
-        $this->addElement($this->confirmation);
-
-        $this->button = new HTML_QuickForm2_Element_InputSubmit(null);
-        $this->button->setAttribute('value', 'Izbriši');
-        $this->addElement($this->button);
     }
 
 }

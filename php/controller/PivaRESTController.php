@@ -1,14 +1,15 @@
 <?php
 
 require_once("model/PivoDB.php");
-require_once("ViewHelper.php");
 require_once("forms/PivoForm.php");
 
 class PivaRESTController {
 
     public static function get($id) {
         try {
-            echo ViewHelper::renderJSON(PivoDB::get(["id" => $id]));
+            $pivo = PivoDB::get(["id" => $id]);
+            $pivo['slika'] = base64_encode(PivoDB::getSlika($id));
+            echo ViewHelper::renderJSON($pivo);
         } catch (InvalidArgumentException $e) {
             echo ViewHelper::renderJSON($e->getMessage(), 404);
         }

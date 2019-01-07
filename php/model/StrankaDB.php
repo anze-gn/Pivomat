@@ -24,26 +24,40 @@ class StrankaDB extends AbstractDB {
         }
     }
 
+    public static function getByEmail(array $params) {
+        $stranka = parent::query("SELECT s.id, s.ime, s.priimek, s.email, s.ulica, s.hisnaSt, s.postnaSt, s.telefon, s.aktiviran, s.geslo, s.potrjen, k.ime as imeKraja "
+            . "FROM Stranka s, Kraj k "
+            . "WHERE s.email = :email AND s.postnaSt = k.postnaSt",
+            $params);
+
+        if (count($stranka) == 1) {
+            return $stranka[0];
+        } else {
+            #throw new InvalidArgumentException("Stranka z id-jem $params ne obstaja!");
+            return false;
+        }
+    }
+
     public static function getPasswordHash($email) {
         # za preverjanje gesla: password_verify($sent["geslo"], StrankaDB::getPasswordHash($sent["email"]))
-        $stranka = parent::query("SELECT geslo "
+        $stranka = parent::query("SELECT geslo, potrjen "
             . "FROM Stranka "
             . "WHERE email = :email",
             array("email" => $email));
 
         if (count($stranka) == 1) {
-            return $stranka[0]["geslo"];
+            return [$stranka[0]["geslo"], $stranka[0]["potrjen"]];
         } else {
             #throw new InvalidArgumentException("Stranka z email-om $email ne obstaja!");
-            return 1;
+            return [1, 1];
         }
     }
 
     public static function insert(array $params) {
         return parent::modify("INSERT INTO Stranka "
-                . "(aktiviran, ime, priimek, email, ulica, hisnaSt, postnaSt, telefon, geslo) "
+                . "(aktiviran, ime, priimek, email, ulica, hisnaSt, postnaSt, telefon, geslo, potrjen) "
                 . "VALUES "
-                . "(:aktiviran, :ime, :priimek, :email, :ulica, :hisnaSt, :postnaSt, :telefon, :geslo)",
+                . "(:aktiviran, :ime, :priimek, :email, :ulica, :hisnaSt, :postnaSt, :telefon, :geslo, :potrjen)",
             $params);
     }
 
@@ -60,6 +74,14 @@ class StrankaDB extends AbstractDB {
                     . "telefon = :telefon"
                     . ((strlen($params["geslo"]) > 0) ? ", geslo = :geslo ": " ")
                 . " WHERE id = :id", $params);
+    }
+    
+    public static function potrdi(array $params) {
+        return
+            parent::modify("UPDATE Stranka SET "
+                    . "aktiviran = 1, "
+                    . "potrjen = NULL "
+                . " WHERE email = :email", $params);
     }
 
     public static function delete(array $params) {

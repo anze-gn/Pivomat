@@ -6,9 +6,13 @@ class PivoDB extends AbstractDB {
 
     public static function insert(array $params) {
         return parent::modify("INSERT INTO Artikel "
-                . "(aktiviran, naziv, idZnamka, opis, kolicina, alkohol, cena, idStil) "
+                . "(aktiviran, naziv, idZnamka, opis, kolicina, alkohol, cena, idStil"
+                . (isset($params['slika']) ? ", slika " : " ")
+                . ") "
                 . "VALUES "
-                . "(:aktiviran, :naziv, :idZnamka, :opis, :kolicina, :alkohol, :cena, :idStil)",
+                . "(:aktiviran, :naziv, :idZnamka, :opis, :kolicina, :alkohol, :cena, :idStil"
+                . (isset($params['slika']) ? ", :slika " : " ")
+                . ") ",
             $params);
     }
 
@@ -22,7 +26,8 @@ class PivoDB extends AbstractDB {
                     . "kolicina = :kolicina, "
                     . "alkohol = :alkohol, "
                     . "cena = :cena, "
-                    . "idStil = :idStil "
+                    . "idStil = :idStil"
+                    . (isset($params['slika']) ? ", slika = :slika" : " ")
                 . " WHERE id = :id", $params);
     }
 
@@ -39,8 +44,24 @@ class PivoDB extends AbstractDB {
         if (count($piva) == 1) {
             return $piva[0];
         } else {
-            throw new InvalidArgumentException("Pivo z id-jem $params ne obstaja!");
+            throw new InvalidArgumentException("Pivo z id-jem ".$params['id']." ne obstaja!");
         }
+    }
+
+    public static function getSlika($id) {
+        $slika = null;
+
+        $sql = "SELECT slika FROM Artikel WHERE id = :id";
+        $stmt = parent::getConnection()->prepare($sql);
+        $stmt->execute(array(":id" => $id));
+        $stmt->bindColumn(1, $slika, PDO::PARAM_LOB);
+        $stmt->fetch(PDO::FETCH_BOUND);
+
+        if ($slika == null) {
+            $slika = file_get_contents('static/images/privzeto_pivo.jpg', 'rb');
+        }
+
+        return $slika;
     }
     
     public static function getAll(array $params = array()) {

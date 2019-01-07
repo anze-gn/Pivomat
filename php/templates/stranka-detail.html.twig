@@ -1,0 +1,53 @@
+{% extends "base.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+
+    <section class="bgwhite p-t-55 p-b-65">
+        <div class="container">
+
+            <h1>{{ title }}</h1>
+            <div class="row my-5">
+                <div class="col-sm-2 ">Ime:</div>
+                <div class="col-sm-10 "><b>{{ stranka.ime }}</b></div>
+            </div>
+            <div class="row my-5">
+                <div class="col-sm-2 ">Priimek:</div>
+                <div class="col-sm-10 "><b>{{ stranka.priimek }}</b></div>
+            </div>
+            <div class="row my-5">
+                <div class="col-sm-2 ">E-mail:</div>
+                <div class="col-sm-10 "><b>{{ stranka.email }}</b></div>
+            </div>
+            <div class="row my-5">
+                <div class="col-sm-2 ">Ulica:</div>
+                <div class="col-sm-10 "><b>{{ stranka.ulica }}</b></div>
+            </div>
+            <div class="row my-5">
+                <div class="col-sm-2 ">Hišna številka:</div>
+                <div class="col-sm-10 "><b>{{ stranka.hisnaSt }}</b></div>
+            </div>
+            <div class="row my-5">
+                <div class="col-sm-2 ">Poštna številka:</div>
+                <div class="col-sm-10 "><b>{{ stranka.postnaSt }}</b></div>
+            </div>
+            <div class="row my-5">
+                <div class="col-sm-2 ">Kraj</div>
+                <div class="col-sm-10 "><b>{{ stranka.imeKraja }}</b></div>
+            </div>
+            <div class="row my-5">
+                <div class="col-sm-2 ">Telefonska številka:</div>
+                <div class="col-sm-10 "><b>{{ stranka.telefon }}</b></div>
+            </div>
+
+            <div class="row my-5">
+                <div class="btn-addcart-product-detail size9 trans-0-4 m-t-10 m-b-10 mx-auto">
+                    <a href="{{BASE_URL}}stranke/edit/{{ stranka.id }}" class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
+                        Uredi
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
