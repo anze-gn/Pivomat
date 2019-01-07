@@ -50,23 +50,6 @@ class LoginActivity : Activity() {
     }
 
 
-    private fun mayRequestContacts(): Boolean {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            // TODO: alert the user with a Snackbar/AlertDialog giving them the permission rationale
-            // To use the Snackbar from the design support library, ensure that the activity extends
-            // AppCompatActivity and uses the Theme.AppCompat theme.
-        } else {
-            requestPermissions(arrayOf(READ_CONTACTS), REQUEST_READ_CONTACTS)
-        }
-        return false
-    }
-
     /**
      * Callback received when a permissions request has been completed.
      */
@@ -180,24 +163,6 @@ class LoginActivity : Activity() {
         }
     }
 
-
-
-    private fun addEmailsToAutoComplete(emailAddressCollection: List<String>) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        val adapter = ArrayAdapter(this@LoginActivity,
-                android.R.layout.simple_dropdown_item_1line, emailAddressCollection)
-
-        email.setAdapter(adapter)
-    }
-
-    object ProfileQuery {
-        val PROJECTION = arrayOf(
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY)
-        val ADDRESS = 0
-        val IS_PRIMARY = 1
-    }
-
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
@@ -229,9 +194,6 @@ class LoginActivity : Activity() {
             showProgress(false)
 
             if (success!!) {
-                val app = PivomatApp()
-                app.setPassword(password.text.toString())
-                app.setPassword(email.text.toString())
                 val intent = Intent(this@LoginActivity, MainActivityPrijavljen::class.java);
                 startActivity(intent);
             } else {

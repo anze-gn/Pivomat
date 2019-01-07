@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.webkit.CookieManager
 import android.widget.AdapterView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
@@ -11,6 +12,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
+import okhttp3.Cookie
+
+
 
 class MainActivity : AppCompatActivity(), Callback<List<Pivo>> {
 
@@ -30,6 +34,12 @@ class MainActivity : AppCompatActivity(), Callback<List<Pivo>> {
                 startActivity(intent)
             }
         }
+
+        val cookieManager = CookieManager.getInstance()
+        cookieManager.setAcceptCookie(true)
+
+
+
 
         container.setOnRefreshListener { PivoService.instance.getAll().enqueue(this) }
 

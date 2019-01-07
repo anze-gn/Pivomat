@@ -37,7 +37,7 @@ class MainActivityPrijavljen: AppCompatActivity(), Callback<List<Pivo>> {
         container.setOnRefreshListener { PivoService.instance.getAll().enqueue(this) }
 
         btnKosarica.setOnClickListener {
-            val intent = Intent(this, null)
+            val intent = Intent(this, KosaricaActivity::class.java)
             startActivity(intent)
         }
 

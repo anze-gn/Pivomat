@@ -26,14 +26,9 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <Button
-        android:id="@+id/btnKosarica"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/ko_arica" />
-    <Button
         android:id="@+id/btnOdjava"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/odjava" />
+        android:text="@string/kon_aj_nakup" />
 
 </LinearLayout>

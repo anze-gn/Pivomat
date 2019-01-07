@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.content_pivo_detail.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.http.Field
 import java.io.IOException
 
 class PivoDetailActivity : AppCompatActivity(), Callback<Pivo> {
@@ -30,7 +31,7 @@ class PivoDetailActivity : AppCompatActivity(), Callback<Pivo> {
 
 
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         val id = intent.getIntExtra("ep.rest.id", 0)
 
@@ -38,13 +39,32 @@ class PivoDetailActivity : AppCompatActivity(), Callback<Pivo> {
             PivoService.instance.get(id).enqueue(this)
         }
 
-        fabVkosarico.setOnClickListener {
 
+        fabVkosarico.setOnClickListener {
+            val api = CartService.instance
+
+           api!!.insert(1,1,1.2, "lala").enqueue(object: Callback<String> {
+               override fun onResponse(call: Call<String>?, response: Response<String>?) {
+
+               }
+
+               override fun onFailure(call: Call<String>?, t: Throwable?) {
+
+               }
+
+            })
         }
+
+
+
     }
 
     private fun deleteBook() {
         // todo
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 
     override fun onResponse(call: Call<Pivo>, response: Response<Pivo>) {
@@ -54,6 +74,8 @@ class PivoDetailActivity : AppCompatActivity(), Callback<Pivo> {
         if (response.isSuccessful) {
             tvOpis.text = "Znamka: " + pivo?.imeZnamke + "\n" + "Stil: " + pivo?.imeStila + "\n" + "Alkoholna vsebnost: " + pivo?.alkohol + "%\n" + "Neto količina: " + pivo?.kolicina + "l\n\n" + pivo?.opis +"\n\n" + "Cena: " + pivo?.cena + "€\n"
             toolbarLayout.title = pivo?.naziv
+
+
 
         } else {
             val errorMessage = try {
@@ -75,3 +97,4 @@ class PivoDetailActivity : AppCompatActivity(), Callback<Pivo> {
         private val TAG = PivoDetailActivity::class.java.canonicalName
     }
 }
+
