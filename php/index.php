@@ -64,6 +64,9 @@ $urls = [
     "/^prijava$/" => function ($method) {
         PrijavaRegistracijaController::prijava();
     },
+    "/^odjava$/" => function ($method) {
+        PrijavaRegistracijaController::odjava();
+    },
     "/^potrditev.+$/" => function ($method) {
         PrijavaRegistracijaController::potrdiEmail();
     },
@@ -90,10 +93,6 @@ $urls = [
     },
     "/^admin\/edit$/" => function ($method) {
         ProdajalciController::editAdmin();
-    },
-    "/^odjava$/" => function ($method) {
-        session_destroy();
-        ViewHelper::redirect(BASE_URL);
     },
 
     # REST API
@@ -133,6 +132,16 @@ $urls = [
     "/^api\/kosarica\/(\d+)$/" => function ($method, $id) {
         if ($method == "DELETE") {
             PivaRESTController::removeFromCart($id);
+        }
+    },
+    "/^api\/prijava$/" => function ($method) {
+        if ($method == "POST") {
+            PivaRESTController::login();
+        }
+    },
+    "/^api\/odjava/" => function ($method) {
+        if ($method == "GET") {
+            PivaRESTController::logout();
         }
     }
 ];

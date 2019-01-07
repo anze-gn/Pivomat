@@ -106,6 +106,11 @@ class PrijavaRegistracijaController {
             ]);
         }
     }
+
+    public static function odjava() {
+        session_destroy();
+        ViewHelper::redirect(BASE_URL);
+    }
     
     public static function potrdiEmail() {
         if(!isset($_GET['m']) && !isset($_GET['h'])){

@@ -2,6 +2,7 @@
 
 require_once("model/PivoDB.php");
 require_once("forms/PivoForm.php");
+require_once("forms/PrijavaForm.php");
 
 class PivaRESTController {
 
@@ -104,6 +105,61 @@ class PivaRESTController {
     public static function removeFromCart($id) {
         unset($_SESSION['kosarica'][$id]);
         echo ViewHelper::renderJSON($_SESSION['kosarica'], 200);
+    }
+
+    public static function login() {
+        # POST zahtevek more vsebovati parameter '_qf__prijava' = ''
+        $form = new PrijavaForm("prijava");
+
+        if ($form->validate()) {
+            $data = $form->getValue();
+
+            session_regenerate_id();
+
+            $podatkiUporabnika = StrankaDB::getByEmail($data);
+            if ($podatkiUporabnika && $podatkiUporabnika['potrjen'] == NULL && password_verify($data["geslo"], $podatkiUporabnika['geslo'])) {
+                if ($podatkiUporabnika['aktiviran'] == 0) {
+                    echo ViewHelper::renderJSON("uporabnik deaktiviran", 401);
+                    exit();
+                }
+                $_SESSION["vloga"] = "stranke";
+                $_SESSION["uporabnik"] = $podatkiUporabnika;
+                echo ViewHelper::renderJSON("Prijava uspešna.", 200);
+                exit();
+            }
+
+            $podatkiUporabnika = ProdajalecDB::getByEmail($data);
+            if ($podatkiUporabnika && password_verify($data["geslo"], $podatkiUporabnika['geslo'])) {
+                if ($podatkiUporabnika['aktiviran'] == 0) {
+                    echo ViewHelper::renderJSON("uporabnik deaktiviran", 401);
+                    exit();
+                }
+                $_SESSION["vloga"] = "prodajalci";
+                $_SESSION["uporabnik"] = $podatkiUporabnika;
+                echo ViewHelper::renderJSON("Prijava uspešna.", 200);
+                exit();
+            }
+
+            $podatkiUporabnika = AdminDB::getByEmail($data);
+            if ($podatkiUporabnika && password_verify($data["geslo"], $podatkiUporabnika['geslo'])) {
+                $_SESSION["vloga"] = "admin";
+                $_SESSION["uporabnik"] = $podatkiUporabnika;
+                echo ViewHelper::renderJSON("Prijava uspešna.", 200);
+                exit();
+            }
+
+            echo ViewHelper::renderJSON("Napačen e-mail ali geslo!", 401);
+            exit();
+        } else {
+            echo ViewHelper::renderJSON("Ni podatkov.", 400);
+            exit();
+        }
+    }
+
+    public static function logout() {
+        session_destroy();
+        echo ViewHelper::renderJSON("Odjava uspešna.", 200);
+        exit();
     }
 
 }
