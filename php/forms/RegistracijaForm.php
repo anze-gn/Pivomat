@@ -5,6 +5,7 @@ require_once 'HTML/QuickForm2/Element/Select.php';
 require_once 'HTML/QuickForm2/Element/InputSubmit.php';
 require_once 'HTML/QuickForm2/Element/InputText.php';
 require_once 'model/KrajDB.php';
+require_once 'model/StrankaDB.php';
 require_once 'HTML/QuickForm2/Element/Captcha/Numeral.php';
 
 abstract class RegistracijaAbstractForm extends HTML_QuickForm2 {
@@ -47,6 +48,7 @@ abstract class RegistracijaAbstractForm extends HTML_QuickForm2 {
         $this->email->addRule('required', 'E-mail ne sme biti prazen.');
         $this->email->addRule('email', 'Napačen vnos e-maila.');
         $this->email->addRule('maxlength', 'E-mail lahko vsebuje največ 45 znakov.', 45);
+        $this->email->addRule('callback', 'Uporabnik s tem e-naslovom je že registriran.', 'RegistracijaAbstractForm::ifMailNotExists');
         $this->addElement($this->email);
         
         $this->ulica = new HTML_QuickForm2_Element_InputText('ulica');
@@ -116,6 +118,15 @@ abstract class RegistracijaAbstractForm extends HTML_QuickForm2 {
             $el->setAttribute('class', 'form-control');
         }
         $this->button->setAttribute('class', 'btn btn-primary d-block mx-auto');
+    }
+
+    public static function ifMailNotExists($email) {
+        try {
+            StrankaDB::getByEmail(['email' => $email]);
+        } catch (InvalidArgumentException $e) {
+            return true;
+        }
+        return false;
     }
 
 }
