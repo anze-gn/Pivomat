@@ -28,6 +28,10 @@ class PivaController {
     }
 
     public static function add() {
+        if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'prodajalci' || $_SESSION['vloga'] == 'admin'))) {
+            echo Twig::instance()->render('accesss-denied.html');
+            exit();
+        }
         $form = new PivoInsertForm("add_form");
 
         if ($form->validate()) {
@@ -49,6 +53,10 @@ class PivaController {
     }
 
     public static function edit($id) {
+        if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'prodajalci' || $_SESSION['vloga'] == 'admin'))) {
+            echo Twig::instance()->render('accesss-denied.html');
+            exit();
+        }
         $editForm = new PivoEditForm("edit_form");
         $editForm->obstojecaSlika->setAttribute('src', "../" . $id . ".jpg");
         $deleteForm = new PivoDeleteForm("delete_form");
@@ -86,6 +94,10 @@ class PivaController {
     }
 
     public static function delete() {
+        if (!(isset($_SESSION['vloga']) && $_SESSION['vloga'] == 'admin')) {
+            echo Twig::instance()->render('accesss-denied.html');
+            exit();
+        }
         $form = new PivoDeleteForm("delete_form");
         $data = $form->getValue();
 

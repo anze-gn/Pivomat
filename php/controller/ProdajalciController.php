@@ -16,6 +16,10 @@ class ProdajalciController {
     }
 
     public static function get($id) {
+        if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin' || $id == $_SESSION["uporabnik"]["id"]))) {
+            echo Twig::instance()->render('accesss-denied.html');
+            exit();
+        }
         echo Twig::instance()->render("prodajalec-detail.html.twig", [
             "title" => "Podatki prodajalca",
             "prodajalec" => ProdajalecDB::get(array('id' => $id)),
@@ -24,6 +28,10 @@ class ProdajalciController {
     }
     
     public static function add() {
+        if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin'))) {
+            echo Twig::instance()->render('accesss-denied.html');
+            exit();
+        }
         $form = new ProdajalecInsertForm("add_form");
 
         if ($form->validate()) {
@@ -42,6 +50,10 @@ class ProdajalciController {
     }
     
     public static function edit($id) {
+        if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin' || $id == $_SESSION["uporabnik"]["id"]))) {
+            echo Twig::instance()->render('accesss-denied.html');
+            exit();
+        }
         $editForm = new ProdajalecEditForm("edit_form");
         $deleteForm = new ProdajalecDeleteForm("delete_form");
 
@@ -86,6 +98,10 @@ class ProdajalciController {
     }
     
     public static function editAdmin() {
+        if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin'))) {
+            echo Twig::instance()->render('accesss-denied.html');
+            exit();
+        }
         $editForm = new AdminEditForm("edit_form");
 
         if ($editForm->isSubmitted()) {
@@ -113,6 +129,10 @@ class ProdajalciController {
     }
 
     public static function delete() {
+        if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin'))) {
+            echo Twig::instance()->render('accesss-denied.html');
+            exit();
+        }
         $form = new ProdajalecDeleteForm("delete_form");
         $data = $form->getValue();
 
