@@ -75,7 +75,7 @@ class PivaRESTController {
 
     public static function addToCart() {
         $cartItem = [];
-        $fields = ['id', 'idPiva', 'kolicina', 'naziv', 'cena'];
+        $fields = ['idPiva', 'kolicina', 'naziv', 'cena'];
         foreach ($fields as $item) {
             if (!isset($_POST[$item])) {
                 echo ViewHelper::renderJSON("Napačni podatki.", 400);
@@ -83,6 +83,16 @@ class PivaRESTController {
             }
             $cartItem[$item] = $_POST[$item];
         }
+        if (!isset($_SESSION['kosarica'])) {
+            $_SESSION['kosarica'] = [];
+        }
+        $cartItem['id'] = 0;
+        foreach ($_SESSION['kosarica'] as $item) {
+            if ($item['id'] > $cartItem['id']) {
+                $cartItem['id'] = $item['id'];
+            }
+        }
+        $cartItem['id']++;
         $_SESSION['kosarica'][$cartItem['id']] = $cartItem;
         echo ViewHelper::renderJSON("Uspešno dodano v košarico.", 200);
     }
