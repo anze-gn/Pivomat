@@ -7,7 +7,7 @@ class StrankeController {
 
     public static function index() {
         if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin') || $_SESSION['vloga'] == 'prodajalci')) {
-            echo Twig::instance()->render('accesss-denied.html');
+            echo Twig::instance()->render('accesss-denied.html.twig');
             exit();
         }
         echo Twig::instance()->render("stranka-list.html.twig", [
@@ -19,7 +19,7 @@ class StrankeController {
 
     public static function get($id) {
         if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin' || $_SESSION['vloga'] == 'prodajalci'|| ($id == $_SESSION["uporabnik"]["id"] && $_SESSION['vloga'] == 'stranke')))) {
-            echo Twig::instance()->render('accesss-denied.html');
+            echo Twig::instance()->render('accesss-denied.html.twig');
             exit();
         }
         echo Twig::instance()->render("stranka-detail.html.twig", [
@@ -30,7 +30,7 @@ class StrankeController {
 
     public static function add() {
         if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin') || $_SESSION['vloga'] == 'prodajalci')) {
-            echo Twig::instance()->render('accesss-denied.html');
+            echo Twig::instance()->render('accesss-denied.html.twig');
             exit();
         }
         $form = new StrankaInsertForm("add_form");
@@ -52,7 +52,7 @@ class StrankeController {
 
     public static function edit($id) {
         if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin' || $_SESSION['vloga'] == 'prodajalci'|| ($id == $_SESSION["uporabnik"]["id"] && $_SESSION['vloga'] == 'stranke')))) {
-            echo Twig::instance()->render('accesss-denied.html');
+            echo Twig::instance()->render('accesss-denied.html.twig');
             exit();
         }
         $editForm = new StrankaEditForm("edit_form");
@@ -92,7 +92,7 @@ class StrankeController {
 
     public static function delete() {
         if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin'))) {
-            echo Twig::instance()->render('accesss-denied.html');
+            echo Twig::instance()->render('accesss-denied.html.twig');
             exit();
         }
         $form = new PivoDeleteForm("delete_form");

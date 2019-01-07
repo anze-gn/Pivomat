@@ -17,7 +17,7 @@ class ProdajalciController {
 
     public static function get($id) {
         if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin' || ($id == $_SESSION["uporabnik"]["id"] && $_SESSION['vloga'] == 'prodajalci')))) {
-            echo Twig::instance()->render('accesss-denied.html');
+            echo Twig::instance()->render('accesss-denied.html.twig');
             exit();
         }
         echo Twig::instance()->render("prodajalec-detail.html.twig", [
@@ -29,7 +29,7 @@ class ProdajalciController {
     
     public static function add() {
         if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin'))) {
-            echo Twig::instance()->render('accesss-denied.html');
+            echo Twig::instance()->render('accesss-denied.html.twig');
             exit();
         }
         $form = new ProdajalecInsertForm("add_form");
@@ -51,7 +51,7 @@ class ProdajalciController {
     
     public static function edit($id) {
         if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin' || ($id == $_SESSION["uporabnik"]["id"] && $_SESSION['vloga'] == 'prodajalci')))) {
-            echo Twig::instance()->render('accesss-denied.html');
+            echo Twig::instance()->render('accesss-denied.html.twig');
             exit();
         }
         $editForm = new ProdajalecEditForm("edit_form");
@@ -90,6 +90,10 @@ class ProdajalciController {
     }
     
     public static function admin() {
+        if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin'))) {
+            echo Twig::instance()->render('accesss-denied.html.twig');
+            exit();
+        }
         echo Twig::instance()->render("prodajalec-detail.html.twig", [
             "title" => "Vaši podatki",
             "prodajalec" => AdminDB::get(array('id' => 1)),
@@ -99,7 +103,7 @@ class ProdajalciController {
     
     public static function editAdmin() {
         if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin'))) {
-            echo Twig::instance()->render('accesss-denied.html');
+            echo Twig::instance()->render('accesss-denied.html.twig');
             exit();
         }
         $editForm = new AdminEditForm("edit_form");
@@ -130,7 +134,7 @@ class ProdajalciController {
 
     public static function delete() {
         if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin'))) {
-            echo Twig::instance()->render('accesss-denied.html');
+            echo Twig::instance()->render('accesss-denied.html.twig');
             exit();
         }
         $form = new ProdajalecDeleteForm("delete_form");

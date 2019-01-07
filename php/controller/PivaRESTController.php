@@ -24,7 +24,7 @@ class PivaRESTController {
 
     public static function add() {
         if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'prodajalci' || $_SESSION['vloga'] == 'admin'))) {
-            echo Twig::instance()->render('accesss-denied.html');
+            echo Twig::instance()->render('accesss-denied.html.twig');
             exit();
         }
         $form = new PivoInsertForm("add_form");
@@ -43,7 +43,7 @@ class PivaRESTController {
 
     public static function edit($id) {
         if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'prodajalci' || $_SESSION['vloga'] == 'admin'))) {
-            echo Twig::instance()->render('accesss-denied.html');
+            echo Twig::instance()->render('accesss-denied.html.twig');
             exit();
         }
         $editForm = new PivoEditForm("edit_form");
@@ -62,7 +62,7 @@ class PivaRESTController {
 
     public static function delete($id) {
         if (!(isset($_SESSION['vloga']) && $_SESSION['vloga'] == 'admin')) {
-            echo Twig::instance()->render('accesss-denied.html');
+            echo Twig::instance()->render('accesss-denied.html.twig');
             exit();
         }
         try {
