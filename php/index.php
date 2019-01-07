@@ -120,6 +120,21 @@ $urls = [
                 break;
         }
     },
+    "/^api\/kosarica$/" => function ($method) {
+        switch ($method) {
+            case "POST":
+                PivaRESTController::addToCart();
+                break;
+            default: # GET
+                PivaRESTController::getCart();
+                break;
+        }
+    },
+    "/^api\/kosarica\/(\d+)$/" => function ($method, $id) {
+        if ($method == "DELETE") {
+            PivaRESTController::removeFromCart($id);
+        }
+    }
 ];
 
 foreach ($urls as $pattern => $controller) {

@@ -73,4 +73,27 @@ class PivaRESTController {
         }
     }
 
+    public static function addToCart() {
+        $cartItem = [];
+        $fields = ['id', 'idPiva', 'kolicina', 'naziv', 'cena'];
+        foreach ($fields as $item) {
+            if (!isset($_POST[$item])) {
+                echo ViewHelper::renderJSON("Napačni podatki.", 400);
+                exit();
+            }
+            $cartItem[$item] = $_POST[$item];
+        }
+        $_SESSION['kosarica'][$cartItem['id']] = $cartItem;
+        echo ViewHelper::renderJSON("Uspešno dodano v košarico.", 200);
+    }
+
+    public static function getCart() {
+        echo ViewHelper::renderJSON($_SESSION['kosarica'], 200);
+    }
+
+    public static function removeFromCart($id) {
+        unset($_SESSION['kosarica'][$id]);
+        echo ViewHelper::renderJSON($_SESSION['kosarica'], 200);
+    }
+
 }
