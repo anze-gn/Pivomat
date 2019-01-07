@@ -64,8 +64,8 @@ abstract class StrankaAbstractForm extends HTML_QuickForm2 {
         $this->hisnaSt = new HTML_QuickForm2_Element_InputText('hisnaSt');
         $this->hisnaSt->setLabel('Hišna številka');
         $this->hisnaSt->addRule('required', 'Hišna številka ne sme biti prazna');
-        $this->hisnaSt->addRule('callback', 'Hišna številka ni pravilno zapisana.', array(
-            'callback' => 'filter_var','arguments' => [FILTER_VALIDATE_INT]));
+        $this->hisnaSt->addRule('regex', 'Napačen zapis hišne številke.', '/^\d+[a-z]{0,1}$/');
+        $this->hisnaSt->addRule('maxlength', 'Hišna številka lahko vsebuje največ 4 znake.', 4);
         $this->addElement($this->hisnaSt);
         
         $this->postnaSt = new HTML_QuickForm2_Element_Select('postnaSt');
