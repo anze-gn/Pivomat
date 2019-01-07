@@ -16,7 +16,7 @@ class ProdajalciController {
     }
 
     public static function get($id) {
-        if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin' || $id == $_SESSION["uporabnik"]["id"]))) {
+        if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin' || ($id == $_SESSION["uporabnik"]["id"] && $_SESSION['vloga'] == 'prodajalci')))) {
             echo Twig::instance()->render('accesss-denied.html');
             exit();
         }
@@ -50,7 +50,7 @@ class ProdajalciController {
     }
     
     public static function edit($id) {
-        if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin' || $id == $_SESSION["uporabnik"]["id"]))) {
+        if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin' || ($id == $_SESSION["uporabnik"]["id"] && $_SESSION['vloga'] == 'prodajalci')))) {
             echo Twig::instance()->render('accesss-denied.html');
             exit();
         }

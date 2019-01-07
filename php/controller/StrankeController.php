@@ -6,6 +6,10 @@ require_once("forms/StrankaForm.php");
 class StrankeController {
 
     public static function index() {
+        if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin') || $_SESSION['vloga'] == 'prodajalci')) {
+            echo Twig::instance()->render('accesss-denied.html');
+            exit();
+        }
         echo Twig::instance()->render("stranka-list.html.twig", [
             "title" => "Seznam vseh strank",
             "stranke" => strankaDB::getAll(array("aktiviran" => 1)),
@@ -14,6 +18,10 @@ class StrankeController {
     }
 
     public static function get($id) {
+        if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin' || $_SESSION['vloga'] == 'prodajalci'|| ($id == $_SESSION["uporabnik"]["id"] && $_SESSION['vloga'] == 'stranke')))) {
+            echo Twig::instance()->render('accesss-denied.html');
+            exit();
+        }
         echo Twig::instance()->render("stranka-detail.html.twig", [
             "title" => "Podatki stranke:",
             "stranka" => StrankaDB::get(array('id' => $id))
@@ -21,6 +29,10 @@ class StrankeController {
     }
 
     public static function add() {
+        if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin') || $_SESSION['vloga'] == 'prodajalci')) {
+            echo Twig::instance()->render('accesss-denied.html');
+            exit();
+        }
         $form = new StrankaInsertForm("add_form");
 
         if ($form->validate()) {
@@ -39,6 +51,10 @@ class StrankeController {
     }
 
     public static function edit($id) {
+        if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin' || $_SESSION['vloga'] == 'prodajalci'|| ($id == $_SESSION["uporabnik"]["id"] && $_SESSION['vloga'] == 'stranke')))) {
+            echo Twig::instance()->render('accesss-denied.html');
+            exit();
+        }
         $editForm = new StrankaEditForm("edit_form");
         $deleteForm = new StrankaDeleteForm("delete_form");
 
@@ -75,6 +91,10 @@ class StrankeController {
     }
 
     public static function delete() {
+        if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'admin'))) {
+            echo Twig::instance()->render('accesss-denied.html');
+            exit();
+        }
         $form = new PivoDeleteForm("delete_form");
         $data = $form->getValue();
 
