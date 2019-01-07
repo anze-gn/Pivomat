@@ -6,15 +6,16 @@ require_once("forms/StrankaForm.php");
 class StrankeController {
 
     public static function index() {
-        echo ViewHelper::render("view/stranka-list.php", [
-            "title" => "seznam vseh strank",
+        echo Twig::instance()->render("stranka-list.html.twig", [
+            "title" => "Seznam vseh strank",
             "stranke" => strankaDB::getAll(array("aktiviran" => 1)),
-            "neaktivneStranke" => strankaDB::getAll(array("aktiviran" => 0))
+            "deaktiviraneStranke" => strankaDB::getAll(array("aktiviran" => 0))
         ]);
     }
 
     public static function get($id) {
-        echo ViewHelper::render("view/stranka-detail.php", [
+        echo Twig::instance()->render("stranka-detail.html.twig", [
+            "title" => "Podatki stranke:",
             "stranka" => StrankaDB::get(array('id' => $id))
         ]);
     }
@@ -30,9 +31,9 @@ class StrankeController {
             $id = StrankaDB::insert($data);
             ViewHelper::redirect(BASE_URL . "stranke/" . $id);
         } else {
-            echo ViewHelper::render("view/stranka-form.php", [
-                "title" => "Dodaj novo stranko",
-                "form" => $form
+            echo Twig::instance()->render("form.html.twig", [
+                "title" => "Dodaj novo strank",
+                "form" => (string) $form->render(CustomRenderer::instance())
             ]);
         }
     }
@@ -48,12 +49,15 @@ class StrankeController {
                     $data["aktiviran"] = 0;
                 }
                 StrankaDB::update($data);
+                if ($_SESSION["vloga"] == "stranke" && $data['id'] == $_SESSION["uporabnik"]["id"]) {
+                    $_SESSION["uporabnik"] = StrankaDB::get(["id" => $data['id']]);
+                }
                 ViewHelper::redirect(BASE_URL . "stranke/" . $data["id"]);
             } else {
-                echo ViewHelper::render("view/stranka-form.php", [
+                echo Twig::instance()->render("form.html.twig", [
                     "title" => "Uredi podatke o stranki",
-                    "form" => $editForm,
-                    "deleteForm" => $deleteForm
+                    "form" => (string) $editForm->render(CustomRenderer::instance()),
+                    "deleteForm" => (string) $deleteForm->render(CustomRenderer::instance())
                 ]);
             }
         } else {
@@ -62,10 +66,10 @@ class StrankeController {
             $editForm->addDataSource($dataSource);
             $deleteForm->addDataSource($dataSource);
 
-            echo ViewHelper::render("view/stranka-form.php", [
+            echo Twig::instance()->render("form.html.twig", [
                 "title" => "Uredi podatke o stranki",
-                "form" => $editForm,
-                "deleteForm" => $deleteForm
+                "form" => (string) $editForm->render(CustomRenderer::instance()),
+                "deleteForm" => (string) $deleteForm->render(CustomRenderer::instance())
             ]);
         }
     }

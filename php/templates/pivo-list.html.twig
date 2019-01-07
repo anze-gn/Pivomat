@@ -3,7 +3,7 @@
 
 {% block content %}
 	<!-- Title Page -->
-	<section class="bg-title-page p-t-50 p-b-40 flex-col-c-m" style="background-image: url({{STATIC_URL}}images/heading-pages-02.jpg);">
+	<section class="bg-title-page p-t-50 p-b-40 flex-col-c-m font-weight-bold" style="background-image: url({{STATIC_URL}}images/header.jpg); text-shadow: 0 0 5px black;">
 		<h2 class="l-text2 t-center">
 			PIVA
 		</h2>
@@ -135,7 +135,7 @@
 						<div class="col-sm-12 col-md-6 col-lg-4 p-b-50">
 							<div class="block2">
 								<div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
-									<img src="{{BASE_URL}}piva/{{ pivo.id }}.jpg" alt="{{ pivo.naziv }}">
+									<img class="mx-auto d-block" style="height: 250px; width: auto;" src="{{BASE_URL}}piva/{{ pivo.id }}.jpg" alt="{{ pivo.naziv }}">
 
 									<div class="block2-overlay trans-0-4">
 										<div class="block2-btn-addcart w-size2 trans-0-4">

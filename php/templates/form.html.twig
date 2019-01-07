@@ -1,0 +1,29 @@
+{% extends "base.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+
+<section class="bgwhite p-t-55 p-b-65">
+    <div class="container">
+
+            <h1>{{ title }}</h1>
+
+            {% if error %}
+                <div class="py-3" style="color: red">{{ error }}</div>
+            {% endif %}
+
+            {{ form | raw }}
+
+            {% if deleteForm %}
+                <div class="py-5"></div>
+                <h2>Brisanje</h2>
+                {{ deleteForm | raw }}
+            {% endif %}
+
+
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

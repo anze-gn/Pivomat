@@ -40,39 +40,56 @@
 					<nav class="menu">
 						<ul class="main_menu">
 							<li>
-								<a href="{{BASE_URL}}">Home</a>
+								<a href="{{BASE_URL}}">Domov</a>
 							</li>
 
 							<li>
-								<a href="{{BASE_URL}}">Shop</a>
+								<a href="{{BASE_URL}}piva">Piva</a>
+								{% if SESSION.vloga == "prodajalci" or SESSION.vloga == "admin" %}
+									<ul class="sub_menu">
+										<li><a href="{{BASE_URL}}piva/add">Dodaj novo</a></li>
+									</ul>
+								{%  endif %}
 							</li>
 
-							<li class="sale-noti">
-								<a href="{{BASE_URL}}">Sale</a>
-							</li>
+							{% if SESSION.vloga == "prodajalci" or SESSION.vloga == "admin" %}
+								<li>
+									<a href="{{BASE_URL}}stranke">Stranke</a>
+									<ul class="sub_menu">
+										<li><a href="{{BASE_URL}}stranke/add">Dodaj novo</a></li>
+									</ul>
+								</li>
+							{%  endif %}
 
-							<li>
-								<a href="{{BASE_URL}}">Features</a>
-							</li>
+							{% if SESSION.vloga == "admin" %}
+								<li>
+									<a href="{{BASE_URL}}prodajalci">Prodajalci</a>
+									<ul class="sub_menu">
+										<li><a href="{{BASE_URL}}prodajalci/add">Dodaj novega</a></li>
+									</ul>
+								</li>
+							{%  endif %}
 
-							<li>
-								<a href="{{BASE_URL}}">Blog</a>
-							</li>
-
-							<li>
-								<a href="{{BASE_URL}}">About</a>
-							</li>
-
-							<li>
-								<a href="{{BASE_URL}}">Contact</a>
-							</li>
+							{% if SESSION.uporabnik %}
+								<li class="sale-noti">
+									<a href="{{BASE_URL}}odjava">Odjava</a>
+								</li>
+							{% else %}
+								<li class="sale-noti">
+									<a href="{{BASE_URL}}prijava">Prijava</a>
+								</li>
+								<li>
+									<a href="{{BASE_URL}}registracija">Registracija</a>
+								</li>
+							{%  endif %}
 						</ul>
 					</nav>
 				</div>
 
 				<!-- Header Icon -->
 				<div class="header-icons">
-					<a href="{{BASE_URL}}registracija" class="header-wrapicon1 dis-block">
+					<a href="{{BASE_URL}}{{ SESSION.vloga }}{% if SESSION.vloga != 'admin' %}/{{ SESSION.uporabnik.id }}{% endif %}" class="header-wrapicon1 dis-block">
+						{{ SESSION.uporabnik.email }}
 						<img src="{{STATIC_URL}}images/icons/icon-header-01.png" class="header-icon1" alt="ICON">
 					</a>
 
@@ -170,7 +187,7 @@
 			<div class="btn-show-menu">
 				<!-- Header Icon mobile -->
 				<div class="header-icons-mobile">
-					<a href="{{BASE_URL}}" class="header-wrapicon1 dis-block">
+					<a href="{{BASE_URL}}{{ SESSION.vloga }}{% if SESSION.vloga != 'admin' %}/{{ SESSION.uporabnik.id }}{% endif %}" class="header-wrapicon1 dis-block">
 						<img src="{{STATIC_URL}}images/icons/icon-header-01.png" class="header-icon1" alt="ICON">
 					</a>
 
@@ -267,34 +284,57 @@
 		<div class="wrap-side-menu" >
 			<nav class="side-menu">
 				<ul class="main-menu">
-
 					<li class="item-menu-mobile">
-						<a href="{{BASE_URL}}">Home</a>
-						<i class="arrow-main-menu fa fa-angle-right" aria-hidden="true"></i>
+						<a href="{{BASE_URL}}">Domov</a>
 					</li>
 
 					<li class="item-menu-mobile">
-						<a href="{{STATIC_URL}}">Shop</a>
+						<a href="{{BASE_URL}}piva">Piva</a>
+						{% if SESSION.vloga == "prodajalci" or SESSION.vloga == "admin" %}
+							<i class="arrow-main-menu fa fa-angle-right" aria-hidden="true"></i>
+							<ul class="sub-menu">
+								<li><a href="{{BASE_URL}}piva/add">Dodaj novo</a></li>
+							</ul>
+						{%  endif %}
 					</li>
 
-					<li class="item-menu-mobile">
-						<a href="{{BASE_URL}}">Sale</a>
-					</li>
+					{% if SESSION.vloga == "prodajalci" or SESSION.vloga == "admin" %}
+						<li class="item-menu-mobile">
+							<a href="{{BASE_URL}}stranke">Stranke</a>
+							<i class="arrow-main-menu fa fa-angle-right" aria-hidden="true"></i>
+							<ul class="sub-menu">
+								<li><a href="{{BASE_URL}}stranke/add">Dodaj novo</a></li>
+							</ul>
+						</li>
+					{%  endif %}
+
+					{% if SESSION.vloga == "admin" %}
+						<li class="item-menu-mobile">
+							<a href="{{BASE_URL}}prodajalci">Prodajalci</a>
+							<i class="arrow-main-menu fa fa-angle-right" aria-hidden="true"></i>
+							<ul class="sub-menu">
+								<li><a href="{{BASE_URL}}prodajalci/add">Dodaj novega</a></li>
+							</ul>
+						</li>
+					{%  endif %}
+
+					{% if SESSION.uporabnik %}
+						<li class="item-menu-mobile">
+							<a href="{{BASE_URL}}odjava">Odjava</a>
+						</li>
+					{% else %}
+						<li class="item-menu-mobile">
+							<a href="{{BASE_URL}}prijava">Prijava</a>
+						</li>
+						<li class="item-menu-mobile">
+							<a href="{{BASE_URL}}registracija">Registracija</a>
+						</li>
+					{%  endif %}
 
 					<li class="item-menu-mobile">
-						<a href="{{BASE_URL}}">Features</a>
-					</li>
-
-					<li class="item-menu-mobile">
-						<a href="{{BASE_URL}}">Blog</a>
-					</li>
-
-					<li class="item-menu-mobile">
-						<a href="{{BASE_URL}}">About</a>
-					</li>
-
-					<li class="item-menu-mobile">
-						<a href="{{BASE_URL}}">Contact</a>
+						<a href="{{BASE_URL}}{{ SESSION.vloga }}{% if SESSION.vloga != 'admin' %}/{{ SESSION.uporabnik.id }}{% endif %}">
+							Prijavljen kot: {{ SESSION.uporabnik.email }}
+						</a>
 					</li>
 				</ul>
 			</nav>

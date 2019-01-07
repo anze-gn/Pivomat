@@ -20,6 +20,7 @@ define("DEBUG", true);
 
 $path = isset($_SERVER["PATH_INFO"]) ? trim($_SERVER["PATH_INFO"], "/") : "";
 
+
 $urls = [
     "/^piva$/" => function ($method) {
         PivaController::index();
@@ -63,11 +64,14 @@ $urls = [
     "/^prijava$/" => function ($method) {
         PrijavaRegistracijaController::prijava();
     },
-    "/^potrditev\/(.*)\/(.*)$/" => function ($method, $email, $hash) {
-        PrijavaRegistracijaController::potrdiEmail($email, $hash);
+    "/^odjava$/" => function ($method) {
+        PrijavaRegistracijaController::odjava();
+    },
+    "/^potrditev.+$/" => function ($method) {
+        PrijavaRegistracijaController::potrdiEmail();
     },
     "/^potrditev$/" => function ($method) {
-        PrijavaRegistracijaController::potrdiEmail("", "");
+        PrijavaRegistracijaController::potrdiEmail();
     },
     "/^prodajalci$/" => function ($method) {
         ProdajalciController::index();
@@ -115,6 +119,31 @@ $urls = [
                 break;
         }
     },
+    "/^api\/kosarica$/" => function ($method) {
+        switch ($method) {
+            case "POST":
+                PivaRESTController::addToCart();
+                break;
+            default: # GET
+                PivaRESTController::getCart();
+                break;
+        }
+    },
+    "/^api\/kosarica\/(\d+)$/" => function ($method, $id) {
+        if ($method == "DELETE") {
+            PivaRESTController::removeFromCart($id);
+        }
+    },
+    "/^api\/prijava$/" => function ($method) {
+        if ($method == "POST") {
+            PivaRESTController::login();
+        }
+    },
+    "/^api\/odjava/" => function ($method) {
+        if ($method == "GET") {
+            PivaRESTController::logout();
+        }
+    }
 ];
 
 foreach ($urls as $pattern => $controller) {

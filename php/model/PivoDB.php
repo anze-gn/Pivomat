@@ -6,9 +6,13 @@ class PivoDB extends AbstractDB {
 
     public static function insert(array $params) {
         return parent::modify("INSERT INTO Artikel "
-                . "(aktiviran, naziv, idZnamka, opis, kolicina, alkohol, cena, idStil, slika) "
+                . "(aktiviran, naziv, idZnamka, opis, kolicina, alkohol, cena, idStil"
+                . (isset($params['slika']) ? ", slika " : " ")
+                . ") "
                 . "VALUES "
-                . "(:aktiviran, :naziv, :idZnamka, :opis, :kolicina, :alkohol, :cena, :idStil, :slika)",
+                . "(:aktiviran, :naziv, :idZnamka, :opis, :kolicina, :alkohol, :cena, :idStil"
+                . (isset($params['slika']) ? ", :slika " : " ")
+                . ") ",
             $params);
     }
 
@@ -22,7 +26,8 @@ class PivoDB extends AbstractDB {
                     . "kolicina = :kolicina, "
                     . "alkohol = :alkohol, "
                     . "cena = :cena, "
-                    . "idStil = :idStil "
+                    . "idStil = :idStil"
+                    . (isset($params['slika']) ? ", slika = :slika" : " ")
                 . " WHERE id = :id", $params);
     }
 

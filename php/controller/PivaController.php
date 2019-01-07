@@ -28,6 +28,10 @@ class PivaController {
     }
 
     public static function add() {
+        if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'prodajalci' || $_SESSION['vloga'] == 'admin'))) {
+            echo Twig::instance()->render('accesss-denied.html');
+            exit();
+        }
         $form = new PivoInsertForm("add_form");
 
         if ($form->validate()) {
@@ -35,10 +39,13 @@ class PivaController {
             if(!array_key_exists('aktiviran', $data)){
                 $data["aktiviran"] = 0;
             }
+            if ($data['slika']['size'] < 1) {
+                unset($data['slika']);
+            }
             $id = PivoDB::insert($data);
             ViewHelper::redirect(BASE_URL . "piva/" . $id);
         } else {
-            echo Twig::instance()->render("pivo-form.html.twig", [
+            echo Twig::instance()->render("form.html.twig", [
                 "title" => "Dodaj novo pivo",
                 "form" => (string) $form->render(CustomRenderer::instance())
             ]);
@@ -46,19 +53,27 @@ class PivaController {
     }
 
     public static function edit($id) {
+        if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'prodajalci' || $_SESSION['vloga'] == 'admin'))) {
+            echo Twig::instance()->render('accesss-denied.html');
+            exit();
+        }
         $editForm = new PivoEditForm("edit_form");
+        $editForm->obstojecaSlika->setAttribute('src', "../" . $id . ".jpg");
         $deleteForm = new PivoDeleteForm("delete_form");
 
         if ($editForm->isSubmitted()) {
             if ($editForm->validate()) {
                 $data = $editForm->getValue();
-                if(!array_key_exists('aktiviran', $data)){
+                if (!array_key_exists('aktiviran', $data)) {
                     $data["aktiviran"] = 0;
+                }
+                if ($data['slika']['size'] < 1) {
+                    unset($data['slika']);
                 }
                 PivoDB::update($data);
                 ViewHelper::redirect(BASE_URL . "piva/" . $data["id"]);
             } else {
-                echo Twig::instance()->render("pivo-form.html.twig", [
+                echo Twig::instance()->render("form.html.twig", [
                     "title" => "Uredi podatke o pivu",
                     "form" => (string) $editForm->render(CustomRenderer::instance()),
                     "deleteForm" => (string) $deleteForm->render(CustomRenderer::instance())
@@ -70,9 +85,7 @@ class PivaController {
             $editForm->addDataSource($dataSource);
             $deleteForm->addDataSource($dataSource);
 
-            $editForm->obstojecaSlika->setAttribute('src', "../" . $id . ".jpg");
-
-            echo Twig::instance()->render("pivo-form.html.twig", [
+            echo Twig::instance()->render("form.html.twig", [
                 "title" => "Uredi podatke o pivu",
                 "form" => (string) $editForm->render(CustomRenderer::instance()),
                 "deleteForm" => (string) $deleteForm->render(CustomRenderer::instance())
@@ -81,6 +94,10 @@ class PivaController {
     }
 
     public static function delete() {
+        if (!(isset($_SESSION['vloga']) && $_SESSION['vloga'] == 'admin')) {
+            echo Twig::instance()->render('accesss-denied.html');
+            exit();
+        }
         $form = new PivoDeleteForm("delete_form");
         $data = $form->getValue();
 

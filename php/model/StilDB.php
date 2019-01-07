@@ -5,7 +5,7 @@ require_once 'model/AbstractDB.php';
 class StilDB extends AbstractDB {
 
     public static function get(array $params) {
-        $stil = parent::query("SELECT naziv "
+        $stil = parent::query("SELECT id, naziv "
                 . "FROM Stil "
                 . "WHERE id = :id",
                 $params);

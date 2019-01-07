@@ -11,10 +11,19 @@ Stranke:
 - rudi.jerman@gmail.com/geslo
 - toncka@hotmail.com/geslo
 
+Geslo za VSE certifikate:
+- pivomatagencija
+
+Server certifikati: 
+- admin
+- localhost
+
+Client certifikati:
+- Janez Novak
+- Metka Dolenc
+- Marjetka Kovac
+
 Inštaliranje:
 - sudo pear install -Z HTML_QuickForm2
 - sudo pear install HTML_QuickForm2_Captcha-0.1.2
 - sudo pear install Text_CAPTCHA_Numeral
-
-- sudo apt-get install sendmail
-- sudo sendmailconfig
