@@ -4,7 +4,7 @@ Ta mapa vsebuje nekaj primerov digitalnih potrdil. Nekatere se namestijo
 v brskalnik, druge v spletni strežnik.
 
 * Datoteke s koncnico `.p12` vsebujejo osebne certifikate. Uvozite jih v
-  brskalnik. Geslo za uvoz je `ep`.
+  brskalnik. Geslo za uvoz je `pivomatagencija`.
 
 * Datoteki `localhost-cert.pem` ter `localhost-key.pem` predstavljata strežnikov
   certifikat oz. zasebni ključ. Namestite ju v ustrezno mapo (denimo
