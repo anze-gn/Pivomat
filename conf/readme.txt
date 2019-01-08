@@ -14,14 +14,14 @@ Stranke:
 Geslo za VSE certifikate:
 - pivomatagencija
 
-Server certifikati: 
-- admin
+Strezniski certifikati: 
 - localhost
 
-Client certifikati:
+Certifikati prodajalcev in admina:
 - Janez Novak
 - Metka Dolenc
 - Marjetka Kovac
+- admin
 
 Inštaliranje:
 - sudo pear install -Z HTML_QuickForm2
