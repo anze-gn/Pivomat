@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import kotlinx.android.synthetic.main.activity_pivo_detail.*
+import kotlinx.android.synthetic.main.activity_pivo_detail_neprijavljen.*
 import kotlinx.android.synthetic.main.content_pivo_detail.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -13,13 +13,13 @@ import retrofit2.Response
 import retrofit2.http.Field
 import java.io.IOException
 
-class PivoDetailActivity : AppCompatActivity(), Callback<Pivo> {
+class PivoDetailNeprijavljenActivity : AppCompatActivity(), Callback<Pivo> {
 
     private var pivo: Pivo? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pivo_detail)
+        setContentView(R.layout.activity_pivo_detail_neprijavljen)
         setSupportActionBar(toolbar)
 
 //        fabEdit.setOnClickListener {
@@ -41,9 +41,6 @@ class PivoDetailActivity : AppCompatActivity(), Callback<Pivo> {
 
 
 
-
-
-
     }
 
     private fun deleteBook() {
@@ -62,20 +59,7 @@ class PivoDetailActivity : AppCompatActivity(), Callback<Pivo> {
             tvOpis.text = "Znamka: " + pivo?.imeZnamke + "\n" + "Stil: " + pivo?.imeStila + "\n" + "Alkoholna vsebnost: " + pivo?.alkohol + "%\n" + "Neto količina: " + pivo?.kolicina + "l\n\n" + pivo?.opis +"\n\n" + "Cena: " + pivo?.cena + "€\n"
             toolbarLayout.title = pivo?.naziv
 
-            fabVkosarico.setOnClickListener {
-                val api = CartService.instance
 
-                api.insert(pivo?.id!!, 1, pivo?.cena!! , pivo?.naziv!!).enqueue(object: Callback<String> {
-                    override fun onResponse(call: Call<String>?, response: Response<String>?) {
-
-                    }
-
-                    override fun onFailure(call: Call<String>?, t: Throwable?) {
-
-                    }
-
-                })
-            }
 
         } else {
             val errorMessage = try {
@@ -94,7 +78,7 @@ class PivoDetailActivity : AppCompatActivity(), Callback<Pivo> {
     }
 
     companion object {
-        private val TAG = PivoDetailActivity::class.java.canonicalName
+        private val TAG = PivoDetailNeprijavljenActivity::class.java.canonicalName
     }
 }
 
