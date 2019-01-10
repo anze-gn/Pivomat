@@ -146,7 +146,7 @@
 									</div>
 								</div>
 
-								<div class="block2-txt p-t-20">
+								<div class="block2-txt p-t-20" data-pivo-id="{{ pivo.id }}" data-pivo-cena="{{ pivo.cena | number_format(2, ',')}}">
 									<a href="{{BASE_URL}}piva/{{ pivo.id }}" class="block2-name dis-block s-text3 p-b-5">
 										{{ pivo.imeZnamke }} - <b>{{ pivo.naziv }}</b>
 										<br><i>({{ pivo.imeStila }})</i>
@@ -161,14 +161,28 @@
 						{% endfor %}
 
 					</div>
-
-					<!-- Pagination -->
-					<div class="pagination flex-m flex-w p-t-26">
-						<a href="{{STATIC_URL}}#" class="item-pagination flex-c-m trans-0-4 active-pagination">1</a>
-						<a href="{{STATIC_URL}}#" class="item-pagination flex-c-m trans-0-4">2</a>
-					</div>
 				</div>
 			</div>
 		</div>
     </section>
+{% endblock %}
+
+{% block javascript %}
+	{{ parent() }}
+	<script type="text/javascript" src="{{STATIC_URL}}vendor/sweetalert/sweetalert.min.js"></script>
+	<script type="text/javascript">
+		$('.block2-btn-addcart').each(function(){
+			$(this).on('click', function() {
+				if ( $( "a#odjava" ).length ) {
+					var pivo_ime = $(this).parent().parent().parent().find('.block2-name').text();
+					var pivo_id = $(this).parent().parent().parent().find('.block2-txt').attr('data-pivo-id');
+					swal("Nalaganje...", "Nalaganje...", "success");
+					dodajVKosarico(pivo_id, 1, "Dodano v košarico", pivo_ime+"<br>dodan v košarico");
+					posodobiKosarico();
+				} else {
+					swal("Prijava potrebna", "Za dodajanje v košarico je potrebna prijava.", "warning");
+				}
+			});
+		});
+	</script>
 {% endblock %}

@@ -83,7 +83,7 @@
 							</div>
 
 							<div class="btn-addcart-product-detail size10 trans-0-4 m-t-10 m-b-10">
-								<button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
+								<button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" id="dodaj-v-kosarico">
 									Dodaj v košarico
 								</button>
 							</div>
@@ -105,4 +105,23 @@
 		</div>
 	</div>
 
+{% endblock %}
+
+{% block javascript %}
+	{{ parent() }}
+	<script type="text/javascript" src="{{STATIC_URL}}vendor/sweetalert/sweetalert.min.js"></script>
+	<script type="text/javascript">
+		$('#dodaj-v-kosarico').on('click', function() {
+			if ( $( "a#odjava" ).length ) {
+				var pivo_ime = '{{ pivo.imeZnamke }} - {{ pivo.naziv }}';
+				var pivo_id = {{ pivo.id }};
+				var pivo_kol = $(this).parent().parent().find('input').val();
+				swal("Nalaganje...", "Nalaganje...", "success");
+				dodajVKosarico(pivo_id, pivo_kol, "Dodano v košarico", pivo_kol+"x<br>"+pivo_ime+"<br>dodan v košarico");
+				posodobiKosarico();
+			} else {
+				swal("Prijava potrebna", "Za dodajanje v košarico je potrebna prijava.", "warning");
+			}
+		});
+	</script>
 {% endblock %}

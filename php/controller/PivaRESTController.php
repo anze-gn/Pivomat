@@ -75,36 +75,55 @@ class PivaRESTController {
     }
 
     public static function addToCart() {
-        $cartItem = [];
-        $fields = ['idPiva', 'kolicina', 'naziv', 'cena'];
-        foreach ($fields as $item) {
-            if (!isset($_POST[$item])) {
-                echo ViewHelper::renderJSON("Napačni podatki.", 400);
-                exit();
-            }
-            $cartItem[$item] = $_POST[$item];
+        $cartItem = filter_input_array(INPUT_POST, [
+            'id' => [
+                'filter' => FILTER_VALIDATE_INT,
+                'options' => ['min_range' => 1]
+            ],
+            'kol' => ['filter' => FILTER_VALIDATE_INT]
+        ]);
+
+        if (empty($cartItem)) {
+            echo ViewHelper::renderJSON("Manjkajoči podatki.", 400);
+            exit();
         }
+        foreach ($cartItem as $value) {
+           if(!$value) {
+               echo ViewHelper::renderJSON("Napačni podatki.", 400);
+               exit();
+           }
+        }
+
         if (!isset($_SESSION['kosarica'])) {
             $_SESSION['kosarica'] = [];
         }
-        $cartItem['id'] = 0;
-        foreach ($_SESSION['kosarica'] as $item) {
-            if ($item['id'] > $cartItem['id']) {
-                $cartItem['id'] = $item['id'];
-            }
+        if (isset($_SESSION['kosarica'][$_POST['id']])) {
+            $_SESSION['kosarica'][$_POST['id']]['kol'] += $_POST['kol'];
+        } else {
+            $_SESSION['kosarica'][$_POST['id']] = $cartItem;
         }
-        $cartItem['id']++;
-        $_SESSION['kosarica'][$cartItem['id']] = $cartItem;
+
         echo ViewHelper::renderJSON("Uspešno dodano v košarico.", 200);
     }
 
     public static function getCart() {
-        echo ViewHelper::renderJSON($_SESSION['kosarica'], 200);
+        if (!isset($_SESSION['kosarica'])) {
+            echo ViewHelper::renderJSON([], 200);
+            exit();
+        }
+
+        $kosarica = [];
+        foreach ($_SESSION['kosarica'] as $cartItem) {
+            $pivo = PivoDB::get(['id' => $cartItem['id']]);
+            $cartItem = array_merge($cartItem, $pivo);
+            $kosarica[] = $cartItem;
+        }
+        echo ViewHelper::renderJSON($kosarica, 200);
     }
 
     public static function removeFromCart($id) {
         unset($_SESSION['kosarica'][$id]);
-        echo ViewHelper::renderJSON($_SESSION['kosarica'], 200);
+        echo ViewHelper::renderJSON('',204);
     }
 
     public static function login() {
