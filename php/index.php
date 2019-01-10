@@ -18,6 +18,9 @@ define("DEBUG", true);
 
 $path = isset($_SERVER["PATH_INFO"]) ? trim($_SERVER["PATH_INFO"], "/") : "";
 
+if (isset($_SESSION["vloga"])) {
+    ViewHelper::forceHttps();
+}
 
 $urls = [
     "/^piva$/" => function ($method) {
