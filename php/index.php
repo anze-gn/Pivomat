@@ -8,13 +8,11 @@ require_once("controller/PivaRESTController.php");
 require_once("controller/ProdajalciController.php");
 require_once("controller/StrankeController.php");
 require_once("controller/PrijavaRegistracijaController.php");
-require_once("ViewHelper.php"); #REMOVE
+require_once("ViewHelper.php");
 require_once("Twig.php");
 require_once("forms/CustomRenderer.php");
 
 define("BASE_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php"));
-define("IMAGES_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php") . "static/images/"); #REMOVE
-define("CSS_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php") . "static/css/"); #REMOVE
 define("STATIC_URL", BASE_URL . "static/");
 define("DEBUG", true);
 
@@ -161,4 +159,4 @@ foreach ($urls as $pattern => $controller) {
     }
 }
 
-ViewHelper::displayError(new InvalidArgumentException("No controller matched."), true);
+ViewHelper::error404();
