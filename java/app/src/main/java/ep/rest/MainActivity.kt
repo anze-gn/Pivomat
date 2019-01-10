@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.AdapterView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
+import okhttp3.Cookie
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -49,6 +50,20 @@ class MainActivity : AppCompatActivity(), Callback<List<Pivo>> {
     override fun onResponse(call: Call<List<Pivo>>, response: Response<List<Pivo>>) {
         val hits = response.body()
 
+        val sCookie = response.headers().get("Set-Cookie")
+//        val value = sCookie.split(';')[0].split('=')[1]
+//        Log.i("COOKIE", value)
+//
+//        val cookie = Cookie.Builder()
+//                .name("PHPSESSID")
+//                .domain("lala")
+//                .value(value)
+//                .path("/")
+//                .build()
+        val app = application as PivomatApp
+        app.cookie = sCookie
+
+
         if (response.isSuccessful) {
             Log.i(TAG, "Hits: " + hits.size)
             adapter?.clear()
@@ -67,7 +82,7 @@ class MainActivity : AppCompatActivity(), Callback<List<Pivo>> {
     }
 
     override fun onFailure(call: Call<List<Pivo>>, t: Throwable) {
-        Log.w(TAG, "Error: ${t.message}" + " lalalalaalalalalalalalalalalalalalalalalalalalal", t)
+        Log.w(TAG, "Error: ${t.message}", t)
         container.isRefreshing = false
     }
 

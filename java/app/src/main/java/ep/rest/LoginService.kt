@@ -1,33 +1,30 @@
 package ep.rest
 
-import okhttp3.Cookie
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
-object PivoService {
+object LoginService {
 
     interface RestApi {
 
         companion object {
-            const val URL = "http://10.0.2.2:8080/netbeans/Pivomat/php/api/"
+            const val URL = "https://10.0.2.2:8443/netbeans/Pivomat/php/api/"
         }
 
-        @GET("piva")
-        fun getAll(): Call<List<Pivo>>
+//        @GET("piva")
+//        fun getAll(): Call<List<Pivo>>
 
-        @GET("piva/{id}")
-        fun get(@Path("id") id: Int, @Header("Cookie") cookie : String): Call<Pivo>
+        @GET("odjava")
+        fun odjava(@Header("Cookie") cookie : String): Call<String>
         // @Header("Cookie") cookie : Cookie
 
-//        @FormUrlEncoded
-//        @POST("pivo")
-//        fun insert(@Field("author") author: String,
-//                   @Field("title") title: String,
-//                   @Field("price") price: Double,
-//                   @Field("year") year: Int,
-//                   @Field("description") description: String): Call<Void>
+        @FormUrlEncoded
+        @POST("prijava")
+        fun prijava(@Field("email") email: String,
+                   @Field("geslo") geslo: String,
+                   @Field("_qf__prijava") prijava: String): Call<String>
 
 //        @FormUrlEncoded
 //        @PUT("books/{id}")
@@ -43,6 +40,7 @@ object PivoService {
         val retrofit = Retrofit.Builder()
                 .baseUrl(RestApi.URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(myOkHttpClient.getUnsafeOkHttpClient())
                 .build()
 
         retrofit.create(RestApi::class.java)

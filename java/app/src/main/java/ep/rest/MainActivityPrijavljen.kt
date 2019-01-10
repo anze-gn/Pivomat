@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.AdapterView
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_main_prijavljen.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -22,6 +23,8 @@ class MainActivityPrijavljen: AppCompatActivity(), Callback<List<Pivo>> {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_prijavljen)
+
+        val app = application as PivomatApp
 
         adapter = PivoAdapter(this)
         items.adapter = adapter
@@ -42,9 +45,28 @@ class MainActivityPrijavljen: AppCompatActivity(), Callback<List<Pivo>> {
         }
 
         btnOdjava.setOnClickListener {
+            LoginService.instance.odjava(app.cookie!!).enqueue(object: Callback<String> {
+                override fun onResponse(call: Call<String>?, response: Response<String>?) {
+                    if (response!!.isSuccessful){
+                        Log.i("ODJAVA", response.body())
+                        val app = application as PivomatApp
+                        app.email = ""
+                        app.geslo = ""
+                        app.cookie = ""
+                        val intent = Intent(this@MainActivityPrijavljen, MainActivity::class.java)
+                        startActivity(intent)
 
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+                    } else {
+                        Log.i("ODJAVA", "NOT SUCCESSFUL")
+                    }
+                }
+
+                override fun onFailure(call: Call<String>?, t: Throwable?) {
+                    Log.i("ODJAVA", "FAIL")
+                }
+
+
+            })
         }
 
         //Log.i("JST", PivomatApp().getEmail())

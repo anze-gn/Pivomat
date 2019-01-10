@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.AdapterView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main_prijavljen.*
+import kotlinx.android.synthetic.main.cartlist_element.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,20 +20,36 @@ class KosaricaActivity : AppCompatActivity(), Callback<List<CartItem>> {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kosarica)
-
+        val app = application as PivomatApp
         adapter = CartAdapter(this)
         items.adapter = adapter
         items.onItemClickListener = AdapterView.OnItemClickListener { _, _, i, _ ->
             val cartItem = adapter?.getItem(i)
             if (cartItem != null) {
-                  val intent = Intent(this, PivoDetailActivity::class.java)
-                  intent.putExtra("ep.rest.id", cartItem.idPiva)
-                  startActivity(intent)
+//                  val intent = Intent(this, PivoDetailActivity::class.java)
+//                  intent.putExtra("ep.rest.id", cartItem.idPiva)
+//                  startActivity(intent)
+                btnIzbrisi.setOnClickListener {
+                    CartService.instance.delete(cartItem.idPiva, app.cookie!!).enqueue(object: Callback<List<CartItem>>{
+                        override fun onResponse(call: Call<List<CartItem>>?, response: Response<List<CartItem>>?) {
+                            if (response!!.isSuccessful) {
+                                container.setOnRefreshListener { CartService.instance.getAll(app.cookie!!).enqueue(this) }
+                                Log.i("KOSARICA", "Uspesno izbrisan element")
+                            }
+
+
+                        }
+
+                        override fun onFailure(call: Call<List<CartItem>>?, t: Throwable?) {
+                            Log.i("KOSARICA", "Neuspesno izbrisan element")
+                        }
+                    })
+                }
             }
         }
 
 
-        CartService.instance.getAll().enqueue(this)
+        CartService.instance.getAll(app.cookie!!).enqueue(this)
     }
 
 
@@ -40,7 +57,7 @@ class KosaricaActivity : AppCompatActivity(), Callback<List<CartItem>> {
         val hits = response!!.body()
 
         if (response.isSuccessful) {
-
+            Log.i("KOSARICA", "Uspesno prikazana kosarica")
             adapter?.clear()
             adapter?.addAll(hits)
         } else {
@@ -58,5 +75,6 @@ class KosaricaActivity : AppCompatActivity(), Callback<List<CartItem>> {
 
     override fun onFailure(call: Call<List<CartItem>>?, t: Throwable?) {
         container.isRefreshing = false
+        Log.i("KOSARICA", "Nemorem prikazati kosarice")
     }
 }

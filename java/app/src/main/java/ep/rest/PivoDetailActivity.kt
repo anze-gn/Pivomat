@@ -29,14 +29,12 @@ class PivoDetailActivity : AppCompatActivity(), Callback<Pivo> {
 //        }
 //
 
-
-
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val id = intent.getIntExtra("ep.rest.id", 0)
-
+        val app = application as PivomatApp
         if (id > 0) {
-            PivoService.instance.get(id).enqueue(this)
+            PivoService.instance.get(id, app.cookie!!).enqueue(this)
         }
 
 
@@ -46,9 +44,6 @@ class PivoDetailActivity : AppCompatActivity(), Callback<Pivo> {
 
     }
 
-    private fun deleteBook() {
-        // todo
-    }
 
     override fun onBackPressed() {
         finish()
@@ -63,15 +58,14 @@ class PivoDetailActivity : AppCompatActivity(), Callback<Pivo> {
             toolbarLayout.title = pivo?.naziv
 
             fabVkosarico.setOnClickListener {
-                val api = CartService.instance
-
-                api.insert(pivo?.id!!, 1, pivo?.cena!! , pivo?.naziv!!).enqueue(object: Callback<String> {
+                val app = application as PivomatApp
+                CartService.instance.insert(pivo?.id!!, 1, pivo?.cena!! , pivo?.naziv!!, app.cookie!!).enqueue(object: Callback<String> {
                     override fun onResponse(call: Call<String>?, response: Response<String>?) {
-
+                        Log.i("KOSARICA", response!!.body())
                     }
 
                     override fun onFailure(call: Call<String>?, t: Throwable?) {
-
+                        Log.i("KOSARICA", "Neuspesno dodan element v kosarico")
                     }
 
                 })
