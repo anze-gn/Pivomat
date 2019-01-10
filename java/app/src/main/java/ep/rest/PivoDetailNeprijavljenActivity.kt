@@ -28,7 +28,7 @@ class PivoDetailNeprijavljenActivity : AppCompatActivity(), Callback<Pivo> {
 //            startActivity(intent)
 //        }
 //
-
+        val app = application as PivomatApp
 
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -36,7 +36,7 @@ class PivoDetailNeprijavljenActivity : AppCompatActivity(), Callback<Pivo> {
         val id = intent.getIntExtra("ep.rest.id", 0)
 
         if (id > 0) {
-            PivoService.instance.get(id).enqueue(this)
+            app.instance.get(id).enqueue(this)
         }
 
 

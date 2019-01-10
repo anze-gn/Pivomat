@@ -34,7 +34,9 @@ class MainActivityPrijavljen: AppCompatActivity(), Callback<List<Pivo>> {
             }
         }
 
-        container.setOnRefreshListener { PivoService.instance.getAll().enqueue(this) }
+        val app = application as PivomatApp
+
+        container.setOnRefreshListener { app.instance.getAll().enqueue(this) }
 
         btnKosarica.setOnClickListener {
             val intent = Intent(this, KosaricaActivity::class.java)
@@ -48,7 +50,7 @@ class MainActivityPrijavljen: AppCompatActivity(), Callback<List<Pivo>> {
         }
 
         //Log.i("JST", PivomatApp().getEmail())
-        PivoService.instance.getAll().enqueue(this)
+        app.instance.getAll().enqueue(this)
     }
 
     override fun onResponse(call: Call<List<Pivo>>, response: Response<List<Pivo>>) {

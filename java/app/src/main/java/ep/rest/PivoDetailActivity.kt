@@ -29,14 +29,14 @@ class PivoDetailActivity : AppCompatActivity(), Callback<Pivo> {
 //        }
 //
 
-
+        val app = application as PivomatApp
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val id = intent.getIntExtra("ep.rest.id", 0)
 
         if (id > 0) {
-            PivoService.instance.get(id).enqueue(this)
+            app.instance.get(id).enqueue(this)
         }
 
 
@@ -56,6 +56,7 @@ class PivoDetailActivity : AppCompatActivity(), Callback<Pivo> {
 
     override fun onResponse(call: Call<Pivo>, response: Response<Pivo>) {
         pivo = response.body()
+
         Log.i(TAG, "Got result: $pivo")
 
         if (response.isSuccessful) {

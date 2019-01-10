@@ -170,7 +170,8 @@ class LoginActivity : Activity() {
     inner class UserLoginTask internal constructor(private val mEmail: String, private val mPassword: String) : AsyncTask<Void, Void, Boolean>() {
 
         override fun doInBackground(vararg params: Void): Boolean? {
-            // TODO: attempt authentication against a network service.
+
+
 
             try {
                 // Simulate network access.

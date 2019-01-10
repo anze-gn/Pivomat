@@ -1,5 +1,6 @@
 package ep.rest
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -7,6 +8,7 @@ import android.util.Log
 import android.widget.AdapterView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
+import okhttp3.Cookie
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,20 +36,28 @@ class MainActivity : AppCompatActivity(), Callback<List<Pivo>> {
         }
 
 
+        val app = application as PivomatApp
 
 
-        container.setOnRefreshListener { PivoService.instance.getAll().enqueue(this) }
+        container.setOnRefreshListener { app.instance.getAll().enqueue(this) }
 
         btnPrijava.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
 
-        PivoService.instance.getAll().enqueue(this)
+        app.instance.getAll().enqueue(this)
     }
 
     override fun onResponse(call: Call<List<Pivo>>, response: Response<List<Pivo>>) {
         val hits = response.body()
+        //val cookie = response.headers().get("Set-Cookie")
+//
+//       val app = application as PivomatApp
+//        app.cookie = null
+////                response.headers().get("Set-Cookie")
+//
+//        val cookie = Cookie.Builder().name("")
 
         if (response.isSuccessful) {
             Log.i(TAG, "Hits: " + hits.size)
@@ -67,7 +77,7 @@ class MainActivity : AppCompatActivity(), Callback<List<Pivo>> {
     }
 
     override fun onFailure(call: Call<List<Pivo>>, t: Throwable) {
-        Log.w(TAG, "Error: ${t.message}" + " lalalalaalalalalalalalalalalalalalalalalalalalal", t)
+        Log.w(TAG, "Error: ${t.message}", t)
         container.isRefreshing = false
     }
 
