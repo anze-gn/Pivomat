@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteRule ^(.*) ../../index.php/prijava/admin [L]
+
+SSLVerifyClient require
+SSLVerifyDepth 1
+SSLOptions +ExportCertData

@@ -63,7 +63,10 @@ $urls = [
         PrijavaRegistracijaController::registracija();
     },
     "/^prijava$/" => function ($method) {
-        PrijavaRegistracijaController::prijava();
+        PrijavaRegistracijaController::prijava(null);
+    },
+    "/^prijava\/(\w+)$/" => function ($method, $vloga) {
+        PrijavaRegistracijaController::prijava($vloga);
     },
     "/^odjava$/" => function ($method) {
         PrijavaRegistracijaController::odjava();

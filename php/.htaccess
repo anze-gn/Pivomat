@@ -10,3 +10,5 @@ RewriteCond %{REQUEST_URI} /static/
 RewriteRule . - [L,PT,QSA]
 
 RewriteRule ^(.*) index.php/$1 [L,PT,QSA]
+
+SSLOptions +ExportCertData

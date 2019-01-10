@@ -54,18 +54,47 @@ class PrijavaRegistracijaController {
                 "title" => "Registriraj se",
                 "form" => (string) $form->render(CustomRenderer::instance())
             ]);
+            exit();
         }
     }
     
-    public static function prijava() {
+    public static function prijava($vloga) {
+
         $form = new PrijavaForm("prijava");
+
+        if ($vloga == "admin" || $vloga == "prodajalci") {
+            $client_cert = filter_input(INPUT_SERVER, "SSL_CLIENT_CERT");
+
+            if ($client_cert == null) {
+                header('Napaka na strezniku.', true, 400);
+                echo Twig::instance()->render("error.html.twig", [
+                    "title" => "Prijava s certifikatom.",
+                    "errorHtml" => '<h1>Prijava je možna samo z veljavnim certifikatom</h1>'
+                ]);
+                exit();
+            }
+
+            $cert_data = openssl_x509_parse($client_cert);
+            $certEmailAddress = (is_array($cert_data['subject']['emailAddress']) ?
+                $cert_data['subject']['emailAddress'][0] : $cert_data['subject']['emailAddress']);
+            $dataSource = new HTML_QuickForm2_DataSource_Array(['email' => $certEmailAddress]);
+            $form->addDataSource($dataSource);
+        }
 
         if ($form->validate()) {
             $data = $form->getValue();
 
-            session_regenerate_id();
+            if ($vloga == 'admin') {
+                $podatkiUporabnika = AdminDB::getByEmail(['email' => $certEmailAddress]);
+                $podatkiUporabnika['aktiviran'] = 1;
+                $podatkiUporabnika['potrjen'] = NULL;
+            } elseif ($vloga == 'prodajalci') {
+                $podatkiUporabnika = ProdajalecDB::getByEmail(['email' => $certEmailAddress]);
+                $podatkiUporabnika['potrjen'] = NULL;
+            } else {
+                $podatkiUporabnika = StrankaDB::getByEmail($data);
+            }
 
-            $podatkiUporabnika = StrankaDB::getByEmail($data);
             if ($podatkiUporabnika && $podatkiUporabnika['potrjen'] == NULL && password_verify($data["geslo"], $podatkiUporabnika['geslo'])) {
                 if ($podatkiUporabnika['aktiviran'] == 0) {
                     echo Twig::instance()->render("deactivated.html.twig");
@@ -73,25 +102,9 @@ class PrijavaRegistracijaController {
                 }
                 $_SESSION["vloga"] = "stranke";
                 $_SESSION["uporabnik"] = $podatkiUporabnika;
-                ViewHelper::redirect(BASE_URL . "piva");
-            }
-
-            $podatkiUporabnika = ProdajalecDB::getByEmail($data);
-            if ($podatkiUporabnika && password_verify($data["geslo"], $podatkiUporabnika['geslo'])) {
-                if ($podatkiUporabnika['aktiviran'] == 0) {
-                    echo Twig::instance()->render("deactivated.html.twig");
-                    exit();
-                }
-                $_SESSION["vloga"] = "prodajalci";
-                $_SESSION["uporabnik"] = $podatkiUporabnika;
-                ViewHelper::redirect(BASE_URL . "stranke");
-            }
-
-            $podatkiUporabnika = AdminDB::getByEmail($data);
-            if ($podatkiUporabnika && password_verify($data["geslo"], $podatkiUporabnika['geslo'])) {
-                $_SESSION["vloga"] = "admin";
-                $_SESSION["uporabnik"] = $podatkiUporabnika;
-                ViewHelper::redirect(BASE_URL . "prodajalci");
+                session_regenerate_id();
+                echo Twig::instance()->render("prijava-uspesna.html.twig");
+                exit();
             }
 
             echo Twig::instance()->render("form.html.twig", [
@@ -99,11 +112,13 @@ class PrijavaRegistracijaController {
                 "error" => "Napačen e-mail ali geslo!",
                 "form" => (string) $form->render(CustomRenderer::instance())
             ]);
+            exit();
         } else {
             echo Twig::instance()->render("form.html.twig", [
                 "title" => "Prijavi se",
                 "form" => (string) $form->render(CustomRenderer::instance())
             ]);
+            exit();
         }
     }
 
@@ -117,6 +132,7 @@ class PrijavaRegistracijaController {
             echo Twig::instance()->render("potrditev.html.twig", [
                 "title" => "Potrdi registracijo"
             ]);
+            exit();
         } else if( isset($_GET['m']) && isset($_GET['h']) &&
                    $_GET['h'] == StrankaDB::getByEmail(["email" => $_GET['m']])['potrjen']){
             StrankaDB::potrdi(["email" => $_GET['m']]);
@@ -127,6 +143,7 @@ class PrijavaRegistracijaController {
                 "errorHtml" => '
                     <h1>Prišlo je do napake, poskusite znova.</h1>'
             ]);
+            exit();
         }
     }
 }

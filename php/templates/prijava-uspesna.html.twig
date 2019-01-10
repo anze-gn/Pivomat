@@ -1,0 +1,13 @@
+{% extends "base.html.twig" %}
+{% block title %}Prijava uspešna!{% endblock %}
+
+{% block content %}
+
+    <section class="bgwhite p-t-55 p-b-65">
+        <div class="container">
+            <h1>Prijava uspešna!</h1>
+            <h3>Pozdravljeni <b>{{ SESSION.uporabnik.ime }} {{ SESSION.uporabnik.priimek }}</b></h3>
+        </div>
+    </section>
+
+{% endblock %}
