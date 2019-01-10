@@ -20,6 +20,7 @@
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
 
+
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
@@ -50,7 +51,8 @@
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:importantForAutofill="no" />
 
             <Button
                 android:id="@+id/email_sign_in_button"
@@ -61,6 +63,13 @@
                 android:text="Prijavi me!"
                 android:textStyle="bold" />
 
+
+            <TextView
+                android:id="@+id/neuspesnaPrijava"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="" />
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>
