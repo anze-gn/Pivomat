@@ -26,6 +26,9 @@ $urls = [
     "/^piva$/" => function ($method) {
         PivaController::index();
     },
+    "/^piva\/deaktivirana$/" => function ($method) {
+        PivaController::indexDeaktivirana();
+    },
     "/^piva\/(\d+)$/" => function ($method, $id) {
         PivaController::get($id);
     },

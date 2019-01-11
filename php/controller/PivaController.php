@@ -8,8 +8,14 @@ class PivaController {
     public static function index() {
         echo Twig::instance()->render('pivo-list.html.twig', [
             "title" => "Seznam piv",
-            "piva" => PivoDB::getAll(["aktiviran" => 1]),
-            "neaktivnaPiva" => PivoDB::getAll(["aktiviran" => 0])
+            "piva" => PivoDB::getAll(["aktiviran" => 1])
+        ]);
+    }
+
+    public static function indexDeaktivirana() {
+        echo Twig::instance()->render('pivo-list.html.twig', [
+            "title" => "Seznam deaktiviranih piv",
+            "piva" => PivoDB::getAll(["aktiviran" => 0])
         ]);
     }
 

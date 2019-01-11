@@ -48,6 +48,7 @@
 								<a href="{{BASE_URL}}piva">Piva</a>
 								{% if SESSION.vloga == "prodajalci" or SESSION.vloga == "admin" %}
 									<ul class="sub_menu">
+										<li><a href="{{BASE_URL}}piva/deaktivirana">Deaktivirana</a></li>
 										<li><a href="{{BASE_URL}}piva/add">Dodaj novo</a></li>
 									</ul>
 								{%  endif %}
