@@ -59,7 +59,7 @@ class PivoDetailActivity : AppCompatActivity(), Callback<Pivo> {
 
             fabVkosarico.setOnClickListener {
                 val app = application as PivomatApp
-                CartService.instance.insert(pivo?.id!!, 1, pivo?.cena!! , pivo?.naziv!!, app.cookie!!).enqueue(object: Callback<String> {
+                CartService.instance.insert(pivo?.id!!, 1, app.cookie!!).enqueue(object: Callback<String> {
                     override fun onResponse(call: Call<String>?, response: Response<String>?) {
                         Log.i("KOSARICA", response!!.body())
                     }

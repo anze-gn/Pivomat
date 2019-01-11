@@ -64,12 +64,7 @@ class LoginActivity : Activity() {
                     neuspesnaPrijava.text = "Napačen email ali geslo!"
                     Log.i("PRIJAVA", "hahaha")
                 }
-
-
             })
-
-
-
         }
     }
 

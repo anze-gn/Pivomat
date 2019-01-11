@@ -25,8 +25,14 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <TextView
+        android:id="@+id/tvSkupnaCena"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"/>
+
     <Button
-        android:id="@+id/btnOdjava"
+        android:id="@+id/btnKoncajNakup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/kon_aj_nakup" />

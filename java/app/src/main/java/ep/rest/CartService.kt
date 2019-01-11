@@ -18,15 +18,13 @@ object CartService {
 
         @FormUrlEncoded
         @POST("kosarica")
-        fun insert(@Field("idPiva") idPiva: Int,
-                   @Field("kolicina") kolicina: Int,
-                   @Field("cena") cena: Double,
-                   @Field("naziv") naziv: String,
+        fun insert(@Field("id") idPiva: Int,
+                   @Field("kol") kolicina: Int,
                    @Header("Cookie") cookie : String): Call<String>
 
 
         @DELETE("kosarica/{id}")
-        fun delete(@Path("id") id: Int, @Header("Cookie") cookie : String): Call<List<CartItem>>
+        fun delete(@Path("id") id: Int, @Header("Cookie") cookie : String): Call<Void>
     }
 
     val instance: RestApi by lazy {

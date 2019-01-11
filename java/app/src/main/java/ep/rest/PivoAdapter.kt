@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.TextView
 import java.util.*
 
@@ -20,7 +21,6 @@ class PivoAdapter(context: Context) : ArrayAdapter<Pivo>(context, 0, ArrayList()
         val tvTitle = view.findViewById<TextView>(R.id.tvTitle)
         val tvAuthor = view.findViewById<TextView>(R.id.tvAuthor)
         val tvPrice = view.findViewById<TextView>(R.id.tvPrice)
-
 
         val pivo = getItem(position)
 

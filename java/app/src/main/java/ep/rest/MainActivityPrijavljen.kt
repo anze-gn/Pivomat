@@ -49,7 +49,6 @@ class MainActivityPrijavljen: AppCompatActivity(), Callback<List<Pivo>> {
                 override fun onResponse(call: Call<String>?, response: Response<String>?) {
                     if (response!!.isSuccessful){
                         Log.i("ODJAVA", response.body())
-                        val app = application as PivomatApp
                         app.email = ""
                         app.geslo = ""
                         app.cookie = ""
