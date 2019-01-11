@@ -100,7 +100,7 @@ class PrijavaRegistracijaController {
                     echo Twig::instance()->render("deactivated.html.twig");
                     exit();
                 }
-                $_SESSION["vloga"] = "stranke";
+                $_SESSION["vloga"] = ($vloga) ? $vloga : 'stranke';
                 $_SESSION["uporabnik"] = $podatkiUporabnika;
                 session_regenerate_id();
                 echo Twig::instance()->render("prijava-uspesna.html.twig");
