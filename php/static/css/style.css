@@ -61,3 +61,11 @@ img.slika {
 .normal-list ul li {
     list-style-type: disc;
 }
+
+.header-cart-item-txt {
+    width: calc(100% - 120px);
+}
+
+.header-cart-item-delete {
+    width: 19px;
+}

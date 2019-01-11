@@ -20,11 +20,10 @@ function posodobiKosarico() {
             this.cena = parseFloat(this.cena).toFixed(2);
             vsota += this.kol*this.cena;
             seznam.append(
-                `<li class="header-cart-item">
+                `<li class="header-cart-item" data-pivo-id="`+this.id+`">
                     <div class="header-cart-item-img">
                         <img src="`+BASE_URL+`piva/`+this.id+`.jpg" alt="IMG">
                     </div>
-        
                     <div class="header-cart-item-txt">
                         <a href="`+BASE_URL+`piva/`+this.id+`" class="header-cart-item-name">
                             `+this.imeZnamke+`<br><b>`+this.naziv+`</b>
@@ -34,8 +33,19 @@ function posodobiKosarico() {
                             `+this.kol+` x `+String(this.cena).replace(".", ",")+` €
                         </span>
                     </div>
+                    <div class="header-cart-item-delete"><i class="fas fa-trash-alt"></i></div>
                 </li>`)
         });
         znesek.html('Skupaj: <b>'+String(vsota.toFixed(2)).replace(".", ",")+' € </b>');
+        $('.cart-count').text(data.length);
+        $('.header-cart-item-delete').click(odstraniIzKosarice)
+    });
+}
+
+function odstraniIzKosarice() {
+    $.ajax({
+        url: BASE_URL+"api/kosarica/"+$(this).parent().attr('data-pivo-id'),
+        type: 'DELETE',
+        success: posodobiKosarico
     });
 }
