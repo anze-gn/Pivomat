@@ -73,6 +73,17 @@
 							{%  endif %}
 
 							{% if SESSION.uporabnik %}
+								<li>
+									<a href="{{BASE_URL}}narocila">Naročila</a>
+									{% if SESSION.vloga == "prodajalci" or SESSION.vloga == "admin" %}
+										<ul class="sub_menu">
+											<li><a href="{{BASE_URL}}narocila/potrjeno">potrjena</a></li>
+											<li><a href="{{BASE_URL}}narocila/preklicano">preklicana</a></li>
+											<li><a href="{{BASE_URL}}narocila/stornirano">stornirana</a></li>
+											<li><a href="{{BASE_URL}}narocila/zakljuceno">zakljucena</a></li>
+										</ul>
+									{%  endif %}
+								</li>
 								<li class="sale-noti">
 									<a id="odjava" href="{{BASE_URL}}odjava">Odjava</a>
 								</li>
@@ -118,7 +129,7 @@
 							<div class="header-cart-buttons">
 								<div class="w-100">
 									<!-- Button -->
-									<a href="{{BASE_URL}}" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+									<a href="{{BASE_URL}}potrdi_nakup" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
 										oddaj naročilo
 									</a>
 								</div>
@@ -163,7 +174,7 @@
 							<div class="header-cart-buttons">
 								<div class="w-100">
 									<!-- Button -->
-									<a href="{{BASE_URL}}" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+									<a href="{{BASE_URL}}potrdi_nakup" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
 										oddaj naročilo
 									</a>
 								</div>

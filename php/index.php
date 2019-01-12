@@ -8,6 +8,7 @@ require_once("controller/PivaRESTController.php");
 require_once("controller/ProdajalciController.php");
 require_once("controller/StrankeController.php");
 require_once("controller/PrijavaRegistracijaController.php");
+require_once("controller/NarocilaController.php");
 require_once("ViewHelper.php");
 require_once("Twig.php");
 require_once("forms/CustomRenderer.php");
@@ -100,6 +101,21 @@ $urls = [
     },
     "/^admin\/edit$/" => function ($method) {
         ProdajalciController::editAdmin();
+    },
+    "/^potrdi_nakup$/" => function ($method) {
+        NarocilaController::potrdiNakup();
+    },
+    "/^narocilo_oddano$/" => function ($method) {
+        NarocilaController::narociloOddano();
+    },
+    "/^narocila$/" => function ($method) {
+        NarocilaController::index(null);
+    },
+    "/^narocila\/(\d+)$/" => function ($method, $id) {
+        NarocilaController::get($id);
+    },
+    "/^narocila\/(\w+)$/" => function ($method, $filter) {
+        NarocilaController::index($filter);
     },
 
     # REST API

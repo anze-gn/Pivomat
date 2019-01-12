@@ -4,10 +4,11 @@ require_once 'model/AbstractDB.php';
 
 class PostavkaDB extends AbstractDB {
 
-    public static function getAll(array $params = array()) {
-        return parent::query("SELECT id, idArtikel, kolicina, idNarocilo "
-            . "FROM Postavka "
-            . "ORDER BY id ASC");
+    public static function getAll(array $params) {
+        return parent::query("SELECT  p.idArtikel as id, p.kolicina as kol, a.naziv, a.kolicina, a.cena, z.naziv as imeZnamke, s.naziv as imeStila "
+            . "FROM Postavka p, Artikel a, Znamka z, Stil s "
+            . "WHERE idNarocilo = :idNarocilo AND p.idArtikel = a.id AND a.idZnamka = z.id AND a.idStil = s.id "
+            . "ORDER BY id ASC", $params);
     }
 
     public static function get(array $params) {
@@ -36,7 +37,7 @@ class PostavkaDB extends AbstractDB {
             parent::modify("UPDATE Postavka SET "
                     . "idArtikel = :idArtikel, "
                     . "kolicina = :kolicina, "
-                    . "idNarocilo = :idNarocilo "
+                    . "idNarocilo = :idNarocilo, "
                 . " WHERE id = :id", $params);
     }
 

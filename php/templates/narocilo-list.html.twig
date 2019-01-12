@@ -1,0 +1,39 @@
+{% extends "base.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+
+    <section class="bgwhite p-t-55 p-b-65">
+        <div class="container normal-list">
+
+            <h1 class="my-3">{{ title }}</h1>
+            <h3 class="my-3">{{ subtitle }}</h3>
+
+            <div class="row my-3"></div>
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">Št.</th>
+                    <th scope="col">Datum</th>
+                    <th scope="col">Stranka</th>
+                    <th scope="col">Stanje</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for narocilo in narocila %}
+                        <tr>
+                            <td class="align-middle" >{{ narocilo.id }}</td>
+                            <td class="align-middle" >{{ narocilo.datum }}</td>
+                            <td class="align-middle" >{{ narocilo.ime }} {{ narocilo.priimek }} ({{ narocilo.email}})</td>
+                            <td class="align-middle" >{{ narocilo.stanje }}</td>
+                            <td class="align-middle" ><a href="{{BASE_URL}}narocila/{{ narocilo.id }}">več...</a></td>
+                        </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+{% endblock %}

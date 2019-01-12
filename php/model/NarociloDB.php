@@ -5,9 +5,10 @@ require_once 'model/AbstractDB.php';
 class NarociloDB extends AbstractDB {
 
     public static function getAll(array $params = array()) {
-        return parent::query("SELECT id, potrjeno, preklicano, stornirano, datum, idStranka "
-            . "FROM Narocilo "
-            . "ORDER BY id ASC");
+        return parent::query("SELECT n.id, n.potrjeno, n.preklicano, n.stornirano, n.zakljuceno, n.datum, n.idStranka, s.ime, s.priimek, s.email "
+            . "FROM Narocilo n, Stranka s "
+            . parent::whereString($params, ["potrjeno" => "IS NOT", "preklicano" => "IS NOT", "stornirano" => "IS NOT", "zakljuceno" => "IS NOT", "idStranka" => "="], "n.idStranka = s.id")
+            . "ORDER BY id DESC", $params);
     }
 
     public static function get(array $params) {

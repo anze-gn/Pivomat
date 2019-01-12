@@ -139,12 +139,12 @@ abstract class AbstractDB {
         $result = array();
 
         foreach ($sql_params as $key => $value) {
-            if (isset($params_altered[$value])) {
+            if (array_key_exists($value, $params_altered)) {
                 $result[$value] = $params_altered[$value];
             }
         }
 
-        if (count($sql_params) != count($result)) {
+        if (count($sql_params) > count($result)) {
             $message = "Podani in zahtevani parametri se ne ujemajo: "
                     . "zahtevani: (" . implode(", ", $sql_params) . "), "
                     . "podani: (" . implode(", ", array_keys($params)) . ")";
@@ -178,11 +178,14 @@ abstract class AbstractDB {
     public static function whereString(array $params, array $filterParams, $whereSuffix = "" ) {
         $conditions = [];
         foreach ($filterParams as $column => $comparator) {
-            if (isset($params[$column])) {
+            if (array_key_exists($column, $params)) {
                 $conditions[] = "$column $comparator :$column";
             }
         }
-        return (count($conditions)>0 || strlen($whereSuffix)>0) ? (" WHERE ".implode(" AND ", $conditions))." ".$whereSuffix." " : "";
+        if ($whereSuffix) {
+            $conditions[] = $whereSuffix;
+        }
+        return (count($conditions)>0) ? (" WHERE ".implode(" AND ", $conditions))." " : "";
     }
 
     public static abstract function get(array $id);
