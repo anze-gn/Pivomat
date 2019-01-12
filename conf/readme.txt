@@ -28,7 +28,7 @@ Nameščanje - Apache:
 - sudo a2enmod rewrite
 - sudo a2ensite default-ssl.conf
 - sudo cp default-ssl.conf /etc/apache2/sites-available/
-- sudo cp 000-default-ssl.conf /etc/apache2/sites-available/
+- sudo cp 000-default.conf /etc/apache2/sites-available/
 - sudo service apache2 restart
 Nameščanje - Firefox:
 - Certificate manager -> Authorities -> Import -> pmca.crt -> Trust this CA to identify websites [check]
