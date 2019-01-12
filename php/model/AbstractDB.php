@@ -71,7 +71,7 @@ abstract class AbstractDB {
                 $fp = fopen($params_filtered[':slika']['tmp_name'], 'rb');
                 $stmt->bindValue($key, $fp, PDO::PARAM_LOB);
             } else {
-                $value = (string)$value;
+                $value = ($value == null) ? null : (string)$value;
                 $stmt->bindValue($key, $value);
             }
         }

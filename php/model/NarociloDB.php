@@ -12,7 +12,7 @@ class NarociloDB extends AbstractDB {
     }
 
     public static function get(array $params) {
-        $narocilo = parent::query("SELECT id, potrjeno, preklicano, stornirano, datum, idStranka "
+        $narocilo = parent::query("SELECT id, potrjeno, preklicano, stornirano, zakljuceno, datum, idStranka "
                         . "FROM Narocilo "
                         . "WHERE id = :id",
                 $params);
@@ -38,7 +38,7 @@ class NarociloDB extends AbstractDB {
                     . "potrjeno = :potrjeno, "
                     . "preklicano = :preklicano, "
                     . "stornirano = :stornirano, "
-                    . "idStranka = :idStranka "
+                    . "zakljuceno = :zakljuceno "
                 . " WHERE id = :id", $params);
     }
 

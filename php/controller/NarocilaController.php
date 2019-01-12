@@ -46,17 +46,57 @@ class NarocilaController
         ]);
     }
 
-    public static function get($id) {
+    public static function get($method, $id) {
+        $stanja = [
+            'potrjeno' => null,
+            'preklicano' => null,
+            'stornirano' => null,
+            'zakljuceno' => null,
+        ];
+
+        if ($method == 'POST') {
+            $narocilo = NarociloDB::get(['id' => $id]);
+            $narociloForm = new NarociloForm("narocilo_form");
+            if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'prodajalci' || $_SESSION['vloga'] == 'admin'))) {
+                echo Twig::instance()->render('access-denied.html.twig');
+                exit();
+            }
+            $formData = $narociloForm->getValue();
+            $formData['id'] = $id;
+            $data = array_merge($stanja, $formData);
+            foreach ($data as $status => $value) {
+                if ($value) {
+                    $data[$status] = ($narocilo[$status]) ? $narocilo[$status] : date('Y-m-d H:i:s');
+                }
+            }
+            NarociloDB::update($data);
+        }
+
         $narocilo = NarociloDB::get(['id' => $id]);
         if (!(isset($_SESSION['vloga'])) || ($_SESSION['vloga'] == 'stranke' && $narocilo['idStranka'] != $_SESSION['uporabnik']['id'])) {
             echo Twig::instance()->render('access-denied.html.twig');
             exit();
         }
+
+        if ($_SESSION['vloga'] != 'stranke') {
+            $narociloForm = new NarociloForm("narocilo_form");
+            $data = ['id' => $id];
+            foreach ($stanja as $status => $value) {
+                $data[$status] = ($narocilo[$status]) ? 1 : 0;
+            }
+            $dataSource = new HTML_QuickForm2_DataSource_Array($data);
+            $narociloForm->addDataSource($dataSource);
+        } else {
+            $narociloForm = null;
+        }
+
         echo Twig::instance()->render('narocilo-detail.html.twig', [
             "title" => "Podrobnosti naročila",
+            "narocilo" => $narocilo,
             "postavke" => PostavkaDB::getAll(['idNarocilo' => $id]),
             "stranka" => StrankaDB::get(['id' => $narocilo['idStranka']]),
-            "oddaj_narocilo" => false
+            "oddaj_narocilo" => false,
+            "form" => ($narociloForm) ? (string) $narociloForm->render(CustomRenderer::instance()) : null
         ]);
     }
 
@@ -109,7 +149,6 @@ class NarocilaController
 
         $idNarocila = NarociloDB::insert(['idStranka' => $_SESSION['uporabnik']['id']]);
         foreach ($_SESSION['kosarica'] as $cartItem) {
-            $pivo = PivoDB::get(['id' => $cartItem['id']]);
             PostavkaDB::insert([
                 'idArtikel' => $cartItem['id'],
                 'kolicina' => $cartItem['kol'],
