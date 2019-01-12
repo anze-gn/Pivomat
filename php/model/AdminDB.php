@@ -18,7 +18,7 @@ class AdminDB extends AbstractDB {
         if (count($admin) == 1) {
             return $admin[0];
         } else {
-            throw new InvalidArgumentException("Admin z id-jem $params ne obstaja!");
+            throw new InvalidArgumentException("Admin z id-jem ".$params['id']." ne obstaja!");
         }
     }
 
@@ -31,7 +31,7 @@ class AdminDB extends AbstractDB {
         if (count($admin) == 1) {
             return $admin[0];
         } else {
-            #throw new InvalidArgumentException("Admin z id-jem $params ne obstaja!");
+            #throw new InvalidArgumentException("Admin z id-jem ".$params['id']." ne obstaja!");
             return false;
         }
     }

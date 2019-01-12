@@ -19,7 +19,7 @@ class KrajDB extends AbstractDB {
         if (count($posta) == 1) {
             return $posta[0];
         } else {
-            throw new InvalidArgumentException("Kraj s pošto $params ne obstaja!");
+            throw new InvalidArgumentException("Kraj s pošto ".$params['postnaSt']." ne obstaja!");
         }
     }
 

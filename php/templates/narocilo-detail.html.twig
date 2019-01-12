@@ -6,7 +6,38 @@
     <section class="bgwhite p-t-55 p-b-65">
         <div class="container normal-list">
 
-            <h1 class="my-3">{{ title }}</h1>
+            <h1 class="my-3">{{ title }} #{{ narocilo.id }}</h1>
+
+            <div class="row my-2">
+                <div class="col-sm-2 ">Oddano:</div>
+                <div class="col-sm-10 "><b>{{ narocilo.datum }}</b></div>
+            </div>
+            {% if narocilo.potrjeno %}
+                <div class="row my-2">
+                    <div class="col-sm-2 ">Potrjeno:</div>
+                    <div class="col-sm-10 "><b>{{ narocilo.potrjeno }}</b></div>
+                </div>
+            {%  endif %}
+            {% if narocilo.preklicano %}
+                <div class="row my-2">
+                    <div class="col-sm-2 ">Preklicano:</div>
+                    <div class="col-sm-10 "><b>{{ narocilo.preklicano }}</b></div>
+                </div>
+            {%  endif %}
+            {% if narocilo.stornirano %}
+                <div class="row my-2">
+                    <div class="col-sm-2 ">Stornirano:</div>
+                    <div class="col-sm-10 "><b>{{ narocilo.stornirano }}</b></div>
+                </div>
+            {%  endif %}
+            {% if narocilo.zakljuceno %}
+                <div class="row my-2">
+                    <div class="col-sm-2 ">Zaključeno:</div>
+                    <div class="col-sm-10 "><b>{{ narocilo.zakljuceno }}</b></div>
+                </div>
+            {%  endif %}
+
+            <div class="my-3"></div>
             
             <h3 class="my-3">
                 {% if SESSION.vloga == "prodajalci" or SESSION.vloga == "admin" %}
@@ -50,6 +81,7 @@
 
             <div class="row my-3"></div>
 
+            <h3 class="my-3">Postavke:</h3>
             <table class="table table-bordered">
                 <thead>
                 <tr>
@@ -91,6 +123,13 @@
                     </a>
                 </div>
             </div>
+            {%  endif %}
+
+            {% if form %}
+                <div class="my-3"></div>
+                <h3 class="my-2">Posodobi stanje:</h3>
+
+                {{ form | raw}}
             {%  endif %}
 
         </div>

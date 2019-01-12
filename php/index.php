@@ -112,7 +112,7 @@ $urls = [
         NarocilaController::index(null);
     },
     "/^narocila\/(\d+)$/" => function ($method, $id) {
-        NarocilaController::get($id);
+        NarocilaController::get($method, $id);
     },
     "/^narocila\/(\w+)$/" => function ($method, $filter) {
         NarocilaController::index($filter);

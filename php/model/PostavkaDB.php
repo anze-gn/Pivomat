@@ -20,7 +20,7 @@ class PostavkaDB extends AbstractDB {
         if (count($postavka) == 1) {
             return $postavka[0];
         } else {
-            throw new InvalidArgumentException("Postavka z id-jem $params ne obstaja!");
+            throw new InvalidArgumentException("Postavka z id-jem ".$params['id']." ne obstaja!");
         }
     }
 
