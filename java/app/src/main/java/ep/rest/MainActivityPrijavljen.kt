@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.AdapterView
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_main_prijavljen.*
 import retrofit2.Call
 import retrofit2.Callback

@@ -1,25 +1,9 @@
 package ep.rest
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.annotation.TargetApi
-import android.content.pm.PackageManager
+
 
 import android.app.Activity
-import android.os.AsyncTask
-import android.os.Build
 import android.os.Bundle
-import android.provider.ContactsContract
-import android.text.TextUtils
-import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.widget.ArrayAdapter
-import android.widget.TextView
-
-
-
-import android.Manifest.permission.READ_CONTACTS
-
 import kotlinx.android.synthetic.main.activity_login.*
 import android.content.Intent
 import android.util.Log

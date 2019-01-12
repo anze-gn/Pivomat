@@ -1,6 +1,5 @@
 package ep.rest
 
-import okhttp3.Cookie
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -19,24 +18,7 @@ object PivoService {
 
         @GET("piva/{id}")
         fun get(@Path("id") id: Int, @Header("Cookie") cookie : String): Call<Pivo>
-        // @Header("Cookie") cookie : Cookie
 
-//        @FormUrlEncoded
-//        @POST("pivo")
-//        fun insert(@Field("author") author: String,
-//                   @Field("title") title: String,
-//                   @Field("price") price: Double,
-//                   @Field("year") year: Int,
-//                   @Field("description") description: String): Call<Void>
-
-//        @FormUrlEncoded
-//        @PUT("books/{id}")
-//        fun update(@Path("id") id: Int,
-//                   @Field("author") author: String,
-//                   @Field("title") title: String,
-//                   @Field("price") price: Double,
-//                   @Field("year") year: Int,
-//                   @Field("description") description: String): Call<Void>
     }
 
     val instance: RestApi by lazy {

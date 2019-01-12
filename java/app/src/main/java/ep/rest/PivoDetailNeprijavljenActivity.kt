@@ -1,7 +1,5 @@
 package ep.rest
 
-import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -10,7 +8,6 @@ import kotlinx.android.synthetic.main.content_pivo_detail.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.Field
 import java.io.IOException
 
 class PivoDetailNeprijavljenActivity : AppCompatActivity(), Callback<Pivo> {
@@ -21,15 +18,6 @@ class PivoDetailNeprijavljenActivity : AppCompatActivity(), Callback<Pivo> {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pivo_detail_neprijavljen)
         setSupportActionBar(toolbar)
-
-//        fabEdit.setOnClickListener {
-//            val intent = Intent(this, PivoFormActivity::class.java)
-//            intent.putExtra("ep.rest.pivo", pivo)
-//            startActivity(intent)
-//        }
-//
-
-
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 

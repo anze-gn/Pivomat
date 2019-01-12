@@ -1,16 +1,16 @@
 package ep.rest
 
-import android.icu.text.DecimalFormat
+
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_kosarica.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
-import java.math.RoundingMode
 import java.util.*
 
 class KosaricaActivity : AppCompatActivity(), Callback<List<CartItem>> {
@@ -23,33 +23,45 @@ class KosaricaActivity : AppCompatActivity(), Callback<List<CartItem>> {
         val app = application as PivomatApp
         adapter = CartAdapter(this)
         items.adapter = adapter
-//        items.onItemClickListener = AdapterView.OnItemClickListener { _, _, i, _ ->
-//            val cartItem = adapter?.getItem(i)
-//            Log.i("KOSARICA", "Izbrana postavka")
-//            if (cartItem != null) {
-//                  val intent = Intent(this, PivoDetailActivity::class.java)
-//                  intent.putExtra("ep.rest.id", cartItem.id)
-//                  startActivity(intent)
-//                btnIzbrisi.setOnClickListener {
-//                    CartService.instance.delete(cartItem.id, app.cookie!!).enqueue(object: Callback<List<CartItem>>{
-//                        override fun onResponse(call: Call<List<CartItem>>?, response: Response<List<CartItem>>?) {
-//                            if (response!!.isSuccessful) {
-//                                container.setOnRefreshListener { CartService.instance.getAll(app.cookie!!).enqueue(this) }
-//                                Log.i("KOSARICA", "Uspesno izbrisan element")
-//                            } else {
-//                                Log.i("KOSARICA", "Neuspesno izbrisan element")
-//                            }
-//
-//
-//                        }
-//
-//                        override fun onFailure(call: Call<List<CartItem>>?, t: Throwable?) {
-//                            Log.i("KOSARICA", "Neuspesno izbrisan element")
-//                        }
-//                    })
-//                }
-//            }
-//        }
+
+        btnKoncajNakup.setOnClickListener {
+            CartService.instance.posljiNarocilo(app.cookie!!).enqueue(object : Callback<Void> {
+                override fun onFailure(call: Call<Void>?, t: Throwable?) {
+                    Log.i("KOSARICA", "Nuspesno zakljucen nakup in poslano narocilo")
+                    tvStatusNarocila.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18.0F)
+                    tvStatusNarocila.text = "Nespešno poslano naročilo, prosim poskusite ponovno!"
+                }
+
+                override fun onResponse(call: Call<Void>?, response: Response<Void>?) {
+
+                    if (response!!.isSuccessful) {
+                        tvStatusNarocila.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18.0F)
+                        tvStatusNarocila.text = "Naročilo uspešno poslano!"
+                        Log.i("KOSARICA", "Nakup uspesno zakljucen, narocilo poslano")
+                        Thread.sleep(2000) //Da se vidi napis uspesnega nakupa
+                        finish();
+                        overridePendingTransition(0, 0);
+                        startActivity(intent);
+                        overridePendingTransition(0, 0);
+                    } else {
+                        Log.i("KOSARICA", "Nespešno poslano naročilo, prosim poskusite ponovno!")
+                        tvStatusNarocila.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18.0F)
+                        tvStatusNarocila.text = "Nespešno poslano naročilo, prosim poskusite ponovno!"
+                        Thread.sleep(2000) //Da se vidi napis uspesnega nakupa
+                        finish();
+                        overridePendingTransition(0, 0);
+                        startActivity(intent);
+                        overridePendingTransition(0, 0);
+                    }
+
+                }
+
+
+            })
+        }
+
+
+
         container.setOnRefreshListener { CartService.instance.getAll(app.cookie!!).enqueue(this) }
 
 
@@ -67,7 +79,7 @@ class KosaricaActivity : AppCompatActivity(), Callback<List<CartItem>> {
             val sCena = koncnaCena(hits)
             val app = application as PivomatApp
             app.skupnaCena = sCena
-
+            tvSkupnaCena.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18.0F)
             tvSkupnaCena.text = String.format(Locale.ENGLISH, "Skupna cena: %.2f€", sCena)
             container.isRefreshing = false
 

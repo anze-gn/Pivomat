@@ -31,10 +31,16 @@
         android:layout_height="wrap_content"
         android:gravity="center"/>
 
+    <TextView
+        android:id="@+id/tvStatusNarocila"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"/>
+
     <Button
         android:id="@+id/btnKoncajNakup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/kon_aj_nakup" />
+        android:text="@string/poslji_naro_ilo_in_kon_aj_nakup" />
 
 </LinearLayout>

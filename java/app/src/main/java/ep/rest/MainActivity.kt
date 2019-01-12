@@ -7,7 +7,6 @@ import android.util.Log
 import android.widget.AdapterView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
-import okhttp3.Cookie
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

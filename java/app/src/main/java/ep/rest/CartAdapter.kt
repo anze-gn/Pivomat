@@ -2,19 +2,14 @@ package ep.rest
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TextView
-import ep.rest.R.id.*
-import kotlinx.android.synthetic.main.activity_kosarica.*
-import kotlinx.android.synthetic.main.activity_login.*
-import okhttp3.Callback
-import okhttp3.Response
 import retrofit2.Call
 import java.util.*
 
@@ -70,6 +65,7 @@ class CartAdapter(context: Context) : ArrayAdapter<CartItem>(context, 0, ArrayLi
         app.skupnaCena = vsota
         val act = context as Activity
         val tvSkupnaCena = act.findViewById<TextView>(R.id.tvSkupnaCena)
+        tvSkupnaCena.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18.0F)
         tvSkupnaCena.text = String.format(Locale.ENGLISH, "Skupna cena: %.2f€", vsota)
     }
 }

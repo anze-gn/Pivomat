@@ -16,6 +16,9 @@ object CartService {
         @GET("kosarica")
         fun getAll(@Header("Cookie") cookie : String): Call<List<CartItem>>
 
+        @GET("narocilo")
+        fun posljiNarocilo(@Header("Cookie") cookie : String): Call<Void>
+
         @FormUrlEncoded
         @POST("kosarica")
         fun insert(@Field("id") idPiva: Int,
