@@ -3,7 +3,7 @@
 require_once("model/NarociloDB.php");
 require_once("model/PostavkaDB.php");
 require_once("model/StrankaDB.php");
-#require_once("forms/NarociloForm.php");
+require_once("forms/NarociloForm.php");
 
 class NarocilaController
 {
@@ -18,8 +18,12 @@ class NarocilaController
         if ($_SESSION['vloga'] == 'stranke') {
             $narocila = NarociloDB::getAll(['idStranka' => $_SESSION['uporabnik']['id']]);
             $subtitle = "Seznam vaših naročil";
-        } elseif (in_array($filter, self::$stanja)) {
-            $narocila = NarociloDB::getAll([$filter => null]);
+        } elseif (in_array($filter, self::$stanja) || $filter == 'neobdelano') {
+            if ($filter == 'neobdelano') {
+                $narocila = NarociloDB::getAll(['zakljuceno' => null]);
+            } else {
+                $narocila = NarociloDB::getAll([$filter => null]);
+            }
             $tmp = str_replace("no", "nih", $filter);
             $subtitle = "Seznam $tmp naročil";
         } else {
