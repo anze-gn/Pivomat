@@ -13,7 +13,7 @@ class ZnamkaDB extends AbstractDB {
         if (count($znamka) == 1) {
             return $znamka[0];
         } else {
-            throw new InvalidArgumentException("Znamka z id-jem $params ne obstaja!");
+            throw new InvalidArgumentException("Znamka z id-jem ".$params['id']." ne obstaja!");
         }
     }
 

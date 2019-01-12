@@ -13,7 +13,7 @@ class StilDB extends AbstractDB {
         if (count($stil) == 1) {
             return $stil[0];
         } else {
-            throw new InvalidArgumentException("Stil z id-jem $params ne obstaja!");
+            throw new InvalidArgumentException("Stil z id-jem ".$params['id']." ne obstaja!");
         }
     }
 

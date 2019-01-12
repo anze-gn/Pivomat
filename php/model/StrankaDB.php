@@ -20,7 +20,7 @@ class StrankaDB extends AbstractDB {
         if (count($stranka) == 1) {
             return $stranka[0];
         } else {
-            throw new InvalidArgumentException("Stranka z id-jem $params ne obstaja!");
+            throw new InvalidArgumentException("Stranka z id-jem ".$params['id']." ne obstaja!");
         }
     }
 
@@ -33,7 +33,7 @@ class StrankaDB extends AbstractDB {
         if (count($stranka) == 1) {
             return $stranka[0];
         } else {
-            #throw new InvalidArgumentException("Stranka z id-jem $params ne obstaja!");
+            #throw new InvalidArgumentException("Stranka z id-jem ".$params['id']." ne obstaja!");
             return false;
         }
     }

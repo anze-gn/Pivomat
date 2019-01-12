@@ -20,7 +20,7 @@ class NarociloDB extends AbstractDB {
         if (count($narocilo) == 1) {
             return $narocilo[0];
         } else {
-            throw new InvalidArgumentException("Naročilo z id-jem $params ne obstaja!");
+            throw new InvalidArgumentException("Naročilo z id-jem ".$params['id']." ne obstaja!");
         }
     }
 

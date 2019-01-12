@@ -20,7 +20,7 @@ class ProdajalecDB extends AbstractDB {
         if (count($prodajalec) == 1) {
             return $prodajalec[0];
         } else {
-            throw new InvalidArgumentException("Prodajalec z id-jem $params ne obstaja!");
+            throw new InvalidArgumentException("Prodajalec z id-jem ".$params['id']." ne obstaja!");
         }
     }
 
@@ -33,7 +33,7 @@ class ProdajalecDB extends AbstractDB {
         if (count($prodajalec) == 1) {
             return $prodajalec[0];
         } else {
-            #throw new InvalidArgumentException("Prodajalec z id-jem $params ne obstaja!");
+            #throw new InvalidArgumentException("Prodajalec z id-jem ".$params['id']." ne obstaja!");
             return false;
         }
     }
