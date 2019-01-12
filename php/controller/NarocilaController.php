@@ -37,6 +37,9 @@ class NarocilaController
                     $statusi[] = $stanje;
                 }
             }
+            if (count($statusi) == 0) {
+                $statusi = ['oddano'];
+            }
             $narocila[$i]['stanje'] = implode(", ", $statusi);
         }
         echo Twig::instance()->render('narocilo-list.html.twig', [
