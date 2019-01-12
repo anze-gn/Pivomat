@@ -21,14 +21,11 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
     <string name="Prijava">Prijava</string>
     <string name="v_ko_arico">V Košarico</string>
     <string name="ko_arica">Košarica</string>
     <string name="odjava">Odjava</string>
     <string name="kon_aj_nakup">Končaj nakup</string>
-    <string name="title_activity_login2">Sign in</string>
     <string name="odstrani">Odstrani</string>
+    <string name="poslji_naro_ilo_in_kon_aj_nakup">Poslji naročilo in končaj nakup</string>
 </resources>
