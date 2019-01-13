@@ -15,7 +15,7 @@ class PrijavaRegistracijaController {
         if ($form->validate()) {
             $data = $form->getValue();
             $form->captcha->clearCaptchaSession();
-            $data["aktiviran"] = 0;
+            $data["aktiviran"] = "0";
             $data["potrjen"] = password_hash($data["email"], PASSWORD_BCRYPT);
             unset($data["ponovitevGesla"]);
             $id = StrankaDB::insert($data);

@@ -35,5 +35,8 @@ Nameščanje - Firefox:
 - Certificate manager -> Your Certificates -> Import -> Janez_Novak.p12, Marjetka_Kovac.p12, Metka_Dolenc.p12, admin.p12
    -> password: pivomatagencija
 
-PEAR
-- sudo pear install -Z HTML_QuickForm2 HTML_QuickForm2_Captcha-0.1.2
+PEAR:
+- sudo pear install -Z HTML_QuickForm2 HTML_QuickForm2_Captcha-0.1.2 Text_CAPTCHA_Numeral
+
+MYSQL:
+- mysql -u root -p < baza.sql

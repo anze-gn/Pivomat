@@ -121,12 +121,7 @@ abstract class RegistracijaAbstractForm extends HTML_QuickForm2 {
     }
 
     public static function ifMailNotExists($email) {
-        try {
-            StrankaDB::getByEmail(['email' => $email]);
-        } catch (InvalidArgumentException $e) {
-            return true;
-        }
-        return false;
+        return !StrankaDB::getByEmail(['email' => $email]);
     }
 
 }
