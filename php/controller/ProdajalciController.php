@@ -40,9 +40,9 @@ class ProdajalciController {
 
         if ($form->validate()) {
             $data = $form->getValue();
-            if(!array_key_exists('aktiviran', $data)){
-                $data["aktiviran"] = 0;
-            }
+            if(!isset($data['aktiviran'])){
+                    $data['aktiviran'] = "0";
+                }
             $id = ProdajalecDB::insert($data);
             ViewHelper::redirect(BASE_URL . "prodajalci/" . $id);
         } else {
@@ -64,8 +64,8 @@ class ProdajalciController {
         if ($editForm->isSubmitted()) {
             if ($editForm->validate()) {
                 $data = $editForm->getValue();
-                if(!array_key_exists('aktiviran', $data)){
-                    $data["aktiviran"] = 0;
+                if(!isset($data['aktiviran'])){
+                    $data['aktiviran'] = "0";
                 }
                 ProdajalecDB::update($data);
                 if ($_SESSION["vloga"] == "prodajalci" && $data['id'] == $_SESSION["uporabnik"]["id"]) {

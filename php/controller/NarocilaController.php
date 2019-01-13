@@ -162,4 +162,29 @@ class NarocilaController
         echo Twig::instance()->render('narocilo-oddano.html.twig', ['idNarocila' => $idNarocila]);
         exit();
     }
+
+    public static function oddajNarociloREST() {
+        if (!(isset($_SESSION['vloga']) && ($_SESSION['vloga'] == 'stranke'))) {
+            echo ViewHelper::renderJSON("Unauthorized", 401);
+            exit();
+        }
+
+        if (!isset($_SESSION['kosarica'])) {
+            echo ViewHelper::renderJSON("Košarica je prazna.", 400);
+            exit();
+        }
+
+        $idNarocila = NarociloDB::insert(['idStranka' => $_SESSION['uporabnik']['id']]);
+        foreach ($_SESSION['kosarica'] as $cartItem) {
+            PostavkaDB::insert([
+                'idArtikel' => $cartItem['id'],
+                'kolicina' => $cartItem['kol'],
+                'idNarocilo' => $idNarocila
+            ]);
+        }
+        unset($_SESSION['kosarica']);
+        echo ViewHelper::renderJSON("Naročilo oddano", 200);
+        exit();
+    }
+
 }

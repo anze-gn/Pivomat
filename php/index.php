@@ -166,6 +166,9 @@ $urls = [
         if ($method == "GET") {
             PivaRESTController::logout();
         }
+    },
+    "/^api\/oddaj_narocilo$/" => function ($method) {
+        NarocilaController::oddajNarociloREST();
     }
 ];
 

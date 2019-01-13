@@ -31,9 +31,9 @@ class PivaRESTController {
 
         if ($form->validate()) {
             $data = $form->getValue();
-            if(!array_key_exists('aktiviran', $data)){
-                $data["aktiviran"] = 0;
-            }
+            if(!isset($data['aktiviran'])){
+                    $data['aktiviran'] = "0";
+                }
             $id = PivoDB::insert($data);
             ViewHelper::redirect(BASE_URL . "api/piva/$id");
         } else {
@@ -50,9 +50,9 @@ class PivaRESTController {
 
         if ($editForm->validate()) {
             $data = $editForm->getValue();
-            if(!array_key_exists('aktiviran', $data)){
-                $data["aktiviran"] = 0;
-            }
+            if(!isset($data['aktiviran'])){
+                    $data['aktiviran'] = "0";
+                }
             PivoDB::update($data);
             echo ViewHelper::renderJSON("", 200);
         } else {

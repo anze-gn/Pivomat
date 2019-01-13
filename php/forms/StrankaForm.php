@@ -5,6 +5,7 @@ require_once 'HTML/QuickForm2/Element/Select.php';
 require_once 'HTML/QuickForm2/Element/InputSubmit.php';
 require_once 'HTML/QuickForm2/Element/InputText.php';
 require_once 'HTML/QuickForm2/Element/InputCheckbox.php';
+require_once 'HTML/QuickForm2/Element/InputHidden.php';
 require_once 'model/KrajDB.php';
 require_once 'forms/DeleteForm.php';
 
@@ -120,6 +121,27 @@ class StrankaEditForm extends StrankaAbstractForm {
 
     public function __construct($id) {
         parent::__construct($id);
+
+        $this->geslo->setLabel('Geslo (pustite prazno za ohranitev starega gesla)');
+        $this->geslo->removeRule($this->gesloRule);
+        $this->button->setAttribute('value', 'Shrani spremembe');
+        $this->id = new HTML_QuickForm2_Element_InputHidden("id");
+        $this->addElement($this->id);
+    }
+
+}
+
+class StrankaSelfEditForm extends StrankaAbstractForm {
+
+    public $id;
+
+    public function __construct($id) {
+        parent::__construct($id);
+
+        $this->removeChild($this->aktiviran);
+
+        $this->aktiviran = new HTML_QuickForm2_Element_InputHidden('aktiviran');
+        $this->addElement($this->aktiviran);
 
         $this->geslo->setLabel('Geslo (pustite prazno za ohranitev starega gesla)');
         $this->geslo->removeRule($this->gesloRule);

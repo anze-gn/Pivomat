@@ -42,8 +42,8 @@ class PivaController {
 
         if ($form->validate()) {
             $data = $form->getValue();
-            if(!array_key_exists('aktiviran', $data)){
-                $data["aktiviran"] = 0;
+            if(!isset($data['aktiviran'])){
+                    $data['aktiviran'] = "0";
             }
             if ($data['slika']['size'] < 1) {
                 unset($data['slika']);
@@ -70,8 +70,8 @@ class PivaController {
         if ($editForm->isSubmitted()) {
             if ($editForm->validate()) {
                 $data = $editForm->getValue();
-                if (!array_key_exists('aktiviran', $data)) {
-                    $data["aktiviran"] = 0;
+                if(!isset($data['aktiviran'])){
+                    $data['aktiviran'] = "0";
                 }
                 if ($data['slika']['size'] < 1) {
                     unset($data['slika']);

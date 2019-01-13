@@ -37,9 +37,9 @@ class StrankeController {
 
         if ($form->validate()) {
             $data = $form->getValue();
-            if(!array_key_exists('aktiviran', $data)){
-                $data["aktiviran"] = 0;
-            }
+            if(!isset($data['aktiviran'])){
+                    $data['aktiviran'] = "0";
+                }
             $id = StrankaDB::insert($data);
             ViewHelper::redirect(BASE_URL . "stranke/" . $id);
         } else {
@@ -55,14 +55,20 @@ class StrankeController {
             echo Twig::instance()->render('access-denied.html.twig'); 
             exit();
         }
-        $editForm = new StrankaEditForm("edit_form");
-        $deleteForm = new StrankaDeleteForm("delete_form");
+
+        if ($_SESSION['vloga'] == 'stranke') {
+            $editForm = new StrankaSelfEditForm("edit_form");
+            $deleteForm = false;
+        } else {
+            $editForm = new StrankaEditForm("edit_form");
+            $deleteForm = new StrankaDeleteForm("delete_form");
+        }
 
         if ($editForm->isSubmitted()) {
             if ($editForm->validate()) {
                 $data = $editForm->getValue();
-                if(!array_key_exists('aktiviran', $data)){
-                    $data["aktiviran"] = 0;
+                if(!isset($data['aktiviran'])){
+                    $data['aktiviran'] = "0";
                 }
                 StrankaDB::update($data);
                 if ($_SESSION["vloga"] == "stranke" && $data['id'] == $_SESSION["uporabnik"]["id"]) {
@@ -73,19 +79,21 @@ class StrankeController {
                 echo Twig::instance()->render("form.html.twig", [
                     "title" => "Uredi podatke o stranki",
                     "form" => (string) $editForm->render(CustomRenderer::instance()),
-                    "deleteForm" => (string) $deleteForm->render(CustomRenderer::instance())
+                    "deleteForm" => ($deleteForm) ? (string) $deleteForm->render(CustomRenderer::instance()) : null
                 ]);
             }
         } else {
             $stranka = StrankaDB::get(array('id' => $id));
             $dataSource = new HTML_QuickForm2_DataSource_Array($stranka);
             $editForm->addDataSource($dataSource);
-            $deleteForm->addDataSource($dataSource);
+            if ($deleteForm) {
+                $deleteForm->addDataSource($dataSource);
+            }
 
             echo Twig::instance()->render("form.html.twig", [
                 "title" => "Uredi podatke o stranki",
                 "form" => (string) $editForm->render(CustomRenderer::instance()),
-                "deleteForm" => (string) $deleteForm->render(CustomRenderer::instance())
+                "deleteForm" => ($deleteForm) ? (string) $deleteForm->render(CustomRenderer::instance()) : null
             ]);
         }
     }
