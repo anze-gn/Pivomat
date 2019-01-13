@@ -15,7 +15,9 @@ require_once("forms/CustomRenderer.php");
 
 define("BASE_URL", rtrim($_SERVER["SCRIPT_NAME"], "index.php"));
 define("STATIC_URL", BASE_URL . "static/");
-define("DEBUG", true);
+define("DEBUG", false);
+
+header("X-XSS-Protection: 1; mode=block");
 
 $path = isset($_SERVER["PATH_INFO"]) ? trim($_SERVER["PATH_INFO"], "/") : "";
 
